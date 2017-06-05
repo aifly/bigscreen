@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=640,user-scalable=no" />
+	<title>
+		微信控制大屏		
+	</title>
+	<style>
+		*{margin: 0;padding: 0;-webkit-user-select:none;}
+		body{
+			-webkit-transform-style:preserve-3d;
+			-webkit-perspective:500px;
+		}
+		ul,li{list-style: none;}
+		li{
+			font-size: 30px;
+		}
+		ul{
+			width: 400px;
+			margin: 100px auto;
+		}
+		ul.top{
+			-webkit-transform:rotateX(15deg);
+		}
+		li{
+			-webkit-box-flex:1;text-align: center;
+			display:-webkit-box;
+		}
+		div{
+			-webkit-box-flex:1;
+			height: 70px;
+		}
+	</style>
+</head>
+<body>
+	<ul class="top">
+		<li>
+			<div></div>
+			<div id='control-top'>↑</div>
+			<div></div>
+		</li>
+		<li>
+			<div id='control-left'>←</div>
+			<div></div>
+			<div id='control-right'>→</div>
+		</li>
+		<li>
+			<div></div>
+			<div id="control-down">↓</div>
+			<div></div>
+		</li>
+	</ul>
+	<script src='https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js'></script>
+	<script type="text/javascript">
+		$(function(){
+			var s = this;
+			var topOpt = {
+				type:'top'
+			}
+			$('#control-top').on('touchstart mousedown',function(e){
+				e.preventDefault();
+				s.timer = setInterval(function(){
+					$.ajax({
+						url:'http://api.zmiti.com/v2/msg/send_msg',
+	                    data:{
+	                        type:'zmiti-screen-1234',
+	                        content:JSON.stringify(topOpt),
+	                        to:topOpt.to||''
+	                    }
+					}).done(function(data){
+					});
+				},40);
+			}).on('touchend mouseup',function(){
+				clearInterval(s.timer);
+			});
+			
+			var leftOpt = {
+				type:'left'
+			}
+			$('#control-left').on('touchstart mousedown',function(e){
+				e.preventDefault();
+				s.timer = setInterval(function(){
+					$.ajax({
+						url:'http://api.zmiti.com/v2/msg/send_msg',
+	                    data:{
+	                        type:'zmiti-screen-1234',
+	                        content:JSON.stringify(leftOpt),
+	                        to:leftOpt.to||''
+	                    }
+					}).done(function(data){
+					});
+				},40);
+			}).on('touchend mouseup',function(){
+				clearInterval(s.timer);
+			});
+			var rightOpt = {
+				type:'right'
+			}
+			$('#control-right').on('touchstart mousedown',function(e){
+				e.preventDefault();
+				s.timer = setInterval(function(){
+					$.ajax({
+						url:'http://api.zmiti.com/v2/msg/send_msg',
+	                    data:{
+	                        type:'zmiti-screen-1234',
+	                        content:JSON.stringify(rightOpt),
+	                        to:rightOpt.to||''
+	                    }
+					}).done(function(data){
+					});
+				},40);
+			}).on('touchend mouseup',function(){
+				clearInterval(s.timer);
+			});
+
+			var bottomOpt = {
+				type:'bottom'
+			}
+			$('#control-down').on('touchstart mousedown',function(e){
+				e.preventDefault();
+				s.timer = setInterval(function(){
+					$.ajax({
+						url:'http://api.zmiti.com/v2/msg/send_msg',
+	                    data:{
+	                        type:'zmiti-screen-1234',
+	                        content:JSON.stringify(bottomOpt),
+	                        to:bottomOpt.to||''
+	                    }
+					}).done(function(data){
+					});
+				},40);
+			}).on('touchend mouseup',function(){
+				clearInterval(s.timer);
+			});
+		});
+	</script>
+</body>
+</html>
