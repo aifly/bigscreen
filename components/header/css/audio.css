@@ -1,0 +1,67 @@
+/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {
+    background-color: #fff;
+    border-color: #bf1616;
+    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);
+}*/
+.lt-full {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: hidden; }
+
+.zmiti-audio-main-ui {
+  -webkit-transform: scale(0.8);
+  transform: scale(0.8);
+  width: 500px;
+  background: #fff;
+  height: 62px;
+  line-height: 62px;
+  border: 1px solid #00afff;
+  border-radius: 30px;
+  margin: 38px auto 0; }
+  .zmiti-audio-main-ui.zmiti-audio-custom {
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    margin: 0 auto; }
+    .zmiti-audio-main-ui.zmiti-audio-custom .zmiti-audio-C {
+      width: 220px;
+      margin: 0 auto;
+      height: 100%;
+      display: -webkit-box;
+      -webkit-box-align: center;
+      -webkit-box-pack: center;
+      -webkit-box-orient: horizontal; }
+      .zmiti-audio-main-ui.zmiti-audio-custom .zmiti-audio-C > aside {
+        -webkit-box-flex: 1;
+        color: #00afff;
+        font-size: 20px; }
+        .zmiti-audio-main-ui.zmiti-audio-custom .zmiti-audio-C > aside img {
+          width: 40px;
+          vertical-align: middle;
+          margin-right: 10px;
+          margin-left: 20px; }
+        .zmiti-audio-main-ui.zmiti-audio-custom .zmiti-audio-C > aside:last-of-type {
+          text-align: right;
+          margin-right: 10px; }
+  .zmiti-audio-main-ui .zmiti-audio-C {
+    width: 440px;
+    margin: 0 auto;
+    height: 100%;
+    display: -webkit-box;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+    -webkit-box-orient: horizontal; }
+    .zmiti-audio-main-ui .zmiti-audio-C > aside {
+      -webkit-box-flex: 1;
+      color: #00afff; }
+      .zmiti-audio-main-ui .zmiti-audio-C > aside img {
+        width: 70px;
+        vertical-align: middle;
+        margin-right: 10px; }
+      .zmiti-audio-main-ui .zmiti-audio-C > aside:last-of-type {
+        text-align: right; }
+
+/*# sourceMappingURL=audio.css.map */

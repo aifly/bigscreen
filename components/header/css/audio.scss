@@ -1,0 +1,49 @@
+@import "../../../assets/css/base.scss";
+$viewW:640px;
+.zmiti-audio-main-ui{
+   &.zmiti-audio-custom{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    margin: 0 auto;
+    .zmiti-audio-C{
+      width:220px;
+      margin: 0 auto;
+      height: 100%;
+      @include displayBox(horizontal);
+      &>aside{
+        -webkit-box-flex:1; 
+        img{width:40px;vertical-align: middle;margin-right: 10px; margin-left: 20px;}
+        color:#00afff;
+        font-size: 20px;
+        &:last-of-type{
+          text-align: right;
+          margin-right: 10px;
+        }
+      }
+     } 
+   }
+   @include transform(scale(.8));
+   width: 500px;
+   background: #fff;
+   height: 62px;
+   line-height: 62px;
+   border:1px solid #00afff;
+   @include br(30px);
+   margin: 38px auto 0;
+   .zmiti-audio-C{
+    width:440px;
+    margin: 0 auto;
+    height: 100%;
+    @include displayBox(horizontal);
+    &>aside{
+      -webkit-box-flex:1; 
+      img{width:70px;vertical-align: middle;margin-right: 10px;}
+      color:#00afff;
+      &:last-of-type{
+        text-align: right;
+      }
+    }
+   }
+}
+
