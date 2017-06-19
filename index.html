@@ -12,6 +12,16 @@
 			-webkit-transform-style:preserve-3d;
 			-webkit-perspective:500px;
 		}
+		@font-face{
+			font-family: hy;
+			 src: url('./assets/fonts/hy.eot');
+			  src:
+			    url('./assets/fonts/hy.eot?#font-spider') format('embedded-opentype'),
+			    url('./assets/fonts/hy.woff') format('woff'),
+			    url('./assets/fonts/hy.ttf') format('truetype'),
+			    url('./assets/fonts/hy.svg') format('svg');
+					}
+
 		ul,li{list-style: none;}
 		li{
 			font-size: 30px;
@@ -53,27 +63,9 @@
 	</ul>
 	<script src='https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js'></script>
 	<script type="text/javascript">
-		$(function(){
+		/*$(function(){
 			var s = this;
-			var topOpt = {
-				type:'top'
-			}
-			$('#control-top').on('touchstart mousedown',function(e){
-				e.preventDefault();
-				s.timer = setInterval(function(){
-					$.ajax({
-						url:'http://api.zmiti.com/v2/msg/send_msg',
-	                    data:{
-	                        type:'zmiti-screen-1234',
-	                        content:JSON.stringify(topOpt),
-	                        to:topOpt.to||''
-	                    }
-					}).done(function(data){
-					});
-				},40);
-			}).on('touchend mouseup',function(){
-				clearInterval(s.timer);
-			});
+			
 			
 			var leftOpt = {
 				type:'left'
@@ -90,7 +82,7 @@
 	                    }
 					}).done(function(data){
 					});
-				},40);
+				},17);
 			}).on('touchend mouseup',function(){
 				clearInterval(s.timer);
 			});
@@ -109,32 +101,69 @@
 	                    }
 					}).done(function(data){
 					});
-				},40);
+				},17);
 			}).on('touchend mouseup',function(){
 				clearInterval(s.timer);
 			});
 
-			var bottomOpt = {
-				type:'bottom'
+			
+		});*/
+
+		$(function(){
+			var s = this;
+			
+			
+			var leftOpt = {
+				type:'left',
+				isOver:false
 			}
-			$('#control-down').on('touchstart mousedown',function(e){
+			$('#control-left').on('touchstart mousedown',function(e){
 				e.preventDefault();
-				s.timer = setInterval(function(){
-					$.ajax({
-						url:'http://api.zmiti.com/v2/msg/send_msg',
-	                    data:{
-	                        type:'zmiti-screen-1234',
-	                        content:JSON.stringify(bottomOpt),
-	                        to:bottomOpt.to||''
-	                    }
-					}).done(function(data){
-						
-					});
-				},40);
-			}).on('touchend mouseup',function(){
-				clearInterval(s.timer);
+				$.ajax({
+					url:'http://api.zmiti.com/v2/msg/send_msg',
+                    data:{
+                        type:'zmiti-screen-1234',
+                        content:JSON.stringify(leftOpt),
+                        to:leftOpt.to||''
+                    }
+				});
+				return !1;
 			});
+			var rightOpt = {
+				type:'right',
+				isOver:false
+			}
+			$('#control-right').on('touchstart mousedown',function(e){
+				e.preventDefault();
+				$.ajax({
+					url:'http://api.zmiti.com/v2/msg/send_msg',
+                    data:{
+                        type:'zmiti-screen-1234',
+                        content:JSON.stringify(rightOpt),
+                        to:rightOpt.to||''
+                    }
+				});
+				return !1;
+			});
+			$(document).on('touchend mouseup',function(e){
+				e.preventDefault();
+				$.ajax({
+					url:'http://api.zmiti.com/v2/msg/send_msg',
+                    data:{
+                        type:'zmiti-screen-1234',
+                        content:JSON.stringify({type:'over'}),
+                        to:rightOpt.to||''
+                    }
+				});
+				return !1;
+			});
+ 
+ 
 		});
+
+		/*
+
+		*/
 	</script>
 </body>
 </html>

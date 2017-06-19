@@ -6,27 +6,187 @@ class ZmitiIndexApp extends Component {
 	constructor(props) {
 		super(props);
 		this.state={
-			
+			transX:200,
+			direction:'',
+			duration:30,
+			waitingList:[
+				{
+					headimgurl:'./assets/images/zmiti.jpg',
+					name:'fly1'
+				},
+				{
+					headimgurl:'./assets/images/zmiti.jpg',
+					name:'fly2'
+				},
+				{
+					headimgurl:'./assets/images/zmiti.jpg',
+					name:'fly3'
+				},
+				{
+					headimgurl:'./assets/images/zmiti.jpg',
+					name:'fly4'
+				},
+				{
+					headimgurl:'./assets/images/zmiti.jpg',
+					name:'fly5'
+				}
+			]
 		};
 		this.viewW = document.documentElement.clientWidth;
 		this.viewH = document.documentElement.clientHeight;
-		
-		
 
 	}
 
 	render() {
 
+		var scollerStyle ={
+			transform:'translate('+this.state.transX+'px,0)'
+		}
+
 		return (
-			<div>
-				124
+			<div className='zmiti-index-main-ui'>
+				<img className='zmiti-main-bg' src='./assets/images/bg.png'/>
+				<header className='zmiti-scroll-bar'>
+					<div></div>
+				</header>
+
+				{this.state.waitingList.length && <div className='zmiti-controller'>
+					<div>
+						<img draggable='false' src={this.state.waitingList[0].headimgurl}/>
+					</div>
+					<div>
+						<div>{this.state.waitingList[0].name}</div>
+						<div>正在游戏...</div>
+					</div>
+				</div>}
+
+				<section style={scollerStyle} className='zmiti-scroller'>
+					<div className='zmiti-scroller-gear'></div>
+					<section className={this.state.direction}>
+						<div className='zmiti-scroller-rod'></div>
+						<div className='zmiti-scroller-latter'>
+							<img draggable='false' src={this.state.isMove?'./assets/images/latter1.png':'./assets/images/latter.png'}/>
+						</div>
+					</section>
+				</section>
+				<div className='zmiti-waitint-list'>
+					<svg version="1.1" id="" xmlns="http://www.w3.org/2000/svg"
+						 width="500px" height="1000px" viewBox="0 0 2000 500" enableBackground="new 0 0 1000 500">
+					<path  className='path' fill="#fff" d="M985.369,394.032l-13.452-9.474l-23.4-10.656l-20.472-3.552l15.208-21.313l15.207-21.905l8.774-23.09
+	l1.169-16.578l-5.851-25.458l-12.284-17.761l-23.399-22.496l-27.491-16.578L871.3,190.963l-22.813-10.656l-35.684-13.026
+	l-16.712-1.939c-3.497,0.007-6.993-0.073-10.488-0.215c-21.61,0.763-43.08,3.649-64.067,9.81c-0.969,0.285-1.905,0.461-2.824,0.593
+	l-1.254,0.635l-21.645,18.354l-12.87,10.657l-11.697,13.615l-2.342,3.552l-19.883-13.022l-25.154-14.802l-38.021-13.615
+	l-31.588-5.328l-38.021-1.183l-28.663,8.88l-23.985,18.944l-19.304,16.578l-18.135,23.682l-8.774,23.682l-15.208-1.776
+	l-19.304-1.775l-21.645,8.287l-19.303,7.104l-14.625-5.921l-18.717-4.146l-24.568,1.776l-18.718,8.88l-12.871,10.064l-11.115,7.104
+	l-15.791-11.84l-18.717-5.921l-18.718-2.369l-18.717-1.183l-16.38,3.552l-22.227,10.657l-13.453,8.287l-9.977,8.262
+	c-4.227,6.436-9.189,12.389-12.6,19.354c-0.021,0.038-0.048,0.066-0.065,0.104c-0.945,5.936-1.48,11.93-1.792,17.785l1.618,13.105
+	l3.51,12.434l-21.059,4.734l-26.909,9.474l-26.323,12.433l-18.135,20.13L3,425.718c0.278,5.612,0.806,11.159,2.526,15.984
+	c1.107,3.115,2.571,6.063,4.127,8.971l8.785,6.112l25.154,7.104l41.531,5.329h25.737l11.698-1.776l11.116,11.839l14.039,8.287
+	l12.284,5.329L173.448,500h14.625l752.252-5.921l28.664-20.72l15.794-20.13l11.115-20.72v-20.13L985.369,394.032z"/>
+
+					</svg>
+
+					<div className='zmiti-cloud-line'>
+						<aside></aside>
+						<aside></aside>
+						<div className='zmiti-duration'>{this.state.duration}S</div>
+					</div>
+
+					<div className='zmiti-cloud-line' style={{height:this.state.waitingList.length*70}}>
+						<aside></aside>
+						<aside></aside>
+					</div>
+
+					<ul className='zmiti-waiting-C'>
+						{this.state.waitingList.map((item,i)=>{
+							return <li key={i}>
+								<img src={item.headimgurl}/>{i===0?this.state.duration+'S后进入游戏':'正在等待......'}
+							</li>
+						})}
+					</ul>
+
+				</div>
 			</div>
 		);
 	}
 
+	startMove(){
+		var speed = 3;
+		var socket = io('http://socket.zmiti.com:2120');
+		var s = this;
+		var isMove = true;
+		this.isMove = isMove;
+		socket.on('zmiti-screen-1234', function(msg){
+            if(!msg){
+                return;
+            }
+            msg = msg.replace(/&quot;/g,"\"");
+
+            var data = JSON.parse(msg);
+            isMove = data.type === 'left' || data.type === 'right';
+
+            switch(data.type){
+            	case "left":
+            		s.setState({
+            			isMove:true,
+            			direction:data.type
+            		});
+            		renderLeft();
+            	break;
+            	case "right":
+            		s.setState({isMove:true,direction:data.type});
+            		renderRight();
+            	break;
+            	case "over":
+            		s.setState({isMove:false,direction:data.type});
+            		isMove = false;
+            	break;
+            }
+
+        });
+
+
+        var renderLeft = function(){
+
+        	var transX = s.state.transX - speed;
+        	if(transX <=0){
+        		isMove = false;
+        		transX = 0;
+        	}
+        	
+        	s.setState({
+        		transX
+        	});
+        	isMove && requestAnimationFrame(renderLeft);
+        }
+
+        var renderRight = function(){
+        	var transX = s.state.transX + speed;
+        	if(transX >= s.viewW - 70){
+        		transX = s.viewW - 70;
+        		isMove = false;
+        	}
+        		 
+        	s.setState({
+        		transX
+        	});
+        	isMove && requestAnimationFrame(renderRight);
+        }
+	}
+
+
 
 	componentDidMount() {
+		this.startMove();
 
+		this.durationTimer = setInterval(()=>{
+			if(this.state.duration <= 0){
+				this.state.duration = 30;
+			}
+			this.setState({
+				duration : this.state.duration - 1
+			})
+		},1000);
 	}
 }
 export default PubCom(ZmitiIndexApp);

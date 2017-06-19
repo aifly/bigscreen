@@ -1,2 +1,214 @@
-﻿html,body,div,p,ul,li,ol,dl,dt,dd,header,footer,video,h1,h2,h3,h4,canvas,section,figure{padding:0;margin:0}a{text-decoration:none}li{list-style:none}html,body{height:100%}body{font-family:"Helvetica Neue", 'Helvetica', "Microsoft YaHei", '微软雅黑', arial, sans-serif;overflow-x:hidden}img{border:none;vertical-align:middle;width:100%;height:auto}input,textarea{outline:none}
+@charset "UTF-8";
+/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {
+    background-color: #fff;
+    border-color: #bf1616;
+    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);
+}*/
+.lt-full {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: hidden; }
+
+html, body, div, p, ul, li, ol, dl, dt, dd, header, footer, video, h1, h2, h3, h4, canvas, section, figure {
+  padding: 0;
+  margin: 0; }
+
+a {
+  text-decoration: none; }
+
+li {
+  list-style: none; }
+
+html, body {
+  height: 100%; }
+
+body {
+  font-family: "Helvetica Neue", 'Helvetica', "Microsoft YaHei", '微软雅黑', arial, sans-serif;
+  overflow-x: hidden; }
+
+img {
+  border: none;
+  vertical-align: middle;
+  width: 100%;
+  height: auto; }
+
+input, textarea {
+  outline: none; }
+
+.zmiti-index-main-ui {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden; }
+  .zmiti-index-main-ui .zmiti-main-bg {
+    width: auto;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 0; }
+  .zmiti-index-main-ui .zmiti-scroll-bar {
+    width: 104vw;
+    height: 30px;
+    position: absolute;
+    top: 0;
+    z-index: 10;
+    background: #fff;
+    left: -2vw; }
+    .zmiti-index-main-ui .zmiti-scroll-bar div {
+      width: 100%;
+      height: 24px;
+      top: 6px;
+      position: absolute;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.6) inset; }
+  .zmiti-index-main-ui .zmiti-scroller {
+    height: 200px;
+    width: 70px;
+    position: absolute;
+    top: 5px;
+    z-index: 11;
+    left: 0; }
+    .zmiti-index-main-ui .zmiti-scroller > section {
+      height: 100%;
+      -webkit-transition: 1s;
+      transition: 1s;
+      -webkit-transform-origin: center 20px;
+      transform-origin: center 20px; }
+      .zmiti-index-main-ui .zmiti-scroller > section.right {
+        -webkit-transform: rotate(15deg);
+        transform: rotate(15deg); }
+      .zmiti-index-main-ui .zmiti-scroller > section.left {
+        -webkit-transform: rotate(-15deg);
+        transform: rotate(-15deg); }
+      .zmiti-index-main-ui .zmiti-scroller > section.over {
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+        -webkit-transition-timing-function: cubic-bezier(0.31, 0.76, 0.72, 1.26);
+        transition-timing-function: cubic-bezier(0.31, 0.76, 0.72, 1.26); }
+    .zmiti-index-main-ui .zmiti-scroller .zmiti-scroller-gear {
+      width: 40px;
+      height: 20px;
+      background: #f00;
+      border-radius: 10px;
+      position: absolute;
+      top: 3px;
+      left: 50%;
+      margin-left: -20px; }
+      .zmiti-index-main-ui .zmiti-scroller .zmiti-scroller-gear:before {
+        content: "";
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background: #ece9a7;
+        border-radius: 50%;
+        left: 50%;
+        top: 50%;
+        margin-left: -5px;
+        margin-top: -5px; }
+    .zmiti-index-main-ui .zmiti-scroller .zmiti-scroller-rod {
+      width: 8px;
+      height: 80%;
+      background: #f00;
+      position: absolute;
+      left: 50%;
+      margin-left: -4px;
+      top: 22px; }
+    .zmiti-index-main-ui .zmiti-scroller .zmiti-scroller-latter {
+      position: absolute;
+      bottom: 0; }
+  .zmiti-index-main-ui .zmiti-controller {
+    position: absolute;
+    width: 400px;
+    height: 100px;
+    top: 50px;
+    left: 40px;
+    color: #fff;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    display: -webkit-flex;
+    -ms-flex-flow: row;
+        flex-flow: row; }
+    .zmiti-index-main-ui .zmiti-controller > div:last-of-type {
+      margin: 20px 0 0 20px;
+      height: 40px; }
+    .zmiti-index-main-ui .zmiti-controller img {
+      width: 80px;
+      border-radius: 50%; }
+  .zmiti-index-main-ui .zmiti-waitint-list {
+    width: 200px;
+    position: absolute;
+    top: 0;
+    z-index: 4;
+    right: 30px;
+    min-height: 200px; }
+    .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line {
+      width: 60px;
+      height: 95px;
+      position: absolute;
+      z-index: 1;
+      right: 30px;
+      -webkit-transform-style: preserve-3d;
+      transform-style: preserve-3d;
+      perspective: 800px;
+      -webkit-perspective: 800px; }
+      .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line:last-of-type {
+        top: 150px;
+        height: 240px; }
+        .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line:last-of-type > aside:after {
+          display: none; }
+      .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line aside {
+        width: 2px;
+        height: 100%;
+        background: #887011;
+        position: absolute; }
+        .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line aside:after {
+          content: '';
+          -webkit-transform: rotateX(70deg);
+          transform: rotateX(70deg);
+          -webkit-transform-origin: bottom;
+          transform-origin: bottom;
+          position: absolute;
+          width: 4px;
+          height: 4px;
+          border-radius: 50%;
+          border: 2px solid #999;
+          bottom: -1px;
+          left: -3px; }
+        .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line aside:nth-of-type(1) {
+          left: 0; }
+        .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line aside:nth-of-type(2) {
+          right: 0; }
+    .zmiti-index-main-ui .zmiti-waitint-list .zmiti-waiting-C {
+      position: absolute;
+      z-index: 12;
+      top: 170px;
+      right: 0; }
+      .zmiti-index-main-ui .zmiti-waitint-list .zmiti-waiting-C li {
+        border-radius: 30px;
+        margin: 20px 0;
+        line-height: 50px;
+        width: 200px;
+        text-align: center;
+        height: 50px;
+        background: #fff; }
+        .zmiti-index-main-ui .zmiti-waitint-list .zmiti-waiting-C li img {
+          margin-right: 20px;
+          width: 40px;
+          border-radius: 50%; }
+    .zmiti-index-main-ui .zmiti-waitint-list .zmiti-duration {
+      font-family: hy;
+      position: absolute;
+      color: #000;
+      bottom: -44px;
+      text-align: center;
+      width: 100%;
+      font-size: 40px; }
+    .zmiti-index-main-ui .zmiti-waitint-list svg {
+      position: absolute;
+      width: 400px;
+      height: 200px; }
+
 /*# sourceMappingURL=index.css.map */
