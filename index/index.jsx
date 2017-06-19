@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import {PubCom} from '../components/public/pub.jsx';
 import './assets/css/index.css';
 
+import $ from 'jquery';
+
 class ZmitiIndexApp extends Component {
 	constructor(props) {
 		super(props);
@@ -30,7 +32,10 @@ class ZmitiIndexApp extends Component {
 					headimgurl:'./assets/images/zmiti.jpg',
 					name:'fly5'
 				}
-			]
+			],
+			currentUser:{
+				 
+			}
 		};
 		this.viewW = document.documentElement.clientWidth;
 		this.viewH = document.documentElement.clientHeight;
@@ -44,18 +49,18 @@ class ZmitiIndexApp extends Component {
 		}
 
 		return (
-			<div className='zmiti-index-main-ui'>
+			<div  className='zmiti-index-main-ui'>
 				<img className='zmiti-main-bg' src='./assets/images/bg.png'/>
 				<header className='zmiti-scroll-bar'>
 					<div></div>
 				</header>
 
-				{this.state.waitingList.length && <div className='zmiti-controller'>
+				{this.state.currentUser.headimgurl && <div className='zmiti-controller'>
 					<div>
-						<img draggable='false' src={this.state.waitingList[0].headimgurl}/>
+						<img draggable='false' src={this.state.currentUser.headimgurl}/>
 					</div>
 					<div>
-						<div>{this.state.waitingList[0].name}</div>
+						<div>{this.state.currentUser.name}</div>
 						<div>正在游戏...</div>
 					</div>
 				</div>}
@@ -174,19 +179,67 @@ class ZmitiIndexApp extends Component {
         }
 	}
 
+	init(){
 
+		this.state.currentUser = this.state.waitingList.shift();
+
+		this.forceUpdate();
+
+	}
 
 	componentDidMount() {
 		this.startMove();
 
+		setTimeout(()=>{
+			this.init();
+		},1000)
 		this.durationTimer = setInterval(()=>{
-			if(this.state.duration <= 0){
-				this.state.duration = 30;
-			}
+			
 			this.setState({
 				duration : this.state.duration - 1
-			})
+			});
+			if(this.state.duration <= 0){
+				this.state.duration = 30;
+				if(this.state.waitingList.length<=0){
+					clearInterval(this.durationTimer);
+				}
+				else{
+					this.init();
+				}
+			}
 		},1000);
+
+		$(document).on('keydown',e=>{
+			switch(e.keyCode){
+				case 37:
+				this.setState({
+					direction:'left',
+					isMove : true,
+					transX:this.state.transX - 3
+				});
+				break;
+				case 39:
+				this.setState({
+					direction:'right',
+					isMove : true,
+					transX:this.state.transX + 3
+				});
+				break;
+			}
+		}).on('keyup',e=>{
+			switch(e.keyCode){
+				case 37:
+				case 39:
+				this.setState({
+					direction:'over',
+					isMove : false,
+				});
+				break;
+				case 39:
+				break;
+			}
+		});
+
 	}
 }
 export default PubCom(ZmitiIndexApp);
