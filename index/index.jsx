@@ -11,6 +11,9 @@ class ZmitiIndexApp extends Component {
 			transX:200,
 			direction:'',
 			duration:30,
+			scrollerHeight:280,
+			bgW:0,
+			bgTransX:0,
 			waitingList:[
 				{
 					headimgurl:'./assets/images/zmiti.jpg',
@@ -33,6 +36,17 @@ class ZmitiIndexApp extends Component {
 					name:'fly5'
 				}
 			],
+			personList:[
+				{
+					style:{
+						width:100,
+						left:200,
+						transform:'translateX(100px)'
+					},
+					transX:100,				
+					src:'./assets/images/p1.png'
+				}
+			],
 			currentUser:{
 				 
 			}
@@ -45,17 +59,30 @@ class ZmitiIndexApp extends Component {
 	render() {
 
 		var scollerStyle ={
-			transform:'translate('+this.state.transX+'px,0)'
+			transform:'translate('+this.state.transX+'px,0)',
+			height:this.state.scrollerHeight
 		}
 
+		var bgStyle ={
+			background:'url(./assets/images/grass.png) repeat-x left bottom'
+		};
+
+		var mainStyle = {
+			width:this.state.bgW*2,
+			transform:'translate('+this.state.bgTransX+'px,0) scale(1)'
+		};
 		return (
 			<div  className='zmiti-index-main-ui'>
-				<img className='zmiti-main-bg' src='./assets/images/bg.png'/>
+				<div className='zmiti-main-bg' style={mainStyle}>
+					<img style={{width:this.state.bgW}} draggable='false' ref='bg'  src='./assets/images/bg.png'/>
+					<img style={{width:this.state.bgW}} draggable='false' src='./assets/images/bg.png'/>
+					<div className='zmiti-index-grass' style={bgStyle}></div>
+				</div>
 				<header className='zmiti-scroll-bar'>
 					<div></div>
 				</header>
 
-				{this.state.currentUser.headimgurl && <div className='zmiti-controller'>
+				{this.state.currentUser.headimgurl && <div className={'zmiti-controller ' + (this.state.hasController?'active':'')}>
 					<div>
 						<img draggable='false' src={this.state.currentUser.headimgurl}/>
 					</div>
@@ -91,6 +118,8 @@ class ZmitiIndexApp extends Component {
 
 					</svg>
 
+
+
 					<div className='zmiti-cloud-line'>
 						<aside></aside>
 						<aside></aside>
@@ -111,6 +140,25 @@ class ZmitiIndexApp extends Component {
 					</ul>
 
 				</div>
+
+				<div className='zmiti-logo'>
+					<img src='./assets/images/text-bg.png'/>
+					<svg xmlns='http://www.www.w3.org/2000/svg'>
+						<path id='path1' d="M0 0 Q 260 150 400 0" stroke='' fill='none'/>
+						<text x='-280' ref='zmiti-text-path' className='zmiti-text-path' fill='#cf000d'>
+							<textPath className='zmiti-text-path' xlinkHref='#path1'>寻找党委书记</textPath>
+						</text>
+					</svg>
+				</div>
+
+
+				{this.state.personList.map((p,i)=>{
+					return 	<div key={i} style={p.style} className='zmiti-person zmiti-person1'>
+								<img  src={p.src}/>
+							</div>
+				})}
+
+				
 			</div>
 		);
 	}
@@ -147,7 +195,6 @@ class ZmitiIndexApp extends Component {
             		isMove = false;
             	break;
             }
-
         });
 
 
@@ -179,17 +226,96 @@ class ZmitiIndexApp extends Component {
         }
 	}
 
+	textAnimate(){
+		var textPath = this.refs['zmiti-text-path'];
+		var x = textPath.getAttribute('x');
+		var speed = 40;
+		var timer = setInterval(()=>{
+			x++;
+			x = x + speed;
+			speed*=.88;
+			if(x>=70){
+				x = 70;
+				clearInterval(timer);
+			}
+			textPath.setAttribute('x',x);
+		},20);
+	}
+
+	beginGrab(){//开始抓取
+		var isStart = true;
+		var render = function(){
+			if(this.state.scrollerHeight>this.viewH -100 ){
+				isStart = false;
+			}
+			var height = this.state.scrollerHeight;
+			this.state.personList.map((item,i)=>{
+				if(height > item.offsetTop && this.state.transX+70>item.transX+item.style.left && this.state.transX<item.transX+item.style.left+item.style.width){
+					isStart = false;
+				}
+			});
+
+			this.setState({
+				scrollerHeight:this.state.scrollerHeight + this.viewH / 200
+			});
+			isStart && requestAnimationFrame(render);
+		}.bind(this)
+		render();
+	}
+
 	init(){
+
 
 		this.state.currentUser = this.state.waitingList.shift();
 
 		this.forceUpdate();
 
+		setTimeout(()=>{
+			this.state.hasController = true;
+			this.forceUpdate();			
+		},10);
+
+	}
+
+	bgAnimate(){
+		var render = function(){
+			var x =this.state.bgTransX;
+			x-=4;
+			if( -x >= this.state.bgW ){
+				x = 0
+			}
+			this.setState({
+				bgTransX:x
+			})
+			requestAnimationFrame(render);
+		}.bind(this);
+		render();
+		
+	}
+
+	initPersonData(){
+		this.state.personList.forEach((item,i)=>{
+			item.offsetTop = $('.zmiti-person').eq(i)[0].offsetTop
+		});
 	}
 
 	componentDidMount() {
 		this.startMove();
+		window.s = this;
+		this.textAnimate();
+		
+		this.bgAnimate();//背景移动
+		//this.beginGrab();//开始抓取.
 
+		var s = this;
+		var img = new Image();
+		img.onload = function(){
+			s.initPersonData();
+			s.setState({
+				bgW:this.width
+			});
+		}
+		img.src=this.refs['bg'].src;
 		setTimeout(()=>{
 			this.init();
 		},1000)
@@ -200,6 +326,9 @@ class ZmitiIndexApp extends Component {
 			});
 			if(this.state.duration <= 0){
 				this.state.duration = 30;
+				this.setState({
+					hasController:false
+				})
 				if(this.state.waitingList.length<=0){
 					clearInterval(this.durationTimer);
 				}
