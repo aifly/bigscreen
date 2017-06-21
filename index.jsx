@@ -10,7 +10,8 @@ export class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			score:0
+			score:0,
+			result:''
 		};
 
 		this.zmitiMap = [
@@ -51,8 +52,12 @@ export class App extends Component {
 			]
 	}
 	render() {
+
+		var mainStyle = {
+			background:'url(./assets/images/bg-c.jpg) no-repeat center top / cover'
+		}
 		return (
-			<div className='zmiti-main-ui lt-full'>
+			<div className='zmiti-main-ui lt-full' style={mainStyle}>
 				<header>
 					<aside>
 						<img src={this.state.headimgurl||'./assets/images/zmiti.jpg'}/>
@@ -61,7 +66,7 @@ export class App extends Component {
 					<aside>
 						<svg version="1.1" id="" xmlns="http://www.w3.org/2000/svg"
 						 width="100%" viewBox="0 0 1000 500" enableBackground="new 0 0 1000 500">
-					<path transform='translate(-120 -100) scale(1.1)' stroke='#999'  strokeWidth={4} className='path' fill="none" d="M985.369,394.032l-13.452-9.474l-23.4-10.656l-20.472-3.552l15.208-21.313l15.207-21.905l8.774-23.09
+					<path transform='translate(-120 -100) scale(1.1)' stroke='#999'  strokeWidth={4} className='path' fill="#fff" d="M985.369,394.032l-13.452-9.474l-23.4-10.656l-20.472-3.552l15.208-21.313l15.207-21.905l8.774-23.09
 	l1.169-16.578l-5.851-25.458l-12.284-17.761l-23.399-22.496l-27.491-16.578L871.3,190.963l-22.813-10.656l-35.684-13.026
 	l-16.712-1.939c-3.497,0.007-6.993-0.073-10.488-0.215c-21.61,0.763-43.08,3.649-64.067,9.81c-0.969,0.285-1.905,0.461-2.824,0.593
 	l-1.254,0.635l-21.645,18.354l-12.87,10.657l-11.697,13.615l-2.342,3.552l-19.883-13.022l-25.154-14.802l-38.021-13.615
@@ -103,6 +108,9 @@ export class App extends Component {
 					</section>
 				</div>
 
+				{this.state.result && <section onTouchStart={()=>{this.setState({result:''})}} className='zmiti-mask lt-full'>
+					<img src={'./assets/images/'+this.state.result+'.png'}/>					
+				</section>}
 			</div>
 		);
 	}
@@ -672,7 +680,9 @@ export class App extends Component {
 
 			var data = JSON.parse(msg);
 
-        	alert(data.msg);
+        	s.setState({
+        		result:data.msg
+        	});
 
 
 		});

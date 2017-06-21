@@ -35,7 +35,18 @@ html,body{
 }
 $viewW:640px;
 .zmiti-main-ui{
-      
+    
+    .zmiti-mask{
+      z-index: 10;
+      background:rgba(0,0,0,.6);
+
+      img{
+        width: 80%;
+         @include pos(a);
+         bottom: 100px;
+         left: 10%;
+      }
+    }
    &>header{
      width: $viewW;
      height: 130px;
@@ -82,7 +93,7 @@ $viewW:640px;
           font-family: hy;
           left: -70px;
           width: 200px;
-          color:#999;
+          color:#333;
        }
        right: 70px;
        @include transform3d();

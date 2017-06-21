@@ -349,7 +349,7 @@ class ZmitiIndexApp extends Component {
                 data:{
                     type:s.state.currentUser.openid+'-over',
                     content:JSON.stringify({
-                    	msg:'gameover'
+                    	msg:'fail'
                     }),
                     to:''
                 }
