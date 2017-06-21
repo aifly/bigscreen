@@ -15,26 +15,7 @@ class ZmitiIndexApp extends Component {
 			bgW:0,
 			bgTransX:0,
 			waitingList:[
-				{
-					headimgurl:'./assets/images/zmiti.jpg',
-					name:'fly1'
-				},
-				{
-					headimgurl:'./assets/images/zmiti.jpg',
-					name:'fly2'
-				},
-				{
-					headimgurl:'./assets/images/zmiti.jpg',
-					name:'fly3'
-				},
-				{
-					headimgurl:'./assets/images/zmiti.jpg',
-					name:'fly4'
-				},
-				{
-					headimgurl:'./assets/images/zmiti.jpg',
-					name:'fly5'
-				}
+				
 			],
 			personList:[
 				{
@@ -92,7 +73,7 @@ class ZmitiIndexApp extends Component {
 					</div>
 				</div>}
 
-				<section style={scollerStyle} className='zmiti-scroller'>
+				<section style={scollerStyle} className={'zmiti-scroller '+ (this.state.scrollerTransition?'transition':'')}>
 					<div className='zmiti-scroller-gear'></div>
 					<section className={this.state.direction}>
 						<div className='zmiti-scroller-rod'></div>
@@ -158,41 +139,83 @@ class ZmitiIndexApp extends Component {
 							</div>
 				})}
 
+				{this.state.qrcodeurl && <img className='zmiti-qrcodeurl' src={this.state.qrcodeurl}/>}
+
 				
 			</div>
 		);
 	}
 
-	startMove(){
+	startMove(key){
 		var speed = 3;
 		var socket = io('http://socket.zmiti.com:2120');
 		var s = this;
 		var isMove = true;
 		this.isMove = isMove;
-		socket.on('zmiti-screen-1234', function(msg){
+		socket.on(key, function(msg){
             if(!msg){
                 return;
             }
             msg = msg.replace(/&quot;/g,"\"");
 
             var data = JSON.parse(msg);
-            isMove = data.type === 'left' || data.type === 'right';
-
+            if(s.state.currentUser.openid === data.openid){
+            	s.isMove = data.type === 'left' || data.type === 'right';
+            }
             switch(data.type){
             	case "left":
-            		s.setState({
-            			isMove:true,
-            			direction:data.type
-            		});
-            		renderLeft();
+
+            		if(s.state.currentUser.openid === data.openid){
+            			s.setState({
+	            			isMove:true,
+	            			direction:data.type
+	            		});	
+            			renderLeft();
+            		}
             	break;
             	case "right":
-            		s.setState({isMove:true,direction:data.type});
-            		renderRight();
+	            	if(s.state.currentUser.openid === data.openid){
+	            		s.setState({isMove:true,direction:data.type});
+            			renderRight();	
+	            	}
+            		
             	break;
             	case "over":
-            		s.setState({isMove:false,direction:data.type});
-            		isMove = false;
+            		if(s.state.currentUser.openid === data.openid){
+	            		s.setState({isMove:false,direction:data.type});
+            			s.isMove = false;
+	            	}
+            	break;
+            	case 'beginGrab':
+            		if(s.state.currentUser.openid === data.openid){
+		            	s.setState({isMove:false,direction:'over'});
+	            		s.isMove = false;
+	            		s.beginGrab();
+	            	}
+            		
+            	break;
+            	case 'login':
+            		var has = false;
+            		s.state.waitingList.map((item,i)=>{
+            			if(item.openid === data.openid || data.openid === s.state.currentUser.openid ){
+            				//当前等待列表中有刷新的用户。
+            				has = true;
+            			}
+            		});
+            		if(!has){
+            			s.state.waitingList.push({
+	            			headimgurl:data.headimgurl,
+							name:data.nickname,
+							openid:data.openid
+	            		});	
+	            		if(!s.state.currentUser.headimgurl){
+	            			s.init();
+	            			s.countdonwStart();
+	            		}
+	            		s.forceUpdate();
+            		}
+            		
+            		
             	break;
             }
         });
@@ -202,14 +225,14 @@ class ZmitiIndexApp extends Component {
 
         	var transX = s.state.transX - speed;
         	if(transX <=0){
-        		isMove = false;
+        		s.isMove = false;
         		transX = 0;
         	}
         	
         	s.setState({
         		transX
         	});
-        	isMove && requestAnimationFrame(renderLeft);
+        	s.isMove && requestAnimationFrame(renderLeft);
         }
 
         var renderRight = function(){
@@ -222,7 +245,7 @@ class ZmitiIndexApp extends Component {
         	s.setState({
         		transX
         	});
-        	isMove && requestAnimationFrame(renderRight);
+        	s.isMove && requestAnimationFrame(renderRight);
         }
 	}
 
@@ -244,36 +267,56 @@ class ZmitiIndexApp extends Component {
 
 	beginGrab(){//开始抓取
 		var isStart = true;
+		var speed = 30;
 		var render = function(){
+			this.setState({
+				scrollerTransition:false
+			})
 			if(this.state.scrollerHeight>this.viewH -100 ){
 				isStart = false;
+				isStart = false;
+				this.setState({
+					scrollerTransition:true
+				});
+				this.initGrab();
 			}
 			var height = this.state.scrollerHeight;
 			this.state.personList.map((item,i)=>{
 				if(height > item.offsetTop && this.state.transX+70>item.transX+item.style.left && this.state.transX<item.transX+item.style.left+item.style.width){
 					isStart = false;
+					this.setState({
+						scrollerTransition:true
+					})
 				}
 			});
-
+			speed +=2;
+			speed = Math.min(200,speed);
 			this.setState({
-				scrollerHeight:this.state.scrollerHeight + this.viewH / 200
+				scrollerHeight:this.state.scrollerHeight + this.viewH / speed
 			});
 			isStart && requestAnimationFrame(render);
 		}.bind(this)
 		render();
 	}
 
+	initGrab(){
+		this.setState({
+			scrollerHeight:280
+		});
+	}
+
 	init(){
 
+		if(this.state.waitingList.length>0){
+			this.state.currentUser = this.state.waitingList.shift();
+			this.forceUpdate();
 
-		this.state.currentUser = this.state.waitingList.shift();
-
-		this.forceUpdate();
-
-		setTimeout(()=>{
-			this.state.hasController = true;
-			this.forceUpdate();			
-		},10);
+			setTimeout(()=>{
+				this.state.hasController = true;
+				this.forceUpdate();			
+			},10);
+		}
+		
 
 	}
 
@@ -299,14 +342,91 @@ class ZmitiIndexApp extends Component {
 		});
 	}
 
+	gameOver(){//游戏结束 
+		var s = this;
+		$.ajax({
+				url:'http://api.zmiti.com/v2/msg/send_msg',
+                data:{
+                    type:s.state.currentUser.openid+'-over',
+                    content:JSON.stringify({
+                    	msg:'gameover'
+                    }),
+                    to:''
+                }
+			});
+	}
+
+	countdonwStart(){
+		this.durationTimer = setInterval(()=>{
+			
+
+			if( this.state.currentUser.openid ){
+
+				this.setState({
+					duration : this.state.duration - 1
+				});	
+				
+				if(this.state.duration <= 0){
+					if(this.state.waitingList.length<=0){
+						this.gameOver();
+						this.state.currentUser = {};
+
+						this.countdonwEnd();
+					}
+					this.state.duration = 30;
+					this.setState({
+						hasController:false
+					})
+					if(this.state.waitingList.length<=0){
+						//clearInterval(this.durationTimer);
+					}
+					else{
+						this.init();
+					}
+				}
+				
+			}
+			else{
+				
+				
+			}
+
+			
+		},1000);
+	}
+	countdonwEnd(){
+		this.state.currentUser = {};//清空当前用户
+		this.state.duration = 30;
+		this.state.isMove = false;
+	    this.state.direction = 'over';
+	    this.isMove = false;
+		this.forceUpdate();
+		clearInterval(this.durationTimer);
+	}
+
+	createQrcode(){
+		$.ajax({
+			url:'http://api.zmiti.com/v2/share/create_qrcode',
+			data:{
+				url:window.href+ '?key=' + this.key
+			}
+		}).done(data=>{
+			this.setState({
+				qrcodeurl:data.qrcodeurl
+			});
+		});
+	}
+
 	componentDidMount() {
-		this.startMove();
+		this.key = this.randomString();
+		this.startMove(this.key);
 		window.s = this;
 		this.textAnimate();
 		
 		this.bgAnimate();//背景移动
-		//this.beginGrab();//开始抓取.
+		
 
+		this.createQrcode();
 		var s = this;
 		var img = new Image();
 		img.onload = function(){
@@ -316,27 +436,8 @@ class ZmitiIndexApp extends Component {
 			});
 		}
 		img.src=this.refs['bg'].src;
-		setTimeout(()=>{
-			this.init();
-		},1000)
-		this.durationTimer = setInterval(()=>{
-			
-			this.setState({
-				duration : this.state.duration - 1
-			});
-			if(this.state.duration <= 0){
-				this.state.duration = 30;
-				this.setState({
-					hasController:false
-				})
-				if(this.state.waitingList.length<=0){
-					clearInterval(this.durationTimer);
-				}
-				else{
-					this.init();
-				}
-			}
-		},1000);
+
+		
 
 		$(document).on('keydown',e=>{
 			switch(e.keyCode){
@@ -369,6 +470,17 @@ class ZmitiIndexApp extends Component {
 			}
 		});
 
+	}
+
+	randomString(len){
+		　var len = len || 8;
+		　　var $chars = 'ABCDEFGHJKMNPQRSTWXYZabcdefhijkmnprstwxyz2345678';    /****默认去掉了容易混淆的字符oOLl,9gq,Vv,Uu,I1****/
+		　　var maxPos = $chars.length;
+		　　var pwd = '';
+		　　for (var i = 0; i < len; i++) {
+		　　　　pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+		　　}
+		　　return pwd;
 	}
 }
 export default PubCom(ZmitiIndexApp);

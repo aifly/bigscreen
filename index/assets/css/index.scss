@@ -34,6 +34,14 @@ input, textarea {
   height: 100vh;
   width: 100vw;
  overflow: hidden;
+
+ .zmiti-qrcodeurl{
+   @include pos(a);
+   right: 10px;
+   top:40px;
+   width: 200px;
+   z-index: 1;
+ }
   .zmiti-main-bg{
     @include transformOrigin(left);
      img{
@@ -123,6 +131,9 @@ input, textarea {
      top: 5px;
      z-index: 11;
      left: 0;
+     &.transition{
+       @include transition(height 1s);
+     }
      &>section{
         height: 100%;
         @include transition(1s);  
@@ -207,7 +218,7 @@ input, textarea {
     @include pos(a);
     top: 0;
     z-index: 4;
-    right: 30px;
+    right: 230px;
     min-height: 200px;
     .zmiti-cloud-line{
 

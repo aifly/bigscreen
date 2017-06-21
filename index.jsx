@@ -9,7 +9,9 @@ injectTapEventPlugin();
 export class App extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			score:0
+		};
 
 		this.zmitiMap = [
 				{"name":"北京市", "log":"116.46", "lat":"39.92"},
@@ -77,16 +79,20 @@ export class App extends Component {
 				<div className='zmiti-cloud-line'>
 					<aside></aside>
 					<aside></aside>
-					<div className='zmiti-duration'>{'积分：'+(this.state.duration||10)}</div>
+					<div className='zmiti-duration'>{'积分：'+(this.state.integral||0)}</div>
 				</div>
 
 				<div className='zmiti-controller'>
 					<section>
 						<aside>
-							<img onTouchStart={this.leftStart.bind(this)} onTouchEnd={this.leftEnd.bind(this)} className={this.state.lefttap?'active':''} src='./assets/images/btn-l.png'/>
+							<div style={{background:'url(./assets/images/btn-l.png) no-repeat center / contain'}} onTouchStart={this.leftStart.bind(this)} onTouchEnd={this.leftEnd.bind(this)} className={this.state.lefttap?'active':''}>
+								
+							</div>
 						</aside>
 						<aside>
-							<img onTouchStart={this.rightStart.bind(this)} onTouchEnd={this.rightEnd.bind(this)} className={this.state.righttap?'active':''} src='./assets/images/btn-r.png'/>
+							<div style={{background:'url(./assets/images/btn-r.png) no-repeat center / contain'}} onTouchStart={this.rightStart.bind(this)} onTouchEnd={this.rightEnd.bind(this)} className={this.state.righttap?'active':''} >
+								
+							</div>
 						</aside>
 					</section>
 						
@@ -96,23 +102,26 @@ export class App extends Component {
 						</aside>
 					</section>
 				</div>
+
 			</div>
 		);
 	}
 
 	leftStart(e){
+
+		e.preventDefault();
 		this.setState({
 			lefttap:true
 		});
-		e.preventDefault();
 		var leftOpt = {
 			type:'left',
-			isOver:false
+			isOver:false,
+			openid:this.state.openid
 		}
 		$.ajax({
 			url:'http://api.zmiti.com/v2/msg/send_msg',
             data:{
-                type:'zmiti-screen-1234',
+                type:this.key,
                 content:JSON.stringify(leftOpt),
                 to:leftOpt.to||''
             }
@@ -122,35 +131,41 @@ export class App extends Component {
 	leftEnd(){
 		this.setState({
 			lefttap:false
-		})
+		});
+		return false;
 	}
 	rightStart(e){
+		e.preventDefault();
 		this.setState({
 			righttap:true
 		});
 		var rightOpt = {
 			type:'right',
-			isOver:false
+			isOver:false,
+			openid:this.state.openid
 		}
-		e.preventDefault();
+		
 		$.ajax({
 			url:'http://api.zmiti.com/v2/msg/send_msg',
             data:{
-                type:'zmiti-screen-1234',
+                type:this.key,
                 content:JSON.stringify(rightOpt),
                 to:rightOpt.to||''
             }
 		});
+		return false;
 	}
 	rightEnd(){
 		this.setState({
 			righttap:false
 		})
+		return false;
 	}
 	sureStart(){
 		this.setState({
 			suretap:true
-		})
+		});
+		return false;
 	}
 	sureEnd(){
 		this.setState({
@@ -162,13 +177,15 @@ export class App extends Component {
 		$.ajax({
 			url:'http://api.zmiti.com/v2/msg/send_msg',
             data:{
-                type:'zmiti-screen-1234',
-                content:JSON.stringify({type:'beginGrab'}),
+                type:this.key,
+                content:JSON.stringify({type:'beginGrab',openid:this.state.openid}),
                 to:''
             }
 		});
 	}
 	getPos(nickname,headimgurl){
+
+			
 	    	var s = this;
 	    	 $.ajax({
 	        	url:`http://restapi.amap.com/v3/geocode/regeo?key=10df4af5d9266f83b404c007534f0001&location=${wx.posData.longitude},${wx.posData.latitude}&poitype=&radius=100&extensions=base&batch=false&roadlevel=1`+'',
@@ -230,20 +247,24 @@ export class App extends Component {
 					   			latitude:wx.posData.latitude,
 					   			accuracy:wx.posData.accuracy,
 					   			wxappid:s.wxappid,
-					   			integral:localStorage.getItem('nickname')?0:10
+					   			integral:localStorage.getItem('nickname'+s.worksid)?0:10
 					   		},
 					   		error(){
 					   			alert('add_wxuser: 服务器返回错误');
 					   		},
 					   		success(data){
 					   			if(data.getret === 0){
-					   				
+					   				s.setState({
+										integral:data['userinfo'].totalintegral
+									});
 					   				
 					   			}else{
 					   				alert('getret  : '+ data.getret + ' msg : ' + data.getmsg+ ' .....');
 					   			}
 					   		}
 					   	});
+
+					   
 
 					   	//获取用户积分
 						//
@@ -268,11 +289,29 @@ export class App extends Component {
 	        })
     }
 
+    get_userrank(){
+    	var s = this;
+    	$.ajax({
+	   		url:'http://api.zmiti.com/v2/weixin/get_userrank/',
+	   		data:{
+	   			wxopenid:s.openid
+	   		}
+	   	}).done(data=>{
+	   		if(data.getret === 0){
+	   			s.setState({integral:data.integral});
+	   		}else{
+	   			//alert('data.getret => '+data.getret + ' \n data.getmsg => '+data.getmsg);
+	   		}
+	   	},e=>{
+	   		//alert('get_userrank error')
+	   	})
+    }
+
 	wxConfig(title,desc,img,appId='wxfacf4a639d9e3bcc',worksid){
 		   var durl = location.href.split('#')[0]; //window.location;
 		        var code_durl = encodeURIComponent(durl);
 
-
+		       // alert('title => '+ title +  '\n'+ 'desc => '+ desc + '\n'+ 'img => '+img+'\n appId => '+appId+'\n worksid => '+worksid);
 		        var s = this;
 
 			$.ajax({
@@ -307,7 +346,22 @@ export class App extends Component {
 			    		wx.getLocation({
 						    type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
 						    fail(){
-						    	alert('location fail');
+						    	//alert('location fail');
+						    	var idx = Math.random()*s.zmitiMap.length|0;
+
+						    	var latitude = s.zmitiMap[idx].lat; // 纬度，浮点数，范围为90 ~ -90
+						        
+						        var longitude = s.zmitiMap[idx].log; // 经度，浮点数，范围为180 ~ -180。
+						       
+						        var accuracy = 100; // 位置精度
+						    	wx.posData = {
+						        	longitude,
+						        	latitude,
+						        	accuracy
+						        };
+						        if((s.nickname || s.headimgurl) && s.openid){
+						        	s.getPos(s.nickname,s.headimgurl);
+						        }
 						    },
 						    cancel:function(){
 						    	var idx = Math.random()*s.zmitiMap.length|0;
@@ -382,31 +436,39 @@ export class App extends Component {
 	}
 	componentDidMount() {
 
+		this.key = this.getQueryString('key');
+
 		var s = this;
-		$.ajax({
+		$.getJSON({
 			url:'./assets/js/data.json',
 			data:{},
 
 		}).done(data=>{
 			
+			if(typeof data === 'string'){
+				data = JSON.parse(data);
+			}
 
 			var key = this.getQueryString('key');
 			this.key = key;
+
 			this.setState({
 				worksid:data.worksid,
 				wxappid:data.wxappid,
 				wxappsecret:data.wxappsecret
 			});
-			this.wxConfig('寻找党委书记','寻找党委书记','http://h5.zmiti.com/public/xwords/imaegs/300.jpg','',this.state.worksid);
+			s.worksid = data.worksid;
+			
+			
+			this.wxConfig('寻找党委书记','寻找党委书记','http://h5.zmiti.com/public/xwords/imaegs/300.jpg',this.state.wxappid,this.state.worksid);
 
 
 
-			data.loadingImg = ['./assets/images/btn-r.png',
+			s.loadingImg = ['./assets/images/btn-r.png',
 								'./assets/images/btn-l.png',
 								'./assets/images/btn-ok.png',
 								];
 
-			
 			if(localStorage.getItem('nickname'+s.worksid) && localStorage.getItem('headimgurl'+s.worksid)&&
 				localStorage.getItem('openid'+s.worksid)){
 			
@@ -414,33 +476,37 @@ export class App extends Component {
 					headimgurl:localStorage.getItem('headimgurl'+s.worksid)
 				});
 				
-				s.loading(data.loadingImg,(scale)=>{
+				/*s.loading(s.loadingImg,(scale)=>{
 							s.setState({
 								progress:(scale*100|0)+'%'
 							})
 						},()=>{
 						
-							s.openid = localStorage.getItem('openid'+s.worksid)
-							s.nickname = localStorage.getItem('nickname'+s.worksid);
-							s.headimgurl = localStorage.getItem('headimgurl'+s.worksid);
 							
-							s.setState({
-								showLoading:false,
-								nickname:s.nickname,
-								headimgurl:s.headimgurl,
-								openid:s.openid
-							});
+						});*/
 
-							if (wx.posData && wx.posData.longitude) {
-								s.getPos(s.nickname, s.headimgurl);
-							}
+				s.openid = localStorage.getItem('openid'+s.worksid)
+				s.nickname = localStorage.getItem('nickname'+s.worksid);
+				s.headimgurl = localStorage.getItem('headimgurl'+s.worksid);
+				
+				s.setState({
+					showLoading:false,
+					nickname:s.nickname,
+					headimgurl:s.headimgurl,
+					openid:s.openid
+				});
 
-						});
+				s.listen();
+
+				s.login();
+
+				
+				if (wx.posData && wx.posData.longitude) {
+					s.getPos(s.nickname, s.headimgurl);
+				}
 				return;
 			}
 
-			
-			
 			$.ajax({
 				url:'http://api.zmiti.com/v2/weixin/getwxuserinfo/',
 				data:{
@@ -456,7 +522,7 @@ export class App extends Component {
 						s.setState({
 							headimgurl:dt.userinfo.headimgurl
 						});
-						s.loading(data.loadingImg,(scale)=>{
+						s.loading(s.loadingImg,(scale)=>{
 							s.setState({
 								progress:(scale*100|0)+'%'
 							})
@@ -477,14 +543,9 @@ export class App extends Component {
 								headimgurl:s.headimgurl,
 								openid:s.openid
 							});
+							s.listen();
+							s.login();
 
-							s.wxConfig(
-								s.state.title,
-								s.state.title,
-								data.shareImg,
-								data.appId,
-								s.worksid
-							);
 							if (wx.posData && wx.posData.longitude) {
 								s.getPos(dt.userinfo.nickname, dt.userinfo.headimgurl);
 							}
@@ -498,7 +559,9 @@ export class App extends Component {
 							showLoading:true
 						});
 
-						if(s.isWeiXin() ){
+
+
+						if( s.isWeiXin() ){
 
 							/*if(localStorage.getItem('oauthurl'+s.worksid)){
 								window.location.href = localStorage.getItem('oauthurl'+s.worksid);
@@ -522,12 +585,16 @@ export class App extends Component {
 										localStorage.setItem('oauthurl'+s.worksid,dt.url);
 										window.location.href =  dt.url;
 									}
+									else{
+										s.setDefaultInfo();										
+										s.login();
+									}
 								}
 							})
 						}
 						else{
 
-							s.loading(data.loadingImg,(scale)=>{
+							s.loading(s.loadingImg,(scale)=>{
 								s.setState({
 									progress:(scale*100|0)+'%'
 								})
@@ -547,6 +614,8 @@ export class App extends Component {
 										}
 									}
 								});
+								s.setDefaultInfo();
+								s.login();
 
 
 								s.defaultName =  data.username || '智媒体';
@@ -565,19 +634,78 @@ export class App extends Component {
 
 				}
 			});
+
+
+
+
+
+
 		})
 
 		$(document).on('touchend mouseup',function(e){
 			e.preventDefault();
+
 			$.ajax({
 				url:'http://api.zmiti.com/v2/msg/send_msg',
                 data:{
-                    type:'zmiti-screen-1234',
-                    content:JSON.stringify({type:'over'}),
+                    type:s.key,
+                    content:JSON.stringify({type:'over',openid:s.state.openid}),
                     to:''
                 }
 			});
 			return !1;
+		});
+
+
+	}
+
+	listen(){
+		var socket = io('http://socket.zmiti.com:2120');
+		var s = this;
+		
+		socket.on(s.openid+'-over', function(msg){
+			alert(msg);
+			if(!msg){
+                return;
+            }
+            msg = msg.replace(/&quot;/g,"\"");
+
+			var data = JSON.parse(msg);
+
+        	alert(data.msg);
+
+
+		});
+	}
+
+	setDefaultInfo(){
+		var s = this;
+		s.openid = s.randomString();
+		s.nickname = 'zmiti';
+		s.headimgurl = './assets/images/zmiti.jpg';
+		s.listen();
+		s.setState({
+			openid:s.openid,
+			nickname:s.nickname,
+			headimgurl:s.headimgurl
+		});
+	}
+
+	login(){
+
+		var s = this;
+		$.ajax({
+			url:'http://api.zmiti.com/v2/msg/send_msg',
+            data:{
+                type:s.key,
+                content:JSON.stringify({
+                	type:'login',
+                	nickname:s.nickname||s.state.nickname,
+            		headimgurl:s.headimgurl||s.state.headimgurl,
+            		openid:s.openid||s.state.openid
+                }),
+                to:''
+            }
 		});
 	}
 
@@ -623,7 +751,6 @@ export class App extends Component {
 		　　}
 		　　return pwd;
 	}
-
 
     isWeiXin(){
 	    var ua = window.navigator.userAgent.toLowerCase();

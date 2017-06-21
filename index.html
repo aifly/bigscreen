@@ -6,12 +6,11 @@
 	<title>
 		微信控制大屏		
 	</title>
+	<script>
+		document.addEventListener("touchmove",function(e){e.preventDefault();});
+	</script>
 	<style>
-		*{margin: 0;padding: 0;-webkit-user-select:none;}
-		body{
-			-webkit-transform-style:preserve-3d;
-			-webkit-perspective:500px;
-		}
+		
 		@font-face{
 			font-family: hy;
 			 src: url('./assets/fonts/hy.eot');
@@ -22,118 +21,26 @@
 			    url('./assets/fonts/hy.svg') format('svg');
 					}
 
-		ul,li{list-style: none;}
-		li{
-			font-size: 30px;
-		}
-		ul{
-			width: 400px;
-			margin: 100px auto;
-		}
-		ul.top{
-			-webkit-transform:rotateX(15deg);
-		}
-		li{
-			-webkit-box-flex:1;text-align: center;
-			display:-webkit-box;
-		}
-		div{
-			-webkit-box-flex:1;
-			height: 70px;
-		}
-		.zmiti-btn{
-			font-size: 30px;
-			text-align: center;
-			width: 120px;
-			height: 50px;
-			margin: 0 auto;
-			border:1px solid red;
-			line-height: 50px;
-			border-radius: 10px;
-		}
 	</style>
 </head>
 <body>
-	<ul class="top" hidden="">
-		<li>
-			<div></div>
-			<div id='control-top'>↑</div>
-			<div></div>
-		</li>
-		<li>
-			<div id='control-left'>←</div>
-			<div></div>
-			<div id='control-right'>→</div>
-		</li>
-		<li>
-			<div></div>
-			<div id="control-down">↓</div>
-			<div></div>
-		</li>
-	</ul>
-	<div class="zmiti-btn" hidden="">
-		确定
-	</div>
+	
 	<div id="fly-main">
 		
 	</div>
-	<script src='https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js'></script>
 	<script type="text/javascript">
-
-		$(function(){
-			var s = this;
-			
-			var leftOpt = {
-				type:'left',
-				isOver:false
-			}
-			$('#control-left').on('touchstart mousedown',function(e){
-				e.preventDefault();
-				$.ajax({
-					url:'http://api.zmiti.com/v2/msg/send_msg',
-                    data:{
-                        type:'zmiti-screen-1234',
-                        content:JSON.stringify(leftOpt),
-                        to:leftOpt.to||''
-                    }
-				});
-				return !1;
-			});
-			var rightOpt = {
-				type:'right',
-				isOver:false
-			}
-			$('#control-right').on('touchstart mousedown',function(e){
-				e.preventDefault();
-				$.ajax({
-					url:'http://api.zmiti.com/v2/msg/send_msg',
-                    data:{
-                        type:'zmiti-screen-1234',
-                        content:JSON.stringify(rightOpt),
-                        to:rightOpt.to||''
-                    }
-				});
-				return !1;
-			});
-			$(document).on('touchend mouseup',function(e){
-				e.preventDefault();
-				$.ajax({
-					url:'http://api.zmiti.com/v2/msg/send_msg',
-                    data:{
-                        type:'zmiti-screen-1234',
-                        content:JSON.stringify({type:'over'}),
-                        to:rightOpt.to||''
-                    }
-				});
-				return !1;
-			});
-		});
-
-		/*
-
-		*/
+		window.PointerEvent = void 0;
+		function onError(){
+			var script  = document.createElement('script');
+			script.src = './assets/js/index.js?aa='+new Date().getTime();
+			document.body.appendChild(script);
+		}
 	</script>
 	<script src='http://res.wx.qq.com/open/js/jweixin-1.2.0.js'></script>
-	<script type="text/javascript" src='http://localhost:3009/index.js'></script>
+	<script src='./assets/libs/socket.io.js'></script>
+	<script type="text/javascript" onError='onError()' src='http://localhost:3009/index.js'></script>
+	<!-- 
+		<script src='./assets/js/index.js'></script> 
+	-->
 </body>
 </html>

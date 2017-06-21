@@ -42,6 +42,12 @@ input, textarea {
   height: 100vh;
   width: 100vw;
   overflow: hidden; }
+  .zmiti-index-main-ui .zmiti-qrcodeurl {
+    position: absolute;
+    right: 10px;
+    top: 40px;
+    width: 200px;
+    z-index: 1; }
   .zmiti-index-main-ui .zmiti-main-bg {
     -webkit-transform-origin: left;
     transform-origin: left;
@@ -118,6 +124,9 @@ input, textarea {
     top: 5px;
     z-index: 11;
     left: 0; }
+    .zmiti-index-main-ui .zmiti-scroller.transition {
+      -webkit-transition: height 1s;
+      transition: height 1s; }
     .zmiti-index-main-ui .zmiti-scroller > section {
       height: 100%;
       -webkit-transition: 1s;
@@ -200,7 +209,7 @@ input, textarea {
     position: absolute;
     top: 0;
     z-index: 4;
-    right: 30px;
+    right: 230px;
     min-height: 200px; }
     .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line {
       width: 60px;

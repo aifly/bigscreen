@@ -77,10 +77,10 @@ $viewW:640px;
        z-index: 1;
        .zmiti-duration{
           @include pos(a);
-          bottom:-80px;
+          bottom:-60px;
           font-size: 34px;
           font-family: hy;
-          left: -60px;
+          left: -70px;
           width: 200px;
           color:#999;
        }
@@ -122,19 +122,30 @@ $viewW:640px;
        &>section{
           @include displayBox(horizontal);
           text-align: center;
+          height: 80px;
           aside{
             -webkit-box-flex: 1;
+            @include pos(r);
+            &>div{
+              @include pos(a);
+              left: 50%;
+              margin-left: -60px;
+              &.active{
+                @include transform(scale(.94) translate3d(0,5px,0));
+              }
+              width: 120px;
+              height: 120px;
+            }
+
             img{
+              -webkit-touch-callout:none;
               width: 120px;
               @include transition_transform(.1s);
-              &.active{
-
-                @include transform(scale(.94) translate3d(0,10px,0));
-              }
+              
             }
           }
           &:nth-of-type(2){
-            margin-top: 80px;
+            margin-top: 120px;
             img{
               width: 200px;
             }
