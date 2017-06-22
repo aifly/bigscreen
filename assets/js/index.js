@@ -90,7 +90,8 @@
 
 			_get(Object.getPrototypeOf(App.prototype), 'constructor', this).call(this, props);
 			this.state = {
-				score: 0
+				score: 0,
+				result: ''
 			};
 
 			this.zmitiMap = [{ "name": "北京市", "log": "116.46", "lat": "39.92" }, { "name": "上海市", "log": "121.48", "lat": "31.22" }, { "name": "天津市", "log": "117.2", "lat": "39.13" }, { "name": "重庆市", "log": "106.54", "lat": "29.59" }, { "name": "石家庄", "log": "114.48", "lat": "38.03" }, { "name": "太原市", "log": "112.53", "lat": "37.87" }, { "name": "沈阳市", "log": "123.38", "lat": "41.8" }, { "name": "长春市", "log": "125.35", "lat": "43.88" }, { "name": "哈尔滨市", "log": "126.63", "lat": "45.75" }, { "name": "杭州市", "log": "120.19", "lat": "30.26" }, { "name": "福州市", "log": "119.3", "lat": "26.08" }, { "name": "济南市", "log": "106.54", "lat": "29.59" }, { "name": "郑州市", "log": "113.65", "lat": "34.76" }, { "name": "武汉市", "log": "114.31", "lat": "30.52" }, { "name": "长沙市", "log": "113", "lat": "28.21" }, { "name": "广州市", "log": "113.23", "lat": "23.16" }, { "name": "海口市", "log": "110.35", "lat": "20.02" }, { "name": "成都市", "log": "104.06", "lat": "30.67" }, { "name": "贵阳市", "log": "106.71", "lat": "26.57" }, { "name": "昆明市", "log": "102.73", "lat": "25.04" }, { "name": "南昌市", "log": "115.89", "lat": "28.68" }, { "name": "西安市", "log": "108.95", "lat": "34.27" }, { "name": "西宁市", "log": "101.74", "lat": "36.56" }, { "name": "兰州市", "log": "103.73", "lat": "36.03" }, { "name": "南宁市", "log": "106.54", "lat": "29.59" }, { "name": "乌鲁木齐市", "log": "87.68", "lat": "43.77" }, { "name": "呼和浩特市", "log": "111.65", "lat": "40.82" }, { "name": "拉萨市", "log": "91.11", "lat": "29.97" }, { "name": "银川市", "log": "106.27", "lat": "38.47" }, { "name": "台北市", "log": "121.5", "lat": "25.14" }, { "name": "香港", "log": "114.17", "lat": "22.27" }, { "name": "澳门", "log": "113.33", "lat": "22.13" }, { "name": "合肥市", "log": "117.27", "lat": "31.86" }, { "name": "南京市", "log": "118.78", "lat": "32.04" }];
@@ -99,9 +100,13 @@
 		_createClass(App, [{
 			key: 'render',
 			value: function render() {
+
+				var mainStyle = {
+					background: 'url(./assets/images/bg-c.jpg) no-repeat center top / cover'
+				};
 				return _react2['default'].createElement(
 					'div',
-					{ className: 'zmiti-main-ui lt-full' },
+					{ className: 'zmiti-main-ui lt-full', style: mainStyle },
 					_react2['default'].createElement(
 						'header',
 						null,
@@ -118,7 +123,7 @@
 								'svg',
 								{ version: '1.1', id: '', xmlns: 'http://www.w3.org/2000/svg',
 									width: '100%', viewBox: '0 0 1000 500', enableBackground: 'new 0 0 1000 500' },
-								_react2['default'].createElement('path', { transform: 'translate(-120 -100) scale(1.1)', stroke: '#999', strokeWidth: 4, className: 'path', fill: 'none', d: 'M985.369,394.032l-13.452-9.474l-23.4-10.656l-20.472-3.552l15.208-21.313l15.207-21.905l8.774-23.09\r l1.169-16.578l-5.851-25.458l-12.284-17.761l-23.399-22.496l-27.491-16.578L871.3,190.963l-22.813-10.656l-35.684-13.026\r l-16.712-1.939c-3.497,0.007-6.993-0.073-10.488-0.215c-21.61,0.763-43.08,3.649-64.067,9.81c-0.969,0.285-1.905,0.461-2.824,0.593\r l-1.254,0.635l-21.645,18.354l-12.87,10.657l-11.697,13.615l-2.342,3.552l-19.883-13.022l-25.154-14.802l-38.021-13.615\r l-31.588-5.328l-38.021-1.183l-28.663,8.88l-23.985,18.944l-19.304,16.578l-18.135,23.682l-8.774,23.682l-15.208-1.776\r l-19.304-1.775l-21.645,8.287l-19.303,7.104l-14.625-5.921l-18.717-4.146l-24.568,1.776l-18.718,8.88l-12.871,10.064l-11.115,7.104\r l-15.791-11.84l-18.717-5.921l-18.718-2.369l-18.717-1.183l-16.38,3.552l-22.227,10.657l-13.453,8.287l-9.977,8.262\r c-4.227,6.436-9.189,12.389-12.6,19.354c-0.021,0.038-0.048,0.066-0.065,0.104c-0.945,5.936-1.48,11.93-1.792,17.785l1.618,13.105\r l3.51,12.434l-21.059,4.734l-26.909,9.474l-26.323,12.433l-18.135,20.13L3,425.718c0.278,5.612,0.806,11.159,2.526,15.984\r c1.107,3.115,2.571,6.063,4.127,8.971l8.785,6.112l25.154,7.104l41.531,5.329h25.737l11.698-1.776l11.116,11.839l14.039,8.287\r l12.284,5.329L173.448,500h14.625l752.252-5.921l28.664-20.72l15.794-20.13l11.115-20.72v-20.13L985.369,394.032z' })
+								_react2['default'].createElement('path', { transform: 'translate(-120 -100) scale(1.1)', stroke: '#999', strokeWidth: 4, className: 'path', fill: '#fff', d: 'M985.369,394.032l-13.452-9.474l-23.4-10.656l-20.472-3.552l15.208-21.313l15.207-21.905l8.774-23.09\r l1.169-16.578l-5.851-25.458l-12.284-17.761l-23.399-22.496l-27.491-16.578L871.3,190.963l-22.813-10.656l-35.684-13.026\r l-16.712-1.939c-3.497,0.007-6.993-0.073-10.488-0.215c-21.61,0.763-43.08,3.649-64.067,9.81c-0.969,0.285-1.905,0.461-2.824,0.593\r l-1.254,0.635l-21.645,18.354l-12.87,10.657l-11.697,13.615l-2.342,3.552l-19.883-13.022l-25.154-14.802l-38.021-13.615\r l-31.588-5.328l-38.021-1.183l-28.663,8.88l-23.985,18.944l-19.304,16.578l-18.135,23.682l-8.774,23.682l-15.208-1.776\r l-19.304-1.775l-21.645,8.287l-19.303,7.104l-14.625-5.921l-18.717-4.146l-24.568,1.776l-18.718,8.88l-12.871,10.064l-11.115,7.104\r l-15.791-11.84l-18.717-5.921l-18.718-2.369l-18.717-1.183l-16.38,3.552l-22.227,10.657l-13.453,8.287l-9.977,8.262\r c-4.227,6.436-9.189,12.389-12.6,19.354c-0.021,0.038-0.048,0.066-0.065,0.104c-0.945,5.936-1.48,11.93-1.792,17.785l1.618,13.105\r l3.51,12.434l-21.059,4.734l-26.909,9.474l-26.323,12.433l-18.135,20.13L3,425.718c0.278,5.612,0.806,11.159,2.526,15.984\r c1.107,3.115,2.571,6.063,4.127,8.971l8.785,6.112l25.154,7.104l41.531,5.329h25.737l11.698-1.776l11.116,11.839l14.039,8.287\r l12.284,5.329L173.448,500h14.625l752.252-5.921l28.664-20.72l15.794-20.13l11.115-20.72v-20.13L985.369,394.032z' })
 							)
 						)
 					),
@@ -159,8 +164,65 @@
 								_react2['default'].createElement('img', { onTouchTap: this.sure.bind(this), onTouchStart: this.sureStart.bind(this), onTouchEnd: this.sureEnd.bind(this), className: this.state.suretap ? 'active' : '', src: './assets/images/btn-ok.png' })
 							)
 						)
+					),
+					this.state.result && _react2['default'].createElement(
+						'section',
+						{ onTouchStart: this['continue'].bind(this), className: 'zmiti-mask lt-full' },
+						_react2['default'].createElement('img', { src: './assets/images/' + this.state.result + '.png' })
 					)
 				);
+			}
+		}, {
+			key: 'continue',
+			value: function _continue() {
+
+				switch (this.state.result) {
+					case "success":
+						_jquery2['default'].ajax({
+							url: 'http://api.zmiti.com/v2/msg/send_msg',
+							data: {
+								type: this.key,
+								content: JSON.stringify({ type: 'finish' }),
+								to: ''
+							}
+						});
+						break;
+					case 'fail':
+						_jquery2['default'].ajax({
+							url: 'http://api.zmiti.com/v2/msg/send_msg',
+							data: {
+								type: this.key,
+								content: JSON.stringify({ type: 'continue' }),
+								to: ''
+							}
+						});
+						break;
+					case 'timeout':
+
+						break;
+				}
+
+				if (this.state.result === 'success') {
+					_jquery2['default'].ajax({
+						url: 'http://api.zmiti.com/v2/msg/send_msg',
+						data: {
+							type: this.key,
+							content: JSON.stringify({ type: 'finish' }),
+							to: ''
+						}
+					});
+				} else if (this.state.result === 'fail') {
+					_jquery2['default'].ajax({
+						url: 'http://api.zmiti.com/v2/msg/send_msg',
+						data: {
+							type: this.key,
+							content: JSON.stringify({ type: 'continue' }),
+							to: ''
+						}
+					});
+				}
+
+				this.setState({ result: '' });
 			}
 		}, {
 			key: 'leftStart',
@@ -686,7 +748,6 @@
 				var s = this;
 
 				socket.on(s.openid + '-over', function (msg) {
-					alert(msg);
 					if (!msg) {
 						return;
 					}
@@ -694,7 +755,9 @@
 
 					var data = JSON.parse(msg);
 
-					alert(data.msg);
+					s.setState({
+						result: data.msg
+					});
 				});
 			}
 		}, {
@@ -22690,7 +22753,7 @@
 
 
 	// module
-	exports.push([module.id, "/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {\r\n    background-color: #fff;\r\n    border-color: #bf1616;\r\n    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);\r\n}*/\r\n.lt-full {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  overflow: hidden; }\r\n\r\nhtml, body, div, p, ul, li, ol, dl, dt, dd, header, footer, video, h1, h2, h3, h4, canvas, section, figure {\r\n  padding: 0;\r\n  margin: 0; }\r\n\r\na {\r\n  text-decoration: none; }\r\n\r\nli {\r\n  list-style: none; }\r\n\r\nhtml, body {\r\n  height: 100%; }\r\n\r\nbody {\r\n  overflow-x: hidden;\r\n  font-size: 24px; }\r\n\r\nimg {\r\n  border: none;\r\n  vertical-align: middle;\r\n  width: 100%;\r\n  height: auto; }\r\n\r\ninput, textarea {\r\n  outline: none; }\r\n\r\nhtml, body {\r\n  -webkit-user-select: none; }\r\n\r\n.zmiti-main-ui > header {\r\n  width: 640px;\r\n  height: 130px;\r\n  margin-top: 100px;\r\n  display: -webkit-box;\r\n  -webkit-box-align: center;\r\n  -webkit-box-pack: center;\r\n  -webkit-box-orient: horizontal; }\r\n  .zmiti-main-ui > header > aside {\r\n    -webkit-box-flex: 1;\r\n    text-align: center;\r\n    font-size: 32px;\r\n    position: relative; }\r\n    .zmiti-main-ui > header > aside svg {\r\n      height: 130px;\r\n      position: relative;\r\n      left: 50px; }\r\n    .zmiti-main-ui > header > aside img {\r\n      width: 100px;\r\n      margin-right: 10px;\r\n      border-radius: 50%; }\r\n.zmiti-main-ui .zmiti-cloud-line {\r\n  top: 0;\r\n  width: 70px;\r\n  height: 145px;\r\n  position: absolute;\r\n  z-index: 1;\r\n  right: 70px;\r\n  -webkit-transform-style: preserve-3d;\r\n  transform-style: preserve-3d;\r\n  perspective: 800px;\r\n  -webkit-perspective: 800px; }\r\n  .zmiti-main-ui .zmiti-cloud-line:last-of-type {\r\n    top: 0px;\r\n    height: 200px; }\r\n    .zmiti-main-ui .zmiti-cloud-line:last-of-type > aside:after {\r\n      display: none; }\r\n  .zmiti-main-ui .zmiti-cloud-line .zmiti-duration {\r\n    position: absolute;\r\n    bottom: -60px;\r\n    font-size: 34px;\r\n    font-family: hy;\r\n    left: -70px;\r\n    width: 200px;\r\n    color: #999; }\r\n  .zmiti-main-ui .zmiti-cloud-line aside {\r\n    width: 4px;\r\n    height: 100%;\r\n    background: #887011;\r\n    position: absolute; }\r\n    .zmiti-main-ui .zmiti-cloud-line aside:before {\r\n      content: '';\r\n      -webkit-transform: rotateX(50deg);\r\n      transform: rotateX(50deg);\r\n      -webkit-transform-origin: bottom;\r\n      transform-origin: bottom;\r\n      position: absolute;\r\n      width: 8px;\r\n      height: 8px;\r\n      border-radius: 50%;\r\n      border: 2px solid #999;\r\n      bottom: -1px;\r\n      left: -3px; }\r\n    .zmiti-main-ui .zmiti-cloud-line aside:nth-of-type(1) {\r\n      left: 0; }\r\n    .zmiti-main-ui .zmiti-cloud-line aside:nth-of-type(2) {\r\n      right: 0; }\r\n.zmiti-main-ui .zmiti-controller {\r\n  width: 640px;\r\n  height: 400px;\r\n  position: absolute;\r\n  bottom: 0;\r\n  left: 0; }\r\n  .zmiti-main-ui .zmiti-controller > section {\r\n    display: -webkit-box;\r\n    -webkit-box-align: center;\r\n    -webkit-box-pack: center;\r\n    -webkit-box-orient: horizontal;\r\n    text-align: center;\r\n    height: 80px; }\r\n    .zmiti-main-ui .zmiti-controller > section aside {\r\n      -webkit-box-flex: 1;\r\n      position: relative; }\r\n      .zmiti-main-ui .zmiti-controller > section aside > div {\r\n        position: absolute;\r\n        left: 50%;\r\n        margin-left: -60px;\r\n        width: 120px;\r\n        height: 120px; }\r\n        .zmiti-main-ui .zmiti-controller > section aside > div.active {\r\n          -webkit-transform: scale(0.94) translate3d(0, 5px, 0);\r\n          transform: scale(0.94) translate3d(0, 5px, 0); }\r\n      .zmiti-main-ui .zmiti-controller > section aside img {\r\n        -webkit-touch-callout: none;\r\n        width: 120px;\r\n        -webkit-transition: -webkit-transform 0.1s;\r\n        transition: -webkit-transform 0.1s;\r\n        transition: transform 0.1s;\r\n        transition: transform 0.1s, -webkit-transform 0.1s; }\r\n    .zmiti-main-ui .zmiti-controller > section:nth-of-type(2) {\r\n      margin-top: 120px; }\r\n      .zmiti-main-ui .zmiti-controller > section:nth-of-type(2) img {\r\n        width: 200px; }\r\n\r\n/*# sourceMappingURL=index.css.map */", ""]);
+	exports.push([module.id, ".lt-full{width:100%;height:100%;position:absolute;left:0;top:0;overflow:hidden}html,body,div,p,ul,li,ol,dl,dt,dd,header,footer,video,h1,h2,h3,h4,canvas,section,figure{padding:0;margin:0}a{text-decoration:none}li{list-style:none}html,body{height:100%}body{overflow-x:hidden;font-size:24px}img{border:none;vertical-align:middle;width:100%;height:auto}input,textarea{outline:none}html,body{-webkit-user-select:none}.zmiti-main-ui .zmiti-mask{z-index:10;background:rgba(0,0,0,0.6)}.zmiti-main-ui .zmiti-mask img{width:80%;position:absolute;bottom:100px;left:10%}.zmiti-main-ui>header{width:640px;height:130px;margin-top:100px;display:-webkit-box;-webkit-box-align:center;-webkit-box-pack:center;-webkit-box-orient:horizontal}.zmiti-main-ui>header>aside{-webkit-box-flex:1;text-align:center;font-size:32px;position:relative}.zmiti-main-ui>header>aside svg{height:130px;position:relative;left:50px}.zmiti-main-ui>header>aside img{width:100px;margin-right:10px;border-radius:50%}.zmiti-main-ui .zmiti-cloud-line{top:0;width:70px;height:145px;position:absolute;z-index:1;right:70px;-webkit-transform-style:preserve-3d;transform-style:preserve-3d;perspective:800px;-webkit-perspective:800px}.zmiti-main-ui .zmiti-cloud-line:last-of-type{top:0px;height:200px}.zmiti-main-ui .zmiti-cloud-line:last-of-type>aside:after{display:none}.zmiti-main-ui .zmiti-cloud-line .zmiti-duration{position:absolute;bottom:-60px;font-size:34px;font-family:hy;left:-70px;width:200px;color:#333}.zmiti-main-ui .zmiti-cloud-line aside{width:4px;height:100%;background:#887011;position:absolute}.zmiti-main-ui .zmiti-cloud-line aside:before{content:'';-webkit-transform:rotateX(50deg);transform:rotateX(50deg);-webkit-transform-origin:bottom;transform-origin:bottom;position:absolute;width:8px;height:8px;border-radius:50%;border:2px solid #999;bottom:-1px;left:-3px}.zmiti-main-ui .zmiti-cloud-line aside:nth-of-type(1){left:0}.zmiti-main-ui .zmiti-cloud-line aside:nth-of-type(2){right:0}.zmiti-main-ui .zmiti-controller{width:640px;height:400px;position:absolute;bottom:0;left:0}.zmiti-main-ui .zmiti-controller>section{display:-webkit-box;-webkit-box-align:center;-webkit-box-pack:center;-webkit-box-orient:horizontal;text-align:center;height:80px}.zmiti-main-ui .zmiti-controller>section aside{-webkit-box-flex:1;position:relative}.zmiti-main-ui .zmiti-controller>section aside>div{position:absolute;left:50%;margin-left:-60px;width:120px;height:120px}.zmiti-main-ui .zmiti-controller>section aside>div.active{-webkit-transform:scale(0.94) translate3d(0, 5px, 0);transform:scale(0.94) translate3d(0, 5px, 0)}.zmiti-main-ui .zmiti-controller>section aside img{-webkit-touch-callout:none;width:120px;-webkit-transition:-webkit-transform .1s;transition:transform .1s}.zmiti-main-ui .zmiti-controller>section:nth-of-type(2){margin-top:120px}.zmiti-main-ui .zmiti-controller>section:nth-of-type(2) img{width:200px}\r\n/*# sourceMappingURL=index.css.map */\r\n", ""]);
 
 	// exports
 

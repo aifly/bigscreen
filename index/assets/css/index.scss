@@ -35,6 +35,27 @@ input, textarea {
   width: 100vw;
  overflow: hidden;
 
+
+ .zmiti-mask{
+   z-index: 100;
+   background: rgba(0,0,0,.7);
+   @include displayFlex(row);
+   &>div{
+    width:500px;
+    
+    left: 50%;
+    @include pos(a);
+    top: 50%;
+    @include transform(translate3d(-50%,-50%,0));
+    
+   }
+   img{
+    
+    
+
+   }
+ }
+
  .zmiti-qrcodeurl{
    @include pos(a);
    right: 10px;

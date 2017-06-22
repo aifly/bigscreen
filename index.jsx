@@ -108,11 +108,65 @@ export class App extends Component {
 					</section>
 				</div>
 
-				{this.state.result && <section onTouchStart={()=>{this.setState({result:''})}} className='zmiti-mask lt-full'>
+				{this.state.result && <section onTouchStart={this.continue.bind(this)} className='zmiti-mask lt-full'>
 					<img src={'./assets/images/'+this.state.result+'.png'}/>					
 				</section>}
 			</div>
 		);
+	}
+
+	continue(){
+
+		switch(this.state.result){
+			case "success":
+				$.ajax({
+					url:'http://api.zmiti.com/v2/msg/send_msg',
+		            data:{
+		                type:this.key,
+		                content:JSON.stringify({type:'finish'}),
+		                to:''
+		            }
+				});
+			break;
+			case 'fail':
+				$.ajax({
+					url:'http://api.zmiti.com/v2/msg/send_msg',
+		            data:{
+		                type:this.key,
+		                content:JSON.stringify({type:'continue'}),
+		                to:''
+		            }
+				});	
+			break;
+			case 'timeout':
+				
+			break;
+		}
+		
+		if(this.state.result === 'success'){
+			$.ajax({
+				url:'http://api.zmiti.com/v2/msg/send_msg',
+	            data:{
+	                type:this.key,
+	                content:JSON.stringify({type:'finish'}),
+	                to:''
+	            }
+			});
+		}
+		else if(this.state.result === 'fail'){
+			$.ajax({
+				url:'http://api.zmiti.com/v2/msg/send_msg',
+	            data:{
+	                type:this.key,
+	                content:JSON.stringify({type:'continue'}),
+	                to:''
+	            }
+			});	
+		}
+
+
+		this.setState({result:''});
+		
 	}
 
 	leftStart(e){
@@ -672,7 +726,6 @@ export class App extends Component {
 		var s = this;
 		
 		socket.on(s.openid+'-over', function(msg){
-			alert(msg);
 			if(!msg){
                 return;
             }
@@ -683,8 +736,6 @@ export class App extends Component {
         	s.setState({
         		result:data.msg
         	});
-
-
 		});
 	}
 

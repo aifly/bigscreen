@@ -14,6 +14,7 @@ class ZmitiIndexApp extends Component {
 			scrollerHeight:280,
 			bgW:0,
 			bgTransX:0,
+			result:'',
 			waitingList:[
 				
 			],
@@ -24,7 +25,8 @@ class ZmitiIndexApp extends Component {
 						left:200,
 						transform:'translateX(100px)'
 					},
-					transX:100,				
+					transX:100,
+					result:'r1',
 					src:'./assets/images/p1.png'
 				}
 			],
@@ -141,6 +143,10 @@ class ZmitiIndexApp extends Component {
 
 				{this.state.qrcodeurl && <img className='zmiti-qrcodeurl' src={this.state.qrcodeurl}/>}
 
+				{this.state.result && <div className='zmiti-mask lt-full'>
+									<div><img src={'./assets/images/'+this.state.result+'.png'}/></div>
+								</div>}
+
 				
 			</div>
 		);
@@ -165,7 +171,7 @@ class ZmitiIndexApp extends Component {
             switch(data.type){
             	case "left":
 
-            		if(s.state.currentUser.openid === data.openid){
+            		if(s.state.currentUser.openid === data.openid&& !s.state.result){
             			s.setState({
 	            			isMove:true,
 	            			direction:data.type
@@ -174,20 +180,20 @@ class ZmitiIndexApp extends Component {
             		}
             	break;
             	case "right":
-	            	if(s.state.currentUser.openid === data.openid){
+	            	if(s.state.currentUser.openid === data.openid&& !s.state.result){
 	            		s.setState({isMove:true,direction:data.type});
             			renderRight();	
 	            	}
             		
             	break;
             	case "over":
-            		if(s.state.currentUser.openid === data.openid){
+            		if(s.state.currentUser.openid === data.openid&& !s.state.result){
 	            		s.setState({isMove:false,direction:data.type});
             			s.isMove = false;
 	            	}
             	break;
             	case 'beginGrab':
-            		if(s.state.currentUser.openid === data.openid){
+            		if(s.state.currentUser.openid === data.openid && !s.state.result){
 		            	s.setState({isMove:false,direction:'over'});
 	            		s.isMove = false;
 	            		s.beginGrab();
@@ -197,7 +203,7 @@ class ZmitiIndexApp extends Component {
             	case 'login':
             		var has = false;
             		s.state.waitingList.map((item,i)=>{
-            			if(item.openid === data.openid || data.openid === s.state.currentUser.openid ){
+            			if(item.openid === data.openid || data.openid === s.state.currentUser.openid && !s.state.result){
             				//当前等待列表中有刷新的用户。
             				has = true;
             			}
@@ -214,8 +220,22 @@ class ZmitiIndexApp extends Component {
 	            		}
 	            		s.forceUpdate();
             		}
+            	break;
+            	case "continue"://继续游戏
+            		if(s.state.currentUser.openid === data.openid && s.state.result){
+		            	s.setState({
+	            			result:''
+	            		});
+	            	}
             		
-            		
+            	break;
+            	case "finish":
+            		if(s.state.currentUser.openid === data.openid && s.state.result){
+		            	s.setState({
+	            			result:'',
+	            			duration:0
+	            		});
+	            	}
             	break;
             }
         });
@@ -274,34 +294,35 @@ class ZmitiIndexApp extends Component {
 			})
 			if(this.state.scrollerHeight>this.viewH -100 ){
 				isStart = false;
-				isStart = false;
-				this.setState({
-					scrollerTransition:true
-				});
 				this.initGrab();
+				return;
 			}
 			var height = this.state.scrollerHeight;
 			this.state.personList.map((item,i)=>{
 				if(height > item.offsetTop && this.state.transX+70>item.transX+item.style.left && this.state.transX<item.transX+item.style.left+item.style.width){
 					isStart = false;
-					this.setState({
-						scrollerTransition:true
-					})
+					this.setState({result:item.result});
+					this.gameResult(item.result === 'r1'?'success':'fail');
+					this.initGrab();
 				}
 			});
-			speed +=2;
-			speed = Math.min(200,speed);
-			this.setState({
-				scrollerHeight:this.state.scrollerHeight + this.viewH / speed
-			});
-			isStart && requestAnimationFrame(render);
+			if(isStart){
+				speed +=2;
+				speed = Math.min(200,speed);
+				this.setState({
+					scrollerHeight:this.state.scrollerHeight + this.viewH / speed
+				});
+				requestAnimationFrame(render);	
+			}
+			
 		}.bind(this)
 		render();
 	}
 
 	initGrab(){
 		this.setState({
-			scrollerHeight:280
+			scrollerHeight:280,
+			scrollerTransition:true
 		});
 	}
 
@@ -342,19 +363,26 @@ class ZmitiIndexApp extends Component {
 		});
 	}
 
-	gameOver(){//游戏结束 
+	
+	/**
+		游戏结果。失败 成功 超时
+	*/
+	gameResult(type){//type:游戏类型：success fail timeout
 		var s = this;
+		
 		$.ajax({
-				url:'http://api.zmiti.com/v2/msg/send_msg',
-                data:{
-                    type:s.state.currentUser.openid+'-over',
-                    content:JSON.stringify({
-                    	msg:'fail'
-                    }),
-                    to:''
-                }
-			});
+			url:'http://api.zmiti.com/v2/msg/send_msg',
+            data:{
+                type:s.state.currentUser.openid+'-over',
+                content:JSON.stringify({
+                	msg:type||'timeout'
+                }),
+                to:''
+            }
+		});
 	}
+
+	
 
 	countdonwStart(){
 		this.durationTimer = setInterval(()=>{
@@ -368,7 +396,7 @@ class ZmitiIndexApp extends Component {
 				
 				if(this.state.duration <= 0){
 					if(this.state.waitingList.length<=0){
-						this.gameOver();
+						this.gameResult('timeout');//时间到了、
 						this.state.currentUser = {};
 
 						this.countdonwEnd();

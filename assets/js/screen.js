@@ -32144,6 +32144,7 @@
 				scrollerHeight: 280,
 				bgW: 0,
 				bgTransX: 0,
+				result: '',
 				waitingList: [],
 				personList: [{
 					style: {
@@ -32152,6 +32153,7 @@
 						transform: 'translateX(100px)'
 					},
 					transX: 100,
+					result: 'r1',
 					src: './assets/images/p1.png'
 				}],
 				currentUser: {}
@@ -32297,7 +32299,16 @@
 							_react2['default'].createElement('img', { src: p.src })
 						);
 					}),
-					this.state.qrcodeurl && _react2['default'].createElement('img', { className: 'zmiti-qrcodeurl', src: this.state.qrcodeurl })
+					this.state.qrcodeurl && _react2['default'].createElement('img', { className: 'zmiti-qrcodeurl', src: this.state.qrcodeurl }),
+					this.state.result && _react2['default'].createElement(
+						'div',
+						{ className: 'zmiti-mask lt-full' },
+						_react2['default'].createElement(
+							'div',
+							null,
+							_react2['default'].createElement('img', { src: './assets/images/' + this.state.result + '.png' })
+						)
+					)
 				);
 			}
 		}, {
@@ -32321,7 +32332,7 @@
 					switch (data.type) {
 						case "left":
 
-							if (s.state.currentUser.openid === data.openid) {
+							if (s.state.currentUser.openid === data.openid && !s.state.result) {
 								s.setState({
 									isMove: true,
 									direction: data.type
@@ -32330,20 +32341,20 @@
 							}
 							break;
 						case "right":
-							if (s.state.currentUser.openid === data.openid) {
+							if (s.state.currentUser.openid === data.openid && !s.state.result) {
 								s.setState({ isMove: true, direction: data.type });
 								renderRight();
 							}
 
 							break;
 						case "over":
-							if (s.state.currentUser.openid === data.openid) {
+							if (s.state.currentUser.openid === data.openid && !s.state.result) {
 								s.setState({ isMove: false, direction: data.type });
 								s.isMove = false;
 							}
 							break;
 						case 'beginGrab':
-							if (s.state.currentUser.openid === data.openid) {
+							if (s.state.currentUser.openid === data.openid && !s.state.result) {
 								s.setState({ isMove: false, direction: 'over' });
 								s.isMove = false;
 								s.beginGrab();
@@ -32353,7 +32364,7 @@
 						case 'login':
 							var has = false;
 							s.state.waitingList.map(function (item, i) {
-								if (item.openid === data.openid || data.openid === s.state.currentUser.openid) {
+								if (item.openid === data.openid || data.openid === s.state.currentUser.openid && !s.state.result) {
 									//当前等待列表中有刷新的用户。
 									has = true;
 								}
@@ -32370,7 +32381,23 @@
 								}
 								s.forceUpdate();
 							}
+							break;
+						case "continue":
+							//继续游戏
+							if (s.state.currentUser.openid === data.openid && s.state.result) {
+								s.setState({
+									result: ''
+								});
+							}
 
+							break;
+						case "finish":
+							if (s.state.currentUser.openid === data.openid && s.state.result) {
+								s.setState({
+									result: '',
+									duration: 0
+								});
+							}
 							break;
 					}
 				});
@@ -32433,27 +32460,26 @@
 					});
 					if (this.state.scrollerHeight > this.viewH - 100) {
 						isStart = false;
-						isStart = false;
-						this.setState({
-							scrollerTransition: true
-						});
 						this.initGrab();
+						return;
 					}
 					var height = this.state.scrollerHeight;
 					this.state.personList.map(function (item, i) {
 						if (height > item.offsetTop && _this2.state.transX + 70 > item.transX + item.style.left && _this2.state.transX < item.transX + item.style.left + item.style.width) {
 							isStart = false;
-							_this2.setState({
-								scrollerTransition: true
-							});
+							_this2.setState({ result: item.result });
+							_this2.gameResult(item.result === 'r1' ? 'success' : 'fail');
+							_this2.initGrab();
 						}
 					});
-					speed += 2;
-					speed = Math.min(200, speed);
-					this.setState({
-						scrollerHeight: this.state.scrollerHeight + this.viewH / speed
-					});
-					isStart && requestAnimationFrame(render);
+					if (isStart) {
+						speed += 2;
+						speed = Math.min(200, speed);
+						this.setState({
+							scrollerHeight: this.state.scrollerHeight + this.viewH / speed
+						});
+						requestAnimationFrame(render);
+					}
 				}).bind(this);
 				render();
 			}
@@ -32461,7 +32487,8 @@
 			key: 'initGrab',
 			value: function initGrab() {
 				this.setState({
-					scrollerHeight: 280
+					scrollerHeight: 280,
+					scrollerTransition: true
 				});
 			}
 		}, {
@@ -32502,17 +32529,22 @@
 					item.offsetTop = (0, _jquery2['default'])('.zmiti-person').eq(i)[0].offsetTop;
 				});
 			}
+
+			/**
+	  	游戏结果。失败 成功 超时
+	  */
 		}, {
-			key: 'gameOver',
-			value: function gameOver() {
-				//游戏结束
+			key: 'gameResult',
+			value: function gameResult(type) {
+				//type:游戏类型：success fail timeout
 				var s = this;
+
 				_jquery2['default'].ajax({
 					url: 'http://api.zmiti.com/v2/msg/send_msg',
 					data: {
 						type: s.state.currentUser.openid + '-over',
 						content: JSON.stringify({
-							msg: 'gameover'
+							msg: type || 'timeout'
 						}),
 						to: ''
 					}
@@ -32533,7 +32565,7 @@
 
 						if (_this4.state.duration <= 0) {
 							if (_this4.state.waitingList.length <= 0) {
-								_this4.gameOver();
+								_this4.gameResult('timeout'); //时间到了、
 								_this4.state.currentUser = {};
 
 								_this4.countdonwEnd();
@@ -32750,7 +32782,7 @@
 
 
 	// module
-	exports.push([module.id, "@charset \"UTF-8\";\r\n/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {\r\n    background-color: #fff;\r\n    border-color: #bf1616;\r\n    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);\r\n}*/\r\n.lt-full {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  overflow: hidden; }\r\n\r\nhtml, body, div, p, ul, li, ol, dl, dt, dd, header, footer, video, h1, h2, h3, h4, canvas, section, figure {\r\n  padding: 0;\r\n  margin: 0; }\r\n\r\na {\r\n  text-decoration: none; }\r\n\r\nli {\r\n  list-style: none; }\r\n\r\nhtml, body {\r\n  height: 100%; }\r\n\r\nbody {\r\n  font-family: \"Helvetica Neue\", 'Helvetica', \"Microsoft YaHei\", '\\5FAE\\8F6F\\96C5\\9ED1', arial, sans-serif;\r\n  overflow-x: hidden; }\r\n\r\nimg {\r\n  border: none;\r\n  vertical-align: middle;\r\n  width: 100%;\r\n  height: auto; }\r\n\r\ninput, textarea {\r\n  outline: none; }\r\n\r\n.zmiti-index-main-ui {\r\n  height: 100vh;\r\n  width: 100vw;\r\n  overflow: hidden; }\r\n  .zmiti-index-main-ui .zmiti-qrcodeurl {\r\n    position: absolute;\r\n    right: 10px;\r\n    top: 40px;\r\n    width: 200px;\r\n    z-index: 1; }\r\n  .zmiti-index-main-ui .zmiti-main-bg {\r\n    -webkit-transform-origin: left;\r\n    transform-origin: left;\r\n    width: 100%;\r\n    height: 100%;\r\n    position: absolute;\r\n    left: 0;\r\n    top: 0;\r\n    z-index: 0; }\r\n    .zmiti-index-main-ui .zmiti-main-bg img {\r\n      width: auto;\r\n      height: 100%;\r\n      font-size: 0;\r\n      margin: 0;\r\n      padding: 0;\r\n      margin-left: 0; }\r\n      .zmiti-index-main-ui .zmiti-main-bg img:last-of-type {\r\n        margin-left: -1px;\r\n        margin-top: -3px; }\r\n    .zmiti-index-main-ui .zmiti-main-bg .zmiti-index-grass {\r\n      position: absolute;\r\n      width: 100%;\r\n      height: 200px;\r\n      bottom: 0; }\r\n  .zmiti-index-main-ui .zmiti-person {\r\n    position: absolute;\r\n    bottom: 130px;\r\n    width: 100px;\r\n    left: 200px; }\r\n  .zmiti-index-main-ui .zmiti-scroll-bar {\r\n    width: 104vw;\r\n    height: 30px;\r\n    position: absolute;\r\n    top: 0;\r\n    z-index: 10;\r\n    background: #fff;\r\n    left: -2vw; }\r\n    .zmiti-index-main-ui .zmiti-scroll-bar div {\r\n      width: 100%;\r\n      height: 24px;\r\n      top: 6px;\r\n      position: absolute;\r\n      box-shadow: 0 0 10px rgba(0, 0, 0, 0.6) inset; }\r\n  .zmiti-index-main-ui .zmiti-logo {\r\n    position: absolute;\r\n    width: 400px;\r\n    left: 50%;\r\n    margin-left: -200px;\r\n    top: 200px;\r\n    -webkit-transform: translate3d(0, -600px, 0);\r\n    transform: translate3d(0, -600px, 0);\r\n    -webkit-transition: 1s;\r\n    transition: 1s;\r\n    -webkit-transition-timing-function: cubic-bezier(1, -0.025, 1, 0.865);\r\n    transition-timing-function: cubic-bezier(1, -0.025, 1, 0.865); }\r\n    .zmiti-index-main-ui .zmiti-logo.active {\r\n      -webkit-transform: translate3d(0, 0, 0);\r\n      transform: translate3d(0, 0, 0); }\r\n    .zmiti-index-main-ui .zmiti-logo svg {\r\n      position: absolute;\r\n      top: 40px;\r\n      width: 100%;\r\n      height: 120px;\r\n      left: 0;\r\n      z-index: 10; }\r\n      .zmiti-index-main-ui .zmiti-logo svg .zmiti-text-path {\r\n        font-size: 50px;\r\n        color: #cf000d;\r\n        font-family: hy; }\r\n  .zmiti-index-main-ui .zmiti-scroller {\r\n    height: 280px;\r\n    width: 70px;\r\n    position: absolute;\r\n    top: 5px;\r\n    z-index: 11;\r\n    left: 0; }\r\n    .zmiti-index-main-ui .zmiti-scroller.transition {\r\n      -webkit-transition: height 1s;\r\n      transition: height 1s; }\r\n    .zmiti-index-main-ui .zmiti-scroller > section {\r\n      height: 100%;\r\n      -webkit-transition: 1s;\r\n      transition: 1s;\r\n      -webkit-transform-origin: center 20px;\r\n      transform-origin: center 20px; }\r\n      .zmiti-index-main-ui .zmiti-scroller > section.right {\r\n        -webkit-transform: rotate(15deg);\r\n        transform: rotate(15deg); }\r\n      .zmiti-index-main-ui .zmiti-scroller > section.left {\r\n        -webkit-transform: rotate(-15deg);\r\n        transform: rotate(-15deg); }\r\n      .zmiti-index-main-ui .zmiti-scroller > section.over {\r\n        -webkit-transition: 0.5s;\r\n        transition: 0.5s;\r\n        -webkit-transition-timing-function: cubic-bezier(0.31, 0.76, 0.72, 1.26);\r\n        transition-timing-function: cubic-bezier(0.31, 0.76, 0.72, 1.26); }\r\n    .zmiti-index-main-ui .zmiti-scroller .zmiti-scroller-gear {\r\n      width: 40px;\r\n      height: 20px;\r\n      background: #f00;\r\n      border-radius: 10px;\r\n      position: absolute;\r\n      top: 3px;\r\n      left: 50%;\r\n      margin-left: -20px; }\r\n      .zmiti-index-main-ui .zmiti-scroller .zmiti-scroller-gear:before {\r\n        content: \"\";\r\n        position: absolute;\r\n        width: 10px;\r\n        height: 10px;\r\n        background: #ece9a7;\r\n        border-radius: 50%;\r\n        left: 50%;\r\n        top: 50%;\r\n        margin-left: -5px;\r\n        margin-top: -5px; }\r\n    .zmiti-index-main-ui .zmiti-scroller .zmiti-scroller-rod {\r\n      width: 8px;\r\n      height: 88%;\r\n      background: #f00;\r\n      position: absolute;\r\n      left: 50%;\r\n      margin-left: -4px;\r\n      top: 22px; }\r\n    .zmiti-index-main-ui .zmiti-scroller .zmiti-scroller-latter {\r\n      position: absolute;\r\n      bottom: 0; }\r\n  .zmiti-index-main-ui .zmiti-controller {\r\n    position: absolute;\r\n    width: 400px;\r\n    height: 100px;\r\n    font-size: 16px;\r\n    top: 50px;\r\n    left: 40px;\r\n    color: #fff;\r\n    -webkit-transform: translate(1920px, 100px);\r\n    transform: translate(1920px, 100px);\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    display: -webkit-flex;\r\n    -ms-flex-flow: row;\r\n        flex-flow: row; }\r\n    .zmiti-index-main-ui .zmiti-controller.active {\r\n      -webkit-transform: translate(0, 0);\r\n      transform: translate(0, 0);\r\n      -webkit-transition: -webkit-transform 1s;\r\n      transition: -webkit-transform 1s;\r\n      transition: transform 1s;\r\n      transition: transform 1s, -webkit-transform 1s; }\r\n    .zmiti-index-main-ui .zmiti-controller > div:last-of-type {\r\n      margin: 5px 0 0 20px;\r\n      height: 40px; }\r\n    .zmiti-index-main-ui .zmiti-controller img {\r\n      width: 50px;\r\n      border-radius: 50%; }\r\n  .zmiti-index-main-ui .zmiti-waitint-list {\r\n    width: 200px;\r\n    position: absolute;\r\n    top: 0;\r\n    z-index: 4;\r\n    right: 230px;\r\n    min-height: 200px; }\r\n    .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line {\r\n      width: 60px;\r\n      height: 95px;\r\n      position: absolute;\r\n      z-index: 1;\r\n      right: 30px;\r\n      -webkit-transform-style: preserve-3d;\r\n      transform-style: preserve-3d;\r\n      perspective: 800px;\r\n      -webkit-perspective: 800px; }\r\n      .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line:last-of-type {\r\n        top: 150px;\r\n        height: 240px; }\r\n        .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line:last-of-type > aside:after {\r\n          display: none; }\r\n      .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line aside {\r\n        width: 2px;\r\n        height: 100%;\r\n        background: #887011;\r\n        position: absolute; }\r\n        .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line aside:after {\r\n          content: '';\r\n          -webkit-transform: rotateX(70deg);\r\n          transform: rotateX(70deg);\r\n          -webkit-transform-origin: bottom;\r\n          transform-origin: bottom;\r\n          position: absolute;\r\n          width: 4px;\r\n          height: 4px;\r\n          border-radius: 50%;\r\n          border: 2px solid #999;\r\n          bottom: -1px;\r\n          left: -3px; }\r\n        .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line aside:nth-of-type(1) {\r\n          left: 0; }\r\n        .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line aside:nth-of-type(2) {\r\n          right: 0; }\r\n    .zmiti-index-main-ui .zmiti-waitint-list .zmiti-waiting-C {\r\n      position: absolute;\r\n      z-index: 12;\r\n      top: 170px;\r\n      right: 0; }\r\n      .zmiti-index-main-ui .zmiti-waitint-list .zmiti-waiting-C li {\r\n        border-radius: 30px;\r\n        margin: 20px 0;\r\n        line-height: 50px;\r\n        width: 200px;\r\n        text-align: center;\r\n        height: 50px;\r\n        background: #fff; }\r\n        .zmiti-index-main-ui .zmiti-waitint-list .zmiti-waiting-C li img {\r\n          margin-right: 20px;\r\n          width: 40px;\r\n          border-radius: 50%; }\r\n    .zmiti-index-main-ui .zmiti-waitint-list .zmiti-duration {\r\n      font-family: hy;\r\n      position: absolute;\r\n      color: #000;\r\n      bottom: -44px;\r\n      text-align: center;\r\n      width: 100%;\r\n      font-size: 40px; }\r\n    .zmiti-index-main-ui .zmiti-waitint-list svg {\r\n      position: absolute;\r\n      width: 400px;\r\n      height: 200px; }\r\n\r\n/*# sourceMappingURL=index.css.map */", ""]);
+	exports.push([module.id, "@charset \"UTF-8\";\r\n/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {\r\n    background-color: #fff;\r\n    border-color: #bf1616;\r\n    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);\r\n}*/\r\n.lt-full {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  overflow: hidden; }\r\n\r\nhtml, body, div, p, ul, li, ol, dl, dt, dd, header, footer, video, h1, h2, h3, h4, canvas, section, figure {\r\n  padding: 0;\r\n  margin: 0; }\r\n\r\na {\r\n  text-decoration: none; }\r\n\r\nli {\r\n  list-style: none; }\r\n\r\nhtml, body {\r\n  height: 100%; }\r\n\r\nbody {\r\n  font-family: \"Helvetica Neue\", 'Helvetica', \"Microsoft YaHei\", '\\5FAE\\8F6F\\96C5\\9ED1', arial, sans-serif;\r\n  overflow-x: hidden; }\r\n\r\nimg {\r\n  border: none;\r\n  vertical-align: middle;\r\n  width: 100%;\r\n  height: auto; }\r\n\r\ninput, textarea {\r\n  outline: none; }\r\n\r\n.zmiti-index-main-ui {\r\n  height: 100vh;\r\n  width: 100vw;\r\n  overflow: hidden; }\r\n  .zmiti-index-main-ui .zmiti-mask {\r\n    z-index: 100;\r\n    background: rgba(0, 0, 0, 0.7);\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    display: -webkit-flex;\r\n    -ms-flex-flow: row;\r\n        flex-flow: row; }\r\n    .zmiti-index-main-ui .zmiti-mask > div {\r\n      width: 500px;\r\n      left: 50%;\r\n      position: absolute;\r\n      top: 50%;\r\n      -webkit-transform: translate3d(-50%, -50%, 0);\r\n      transform: translate3d(-50%, -50%, 0); }\r\n  .zmiti-index-main-ui .zmiti-qrcodeurl {\r\n    position: absolute;\r\n    right: 10px;\r\n    top: 40px;\r\n    width: 200px;\r\n    z-index: 1; }\r\n  .zmiti-index-main-ui .zmiti-main-bg {\r\n    -webkit-transform-origin: left;\r\n    transform-origin: left;\r\n    width: 100%;\r\n    height: 100%;\r\n    position: absolute;\r\n    left: 0;\r\n    top: 0;\r\n    z-index: 0; }\r\n    .zmiti-index-main-ui .zmiti-main-bg img {\r\n      width: auto;\r\n      height: 100%;\r\n      font-size: 0;\r\n      margin: 0;\r\n      padding: 0;\r\n      margin-left: 0; }\r\n      .zmiti-index-main-ui .zmiti-main-bg img:last-of-type {\r\n        margin-left: -1px;\r\n        margin-top: -3px; }\r\n    .zmiti-index-main-ui .zmiti-main-bg .zmiti-index-grass {\r\n      position: absolute;\r\n      width: 100%;\r\n      height: 200px;\r\n      bottom: 0; }\r\n  .zmiti-index-main-ui .zmiti-person {\r\n    position: absolute;\r\n    bottom: 130px;\r\n    width: 100px;\r\n    left: 200px; }\r\n  .zmiti-index-main-ui .zmiti-scroll-bar {\r\n    width: 104vw;\r\n    height: 30px;\r\n    position: absolute;\r\n    top: 0;\r\n    z-index: 10;\r\n    background: #fff;\r\n    left: -2vw; }\r\n    .zmiti-index-main-ui .zmiti-scroll-bar div {\r\n      width: 100%;\r\n      height: 24px;\r\n      top: 6px;\r\n      position: absolute;\r\n      box-shadow: 0 0 10px rgba(0, 0, 0, 0.6) inset; }\r\n  .zmiti-index-main-ui .zmiti-logo {\r\n    position: absolute;\r\n    width: 400px;\r\n    left: 50%;\r\n    margin-left: -200px;\r\n    top: 200px;\r\n    -webkit-transform: translate3d(0, -600px, 0);\r\n    transform: translate3d(0, -600px, 0);\r\n    -webkit-transition: 1s;\r\n    transition: 1s;\r\n    -webkit-transition-timing-function: cubic-bezier(1, -0.025, 1, 0.865);\r\n    transition-timing-function: cubic-bezier(1, -0.025, 1, 0.865); }\r\n    .zmiti-index-main-ui .zmiti-logo.active {\r\n      -webkit-transform: translate3d(0, 0, 0);\r\n      transform: translate3d(0, 0, 0); }\r\n    .zmiti-index-main-ui .zmiti-logo svg {\r\n      position: absolute;\r\n      top: 40px;\r\n      width: 100%;\r\n      height: 120px;\r\n      left: 0;\r\n      z-index: 10; }\r\n      .zmiti-index-main-ui .zmiti-logo svg .zmiti-text-path {\r\n        font-size: 50px;\r\n        color: #cf000d;\r\n        font-family: hy; }\r\n  .zmiti-index-main-ui .zmiti-scroller {\r\n    height: 280px;\r\n    width: 70px;\r\n    position: absolute;\r\n    top: 5px;\r\n    z-index: 11;\r\n    left: 0; }\r\n    .zmiti-index-main-ui .zmiti-scroller.transition {\r\n      -webkit-transition: height 1s;\r\n      transition: height 1s; }\r\n    .zmiti-index-main-ui .zmiti-scroller > section {\r\n      height: 100%;\r\n      -webkit-transition: 1s;\r\n      transition: 1s;\r\n      -webkit-transform-origin: center 20px;\r\n      transform-origin: center 20px; }\r\n      .zmiti-index-main-ui .zmiti-scroller > section.right {\r\n        -webkit-transform: rotate(15deg);\r\n        transform: rotate(15deg); }\r\n      .zmiti-index-main-ui .zmiti-scroller > section.left {\r\n        -webkit-transform: rotate(-15deg);\r\n        transform: rotate(-15deg); }\r\n      .zmiti-index-main-ui .zmiti-scroller > section.over {\r\n        -webkit-transition: 0.5s;\r\n        transition: 0.5s;\r\n        -webkit-transition-timing-function: cubic-bezier(0.31, 0.76, 0.72, 1.26);\r\n        transition-timing-function: cubic-bezier(0.31, 0.76, 0.72, 1.26); }\r\n    .zmiti-index-main-ui .zmiti-scroller .zmiti-scroller-gear {\r\n      width: 40px;\r\n      height: 20px;\r\n      background: #f00;\r\n      border-radius: 10px;\r\n      position: absolute;\r\n      top: 3px;\r\n      left: 50%;\r\n      margin-left: -20px; }\r\n      .zmiti-index-main-ui .zmiti-scroller .zmiti-scroller-gear:before {\r\n        content: \"\";\r\n        position: absolute;\r\n        width: 10px;\r\n        height: 10px;\r\n        background: #ece9a7;\r\n        border-radius: 50%;\r\n        left: 50%;\r\n        top: 50%;\r\n        margin-left: -5px;\r\n        margin-top: -5px; }\r\n    .zmiti-index-main-ui .zmiti-scroller .zmiti-scroller-rod {\r\n      width: 8px;\r\n      height: 88%;\r\n      background: #f00;\r\n      position: absolute;\r\n      left: 50%;\r\n      margin-left: -4px;\r\n      top: 22px; }\r\n    .zmiti-index-main-ui .zmiti-scroller .zmiti-scroller-latter {\r\n      position: absolute;\r\n      bottom: 0; }\r\n  .zmiti-index-main-ui .zmiti-controller {\r\n    position: absolute;\r\n    width: 400px;\r\n    height: 100px;\r\n    font-size: 16px;\r\n    top: 50px;\r\n    left: 40px;\r\n    color: #fff;\r\n    -webkit-transform: translate(1920px, 100px);\r\n    transform: translate(1920px, 100px);\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    display: -webkit-flex;\r\n    -ms-flex-flow: row;\r\n        flex-flow: row; }\r\n    .zmiti-index-main-ui .zmiti-controller.active {\r\n      -webkit-transform: translate(0, 0);\r\n      transform: translate(0, 0);\r\n      -webkit-transition: -webkit-transform 1s;\r\n      transition: -webkit-transform 1s;\r\n      transition: transform 1s;\r\n      transition: transform 1s, -webkit-transform 1s; }\r\n    .zmiti-index-main-ui .zmiti-controller > div:last-of-type {\r\n      margin: 5px 0 0 20px;\r\n      height: 40px; }\r\n    .zmiti-index-main-ui .zmiti-controller img {\r\n      width: 50px;\r\n      border-radius: 50%; }\r\n  .zmiti-index-main-ui .zmiti-waitint-list {\r\n    width: 200px;\r\n    position: absolute;\r\n    top: 0;\r\n    z-index: 4;\r\n    right: 230px;\r\n    min-height: 200px; }\r\n    .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line {\r\n      width: 60px;\r\n      height: 95px;\r\n      position: absolute;\r\n      z-index: 1;\r\n      right: 30px;\r\n      -webkit-transform-style: preserve-3d;\r\n      transform-style: preserve-3d;\r\n      perspective: 800px;\r\n      -webkit-perspective: 800px; }\r\n      .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line:last-of-type {\r\n        top: 150px;\r\n        height: 240px; }\r\n        .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line:last-of-type > aside:after {\r\n          display: none; }\r\n      .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line aside {\r\n        width: 2px;\r\n        height: 100%;\r\n        background: #887011;\r\n        position: absolute; }\r\n        .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line aside:after {\r\n          content: '';\r\n          -webkit-transform: rotateX(70deg);\r\n          transform: rotateX(70deg);\r\n          -webkit-transform-origin: bottom;\r\n          transform-origin: bottom;\r\n          position: absolute;\r\n          width: 4px;\r\n          height: 4px;\r\n          border-radius: 50%;\r\n          border: 2px solid #999;\r\n          bottom: -1px;\r\n          left: -3px; }\r\n        .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line aside:nth-of-type(1) {\r\n          left: 0; }\r\n        .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line aside:nth-of-type(2) {\r\n          right: 0; }\r\n    .zmiti-index-main-ui .zmiti-waitint-list .zmiti-waiting-C {\r\n      position: absolute;\r\n      z-index: 12;\r\n      top: 170px;\r\n      right: 0; }\r\n      .zmiti-index-main-ui .zmiti-waitint-list .zmiti-waiting-C li {\r\n        border-radius: 30px;\r\n        margin: 20px 0;\r\n        line-height: 50px;\r\n        width: 200px;\r\n        text-align: center;\r\n        height: 50px;\r\n        background: #fff; }\r\n        .zmiti-index-main-ui .zmiti-waitint-list .zmiti-waiting-C li img {\r\n          margin-right: 20px;\r\n          width: 40px;\r\n          border-radius: 50%; }\r\n    .zmiti-index-main-ui .zmiti-waitint-list .zmiti-duration {\r\n      font-family: hy;\r\n      position: absolute;\r\n      color: #000;\r\n      bottom: -44px;\r\n      text-align: center;\r\n      width: 100%;\r\n      font-size: 40px; }\r\n    .zmiti-index-main-ui .zmiti-waitint-list svg {\r\n      position: absolute;\r\n      width: 400px;\r\n      height: 200px; }\r\n\r\n/*# sourceMappingURL=index.css.map */", ""]);
 
 	// exports
 
