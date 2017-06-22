@@ -108,14 +108,15 @@ export class App extends Component {
 					</section>
 				</div>
 
-				{this.state.result && <section onTouchStart={this.continue.bind(this)} className='zmiti-mask lt-full'>
+				{this.state.result && <section onTouchStart={this.sendMsg.bind(this)} className='zmiti-mask lt-full'>
 					<img src={'./assets/images/'+this.state.result+'.png'}/>					
 				</section>}
 			</div>
 		);
 	}
 
-	continue(){
+	sendMsg(){
+
 
 		switch(this.state.result){
 			case "success":
@@ -123,48 +124,23 @@ export class App extends Component {
 					url:'http://api.zmiti.com/v2/msg/send_msg',
 		            data:{
 		                type:this.key,
-		                content:JSON.stringify({type:'finish'}),
+		                content:JSON.stringify({type:'finish',openid:this.state.openid}),
 		                to:''
 		            }
 				});
+				
 			break;
 			case 'fail':
 				$.ajax({
 					url:'http://api.zmiti.com/v2/msg/send_msg',
 		            data:{
 		                type:this.key,
-		                content:JSON.stringify({type:'continue'}),
+		                content:JSON.stringify({type:'continue',openid:this.state.openid}),
 		                to:''
 		            }
 				});	
 			break;
-			case 'timeout':
-				
-			break;
 		}
-		
-		if(this.state.result === 'success'){
-			$.ajax({
-				url:'http://api.zmiti.com/v2/msg/send_msg',
-	            data:{
-	                type:this.key,
-	                content:JSON.stringify({type:'finish'}),
-	                to:''
-	            }
-			});
-		}
-		else if(this.state.result === 'fail'){
-			$.ajax({
-				url:'http://api.zmiti.com/v2/msg/send_msg',
-	            data:{
-	                type:this.key,
-	                content:JSON.stringify({type:'continue'}),
-	                to:''
-	            }
-			});	
-		}
-
-
 		this.setState({result:''});
 		
 	}

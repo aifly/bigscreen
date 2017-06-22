@@ -26,7 +26,7 @@ class ZmitiIndexApp extends Component {
 						transform:'translateX(100px)'
 					},
 					transX:100,
-					result:'r1',
+					result:'r3',
 					src:'./assets/images/p1.png'
 				}
 			],
@@ -230,13 +230,16 @@ class ZmitiIndexApp extends Component {
             		
             	break;
             	case "finish":
-            		if(s.state.currentUser.openid === data.openid && s.state.result){
+            		alert(s.state.currentUser.openid +' --- '+ data.openid);
+            		if(s.state.currentUser.openid === data.openid){
 		            	s.setState({
 	            			result:'',
-	            			duration:0
+	            			duration:30,
+	            			currentUser:{}
 	            		});
 	            	}
             	break;
+            	
             }
         });
 
@@ -312,6 +315,7 @@ class ZmitiIndexApp extends Component {
 				this.setState({
 					scrollerHeight:this.state.scrollerHeight + this.viewH / speed
 				});
+				
 				requestAnimationFrame(render);	
 			}
 			
@@ -397,8 +401,8 @@ class ZmitiIndexApp extends Component {
 				if(this.state.duration <= 0){
 					if(this.state.waitingList.length<=0){
 						this.gameResult('timeout');//时间到了、
+						this.state.result = '';
 						this.state.currentUser = {};
-
 						this.countdonwEnd();
 					}
 					this.state.duration = 30;
@@ -433,6 +437,26 @@ class ZmitiIndexApp extends Component {
 	}
 
 	createQrcode(){
+		var s = this;
+		var code = window.localStorage.getItem('zmiti-bigscreen-qrcode');
+		if(code){
+
+			var img = new Image();
+			img.onerror = function(){
+				s.requestQrcode();
+			}
+			img.src = code;
+
+			s.setState({
+				qrcodeurl:code
+			})
+		}else{
+			s.requestQrcode();
+		}
+		
+	}
+
+	requestQrcode(){
 		$.ajax({
 			url:'http://api.zmiti.com/v2/share/create_qrcode',
 			data:{
@@ -442,11 +466,14 @@ class ZmitiIndexApp extends Component {
 			this.setState({
 				qrcodeurl:data.qrcodeurl
 			});
+			window.localStorage.setItem('zmiti-bigscreen-qrcode',data.qrcodeurl);
+
 		});
 	}
 
 	componentDidMount() {
-		this.key = this.randomString();
+		this.key = window.localStorage.getItem('zmiti-bigscreen-key') || this.randomString();
+		window.localStorage.setItem('zmiti-bigscreen-key',this.key);
 		this.startMove(this.key);
 		window.s = this;
 		this.textAnimate();
