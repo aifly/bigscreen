@@ -6,6 +6,8 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import $ from 'jquery';
 injectTapEventPlugin();
 
+
+
 export class App extends Component {
 	constructor(props) {
 		super(props);
@@ -117,14 +119,13 @@ export class App extends Component {
 
 	sendMsg(){
 
-
 		switch(this.state.result){
 			case "success":
 				$.ajax({
 					url:'http://api.zmiti.com/v2/msg/send_msg',
 		            data:{
 		                type:this.key,
-		                content:JSON.stringify({type:'finish',openid:this.state.openid}),
+		                content:JSON.stringify({type:'finish',openid:this.state.openid,nickname:this.state.nickname,headimgurl:this.state.headimgurl}),
 		                to:''
 		            }
 				});
