@@ -399,38 +399,45 @@ class ZmitiIndexApp extends Component {
 	}
 
 	beginGrab(){//开始抓取
-		var isStart = true;
-		var speed = 30;
-		var render = function(){
-			this.setState({
-				scrollerTransition:false
-			})
-			if(this.state.scrollerHeight>this.viewH -100 ){
-				isStart = false;
-				this.initGrab();
-				return;
-			}
-			var height = this.state.scrollerHeight;
-			this.state.personList.map((item,i)=>{
-				if(height > item.offsetTop && this.state.transX+70>item.transX+item.style.left && this.state.transX<item.transX+item.style.left+item.style.width){
-					isStart = false;
-					this.setState({result:item.result});
-					this.gameResult(item.result === 'r1' ? 'success' : 'fail');
-					this.initGrab();
-				}
-			});
-			if(isStart){
-				speed +=2;
-				speed = Math.min(200,speed);
+		//this.startGrab = this.startGrab || false;
+		if(!this.startGrab){
+			this.startGrab = true;
+			var isStart = true;
+			var speed = 30;
+			var render = function(){
 				this.setState({
-					scrollerHeight:this.state.scrollerHeight + this.viewH / speed
+					scrollerTransition:false
+				})
+				if(this.state.scrollerHeight>this.viewH -100 ){
+					isStart = false;
+					this.startGrab = false;
+					this.initGrab();
+					return;
+				}
+				var height = this.state.scrollerHeight;
+				this.state.personList.map((item,i)=>{
+					if(height > item.offsetTop && this.state.transX+70>item.transX+item.style.left && this.state.transX<item.transX+item.style.left+item.style.width){
+						isStart = false;
+						this.startGrab = false;
+						this.setState({result:item.result});
+						this.gameResult(item.result === 'r1' ? 'success' : 'fail');
+						this.initGrab();
+					}
 				});
+				if(this.startGrab){
+					speed +=2;
+					speed = Math.min(200,speed);
+					this.setState({
+						scrollerHeight:this.state.scrollerHeight + this.viewH / speed
+					});
+					
+					requestAnimationFrame(render);	
+				}
 				
-				requestAnimationFrame(render);	
-			}
-			
-		}.bind(this)
-		render();
+			}.bind(this)
+			render();	
+		}
+		
 	}
 
 	initGrab(){
