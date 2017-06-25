@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=640,user-scalable=no" />
+	<title>
+		党在我心中		
+	</title>
+	<script>
+		document.addEventListener("touchmove",function(e){e.preventDefault();});
+	</script>
+	<style>
+		
+		@font-face{
+			font-family: hy;
+			 src: url('../assets/fonts/hy.eot');
+			  src:
+			    url('../assets/fonts/hy.eot?#font-spider') format('embedded-opentype'),
+			    url('../assets/fonts/hy.woff') format('woff'),
+			    url('../assets/fonts/hy.ttf') format('truetype'),
+			    url('../assets/fonts/hy.svg') format('svg');
+					}
+
+	</style>
+</head>
+<body>
+	
+	<div id="fly-main">
+		
+	</div>
+	<script type="text/javascript">
+		window.PointerEvent = void 0;
+		function onError(){
+			var script  = document.createElement('script');
+			script.src = './assets/js/m.js?aa='+new Date().getTime();
+			document.body.appendChild(script);
+		}
+	</script>
+	<script src='http://res.wx.qq.com/open/js/jweixin-1.2.0.js'></script>
+	
+	<script type="text/javascript" onError='onError()' src='http://localhost:3009/m.js'></script>
+	<!-- 
+		<script src='./assets/js/index.js'></script> 
+	-->
+</body>
+</html>

@@ -68,8 +68,6 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	__webpack_require__(183);
-
 	//import ZmitiIndexApp from './index/index.jsx'
 
 	var _reactTapEventPlugin = __webpack_require__(187);
@@ -79,6 +77,12 @@
 	var _jquery = __webpack_require__(193);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
+
+	__webpack_require__(200);
+
+	var _indexIndexJsx = __webpack_require__(202);
+
+	var _indexIndexJsx2 = _interopRequireDefault(_indexIndexJsx);
 
 	(0, _reactTapEventPlugin2['default'])();
 
@@ -103,209 +107,13 @@
 			value: function render() {
 
 				var mainStyle = {
-					background: 'url(./assets/images/bg-c.jpg) no-repeat center top / cover'
+					background: 'url(../assets/images/bg-c.jpg) no-repeat center top / cover'
 				};
 				return _react2['default'].createElement(
 					'div',
 					{ className: 'zmiti-main-ui lt-full', style: mainStyle },
-					_react2['default'].createElement(
-						'header',
-						null,
-						_react2['default'].createElement(
-							'aside',
-							null,
-							_react2['default'].createElement('img', { src: this.state.headimgurl || './assets/images/zmiti.jpg' }),
-							this.state.nickname || 'zmiti'
-						),
-						_react2['default'].createElement(
-							'aside',
-							null,
-							_react2['default'].createElement(
-								'svg',
-								{ version: '1.1', id: '', xmlns: 'http://www.w3.org/2000/svg',
-									width: '100%', viewBox: '0 0 1000 500', enableBackground: 'new 0 0 1000 500' },
-								_react2['default'].createElement('path', { transform: 'translate(-120 -100) scale(1.1)', stroke: '#999', strokeWidth: 4, className: 'path', fill: '#fff', d: 'M985.369,394.032l-13.452-9.474l-23.4-10.656l-20.472-3.552l15.208-21.313l15.207-21.905l8.774-23.09\r l1.169-16.578l-5.851-25.458l-12.284-17.761l-23.399-22.496l-27.491-16.578L871.3,190.963l-22.813-10.656l-35.684-13.026\r l-16.712-1.939c-3.497,0.007-6.993-0.073-10.488-0.215c-21.61,0.763-43.08,3.649-64.067,9.81c-0.969,0.285-1.905,0.461-2.824,0.593\r l-1.254,0.635l-21.645,18.354l-12.87,10.657l-11.697,13.615l-2.342,3.552l-19.883-13.022l-25.154-14.802l-38.021-13.615\r l-31.588-5.328l-38.021-1.183l-28.663,8.88l-23.985,18.944l-19.304,16.578l-18.135,23.682l-8.774,23.682l-15.208-1.776\r l-19.304-1.775l-21.645,8.287l-19.303,7.104l-14.625-5.921l-18.717-4.146l-24.568,1.776l-18.718,8.88l-12.871,10.064l-11.115,7.104\r l-15.791-11.84l-18.717-5.921l-18.718-2.369l-18.717-1.183l-16.38,3.552l-22.227,10.657l-13.453,8.287l-9.977,8.262\r c-4.227,6.436-9.189,12.389-12.6,19.354c-0.021,0.038-0.048,0.066-0.065,0.104c-0.945,5.936-1.48,11.93-1.792,17.785l1.618,13.105\r l3.51,12.434l-21.059,4.734l-26.909,9.474l-26.323,12.433l-18.135,20.13L3,425.718c0.278,5.612,0.806,11.159,2.526,15.984\r c1.107,3.115,2.571,6.063,4.127,8.971l8.785,6.112l25.154,7.104l41.531,5.329h25.737l11.698-1.776l11.116,11.839l14.039,8.287\r l12.284,5.329L173.448,500h14.625l752.252-5.921l28.664-20.72l15.794-20.13l11.115-20.72v-20.13L985.369,394.032z' })
-							)
-						)
-					),
-					_react2['default'].createElement(
-						'div',
-						{ className: 'zmiti-cloud-line' },
-						_react2['default'].createElement('aside', null),
-						_react2['default'].createElement('aside', null),
-						_react2['default'].createElement(
-							'div',
-							{ className: 'zmiti-duration' },
-							'积分：' + (this.state.integral || 0)
-						)
-					),
-					_react2['default'].createElement(
-						'div',
-						{ className: 'zmiti-text' },
-						'您一共找出',
-						_react2['default'].createElement(
-							'span',
-							null,
-							this.state.count
-						),
-						'项党员气质。'
-					),
-					_react2['default'].createElement(
-						'div',
-						{ className: 'zmiti-controller' },
-						_react2['default'].createElement(
-							'section',
-							null,
-							_react2['default'].createElement(
-								'aside',
-								null,
-								_react2['default'].createElement('div', { style: { background: 'url(./assets/images/btn-l.png) no-repeat center / contain' }, onTouchStart: this.leftStart.bind(this), onTouchEnd: this.leftEnd.bind(this), className: this.state.lefttap ? 'active' : '' })
-							),
-							_react2['default'].createElement(
-								'aside',
-								null,
-								_react2['default'].createElement('div', { style: { background: 'url(./assets/images/btn-r.png) no-repeat center / contain' }, onTouchStart: this.rightStart.bind(this), onTouchEnd: this.rightEnd.bind(this), className: this.state.righttap ? 'active' : '' })
-							)
-						),
-						_react2['default'].createElement(
-							'section',
-							null,
-							_react2['default'].createElement(
-								'aside',
-								null,
-								_react2['default'].createElement('img', { onTouchTap: this.sure.bind(this), onTouchStart: this.sureStart.bind(this), onTouchEnd: this.sureEnd.bind(this), className: this.state.suretap ? 'active' : '', src: './assets/images/btn-ok.png' })
-							)
-						)
-					),
-					this.state.result && _react2['default'].createElement(
-						'section',
-						{ onTouchStart: this.sendMsg.bind(this), className: 'zmiti-mask lt-full' },
-						_react2['default'].createElement('img', { src: './assets/images/' + this.state.result + '.png' })
-					)
+					_react2['default'].createElement(_indexIndexJsx2['default'], null)
 				);
-			}
-		}, {
-			key: 'sendMsg',
-			value: function sendMsg() {
-
-				switch (this.state.result) {
-					case "success":
-						_jquery2['default'].ajax({
-							url: 'http://api.zmiti.com/v2/msg/send_msg',
-							data: {
-								type: this.key,
-								content: JSON.stringify({ type: 'finish', openid: this.state.openid, nickname: this.state.nickname, headimgurl: this.state.headimgurl }),
-								to: ''
-							}
-						});
-
-						this.setState({
-							count: this.state.count + 1
-						});
-
-						break;
-					case 'fail':
-						_jquery2['default'].ajax({
-							url: 'http://api.zmiti.com/v2/msg/send_msg',
-							data: {
-								type: this.key,
-								content: JSON.stringify({ type: 'continue', openid: this.state.openid }),
-								to: ''
-							}
-						});
-						break;
-				}
-				this.setState({ result: '' });
-			}
-		}, {
-			key: 'leftStart',
-			value: function leftStart(e) {
-
-				e.preventDefault();
-				this.setState({
-					lefttap: true
-				});
-				var leftOpt = {
-					type: 'left',
-					isOver: false,
-					openid: this.state.openid
-				};
-				_jquery2['default'].ajax({
-					url: 'http://api.zmiti.com/v2/msg/send_msg',
-					data: {
-						type: this.key,
-						content: JSON.stringify(leftOpt),
-						to: leftOpt.to || ''
-					}
-				});
-				return !1;
-			}
-		}, {
-			key: 'leftEnd',
-			value: function leftEnd() {
-				this.setState({
-					lefttap: false
-				});
-				return false;
-			}
-		}, {
-			key: 'rightStart',
-			value: function rightStart(e) {
-				e.preventDefault();
-				this.setState({
-					righttap: true
-				});
-				var rightOpt = {
-					type: 'right',
-					isOver: false,
-					openid: this.state.openid
-				};
-
-				_jquery2['default'].ajax({
-					url: 'http://api.zmiti.com/v2/msg/send_msg',
-					data: {
-						type: this.key,
-						content: JSON.stringify(rightOpt),
-						to: rightOpt.to || ''
-					}
-				});
-				return false;
-			}
-		}, {
-			key: 'rightEnd',
-			value: function rightEnd() {
-				this.setState({
-					righttap: false
-				});
-				return false;
-			}
-		}, {
-			key: 'sureStart',
-			value: function sureStart() {
-				this.setState({
-					suretap: true
-				});
-				return false;
-			}
-		}, {
-			key: 'sureEnd',
-			value: function sureEnd() {
-				this.setState({
-					suretap: false
-				});
-			}
-		}, {
-			key: 'sure',
-			value: function sure(e) {
-				e.preventDefault();
-				_jquery2['default'].ajax({
-					url: 'http://api.zmiti.com/v2/msg/send_msg',
-					data: {
-						type: this.key,
-						content: JSON.stringify({ type: 'beginGrab', openid: this.state.openid }),
-						to: ''
-					}
-				});
 			}
 		}, {
 			key: 'getPos',
@@ -403,25 +211,6 @@
 								alert('地址信息获取失败');
 							}
 					}
-				});
-			}
-		}, {
-			key: 'get_userrank',
-			value: function get_userrank() {
-				var s = this;
-				_jquery2['default'].ajax({
-					url: 'http://api.zmiti.com/v2/weixin/get_userrank/',
-					data: {
-						wxopenid: s.openid
-					}
-				}).done(function (data) {
-					if (data.getret === 0) {
-						s.setState({ integral: data.integral });
-					} else {
-						//alert('data.getret => '+data.getret + ' \n data.getmsg => '+data.getmsg);
-					}
-				}, function (e) {
-					//alert('get_userrank error')
 				});
 			}
 		}, {
@@ -550,7 +339,7 @@
 
 				var s = this;
 				_jquery2['default'].getJSON({
-					url: './assets/js/data.json',
+					url: '../assets/js/data.json',
 					data: {}
 
 				}).done(function (data) {
@@ -571,22 +360,13 @@
 
 					_this.wxConfig('寻找党委书记', '寻找党委书记', 'http://h5.zmiti.com/public/xwords/imaegs/300.jpg', _this.state.wxappid, _this.state.worksid);
 
-					s.loadingImg = ['./assets/images/btn-r.png', './assets/images/btn-l.png', './assets/images/btn-ok.png'];
+					s.loadingImg = ['../assets/images/bg-c.jpg'];
 
 					if (localStorage.getItem('nickname' + s.worksid) && localStorage.getItem('headimgurl' + s.worksid) && localStorage.getItem('openid' + s.worksid)) {
 
 						s.setState({
 							headimgurl: localStorage.getItem('headimgurl' + s.worksid)
 						});
-
-						/*s.loading(s.loadingImg,(scale)=>{
-	     			s.setState({
-	     				progress:(scale*100|0)+'%'
-	     			})
-	     		},()=>{
-	     		
-	     			
-	     		});*/
 
 						s.openid = localStorage.getItem('openid' + s.worksid);
 						s.nickname = localStorage.getItem('nickname' + s.worksid);
@@ -598,10 +378,6 @@
 							headimgurl: s.headimgurl,
 							openid: s.openid
 						});
-
-						s.listen();
-
-						s.login();
 
 						if (wx.posData && wx.posData.longitude) {
 							s.getPos(s.nickname, s.headimgurl);
@@ -679,10 +455,7 @@
 
 												localStorage.setItem('oauthurl' + s.worksid, dt.url);
 												window.location.href = dt.url;
-											} else {
-												s.setDefaultInfo();
-												s.login();
-											}
+											} else {}
 										}
 									});
 								} else {
@@ -707,8 +480,6 @@
 												}
 											}
 										});
-										s.setDefaultInfo();
-										s.login();
 
 										s.defaultName = data.username || '智媒体';
 
@@ -751,39 +522,6 @@
 					s.setState({
 						result: data.msg
 					});
-				});
-			}
-		}, {
-			key: 'setDefaultInfo',
-			value: function setDefaultInfo() {
-				var s = this;
-				s.openid = s.randomString();
-				s.nickname = 'zmiti';
-				s.headimgurl = './assets/images/zmiti.jpg';
-				s.listen();
-				s.setState({
-					openid: s.openid,
-					nickname: s.nickname,
-					headimgurl: s.headimgurl
-				});
-			}
-		}, {
-			key: 'login',
-			value: function login() {
-
-				var s = this;
-				_jquery2['default'].ajax({
-					url: 'http://api.zmiti.com/v2/msg/send_msg',
-					data: {
-						type: s.key,
-						content: JSON.stringify({
-							type: 'login',
-							nickname: s.nickname || s.state.nickname,
-							headimgurl: s.headimgurl || s.state.headimgurl,
-							openid: s.openid || s.state.openid
-						}),
-						to: ''
-					}
 				});
 			}
 		}, {
@@ -22712,46 +22450,8 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 183 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(184);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(186)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!../../node_modules/css-loader/index.js!./index.css", function() {
-				var newContent = require("!!../../node_modules/css-loader/index.js!./index.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ }),
-/* 184 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(185)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {\r\n    background-color: #fff;\r\n    border-color: #bf1616;\r\n    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);\r\n}*/\r\n.lt-full {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  overflow: hidden; }\r\n\r\nhtml, body, div, p, ul, li, ol, dl, dt, dd, header, footer, video, h1, h2, h3, h4, canvas, section, figure {\r\n  padding: 0;\r\n  margin: 0; }\r\n\r\na {\r\n  text-decoration: none; }\r\n\r\nli {\r\n  list-style: none; }\r\n\r\nhtml, body {\r\n  height: 100%; }\r\n\r\nbody {\r\n  overflow-x: hidden;\r\n  font-size: 24px; }\r\n\r\nimg {\r\n  border: none;\r\n  vertical-align: middle;\r\n  width: 100%;\r\n  height: auto; }\r\n\r\ninput, textarea {\r\n  outline: none; }\r\n\r\nhtml, body {\r\n  -webkit-user-select: none; }\r\n\r\n.zmiti-main-ui .zmiti-text {\r\n  position: absolute;\r\n  width: 100%;\r\n  text-align: center;\r\n  font-family: hy;\r\n  font-size: 34px;\r\n  top: 40%; }\r\n  .zmiti-main-ui .zmiti-text span {\r\n    font-size: 60px;\r\n    color: #f00;\r\n    margin: 0 10px; }\r\n.zmiti-main-ui .zmiti-mask {\r\n  z-index: 10;\r\n  background: rgba(0, 0, 0, 0.6); }\r\n  .zmiti-main-ui .zmiti-mask img {\r\n    width: 80%;\r\n    position: absolute;\r\n    bottom: 100px;\r\n    left: 10%; }\r\n.zmiti-main-ui > header {\r\n  width: 640px;\r\n  height: 130px;\r\n  margin-top: 100px;\r\n  display: -webkit-box;\r\n  -webkit-box-align: center;\r\n  -webkit-box-pack: center;\r\n  -webkit-box-orient: horizontal; }\r\n  .zmiti-main-ui > header > aside {\r\n    -webkit-box-flex: 1;\r\n    text-align: center;\r\n    font-size: 32px;\r\n    position: relative; }\r\n    .zmiti-main-ui > header > aside svg {\r\n      height: 130px;\r\n      position: relative;\r\n      left: 50px; }\r\n    .zmiti-main-ui > header > aside img {\r\n      width: 100px;\r\n      margin-right: 10px;\r\n      border-radius: 50%; }\r\n.zmiti-main-ui .zmiti-cloud-line {\r\n  top: 0;\r\n  width: 70px;\r\n  height: 145px;\r\n  position: absolute;\r\n  z-index: 1;\r\n  right: 70px;\r\n  -webkit-transform-style: preserve-3d;\r\n  transform-style: preserve-3d;\r\n  perspective: 800px;\r\n  -webkit-perspective: 800px; }\r\n  .zmiti-main-ui .zmiti-cloud-line:last-of-type {\r\n    top: 0px;\r\n    height: 200px; }\r\n    .zmiti-main-ui .zmiti-cloud-line:last-of-type > aside:after {\r\n      display: none; }\r\n  .zmiti-main-ui .zmiti-cloud-line .zmiti-duration {\r\n    position: absolute;\r\n    bottom: -60px;\r\n    font-size: 34px;\r\n    font-family: hy;\r\n    left: -70px;\r\n    width: 200px;\r\n    color: #333; }\r\n  .zmiti-main-ui .zmiti-cloud-line aside {\r\n    width: 4px;\r\n    height: 100%;\r\n    background: #887011;\r\n    position: absolute; }\r\n    .zmiti-main-ui .zmiti-cloud-line aside:before {\r\n      content: '';\r\n      -webkit-transform: rotateX(50deg);\r\n      transform: rotateX(50deg);\r\n      -webkit-transform-origin: bottom;\r\n      transform-origin: bottom;\r\n      position: absolute;\r\n      width: 8px;\r\n      height: 8px;\r\n      border-radius: 50%;\r\n      border: 2px solid #999;\r\n      bottom: -1px;\r\n      left: -3px; }\r\n    .zmiti-main-ui .zmiti-cloud-line aside:nth-of-type(1) {\r\n      left: 0; }\r\n    .zmiti-main-ui .zmiti-cloud-line aside:nth-of-type(2) {\r\n      right: 0; }\r\n.zmiti-main-ui .zmiti-controller {\r\n  width: 640px;\r\n  height: 400px;\r\n  position: absolute;\r\n  bottom: 0;\r\n  left: 0; }\r\n  .zmiti-main-ui .zmiti-controller > section {\r\n    display: -webkit-box;\r\n    -webkit-box-align: center;\r\n    -webkit-box-pack: center;\r\n    -webkit-box-orient: horizontal;\r\n    text-align: center;\r\n    height: 80px; }\r\n    .zmiti-main-ui .zmiti-controller > section aside {\r\n      -webkit-box-flex: 1;\r\n      position: relative; }\r\n      .zmiti-main-ui .zmiti-controller > section aside > div {\r\n        position: absolute;\r\n        left: 50%;\r\n        margin-left: -60px;\r\n        width: 120px;\r\n        height: 120px; }\r\n        .zmiti-main-ui .zmiti-controller > section aside > div.active {\r\n          -webkit-transform: scale(0.94) translate3d(0, 5px, 0);\r\n          transform: scale(0.94) translate3d(0, 5px, 0); }\r\n      .zmiti-main-ui .zmiti-controller > section aside img {\r\n        -webkit-touch-callout: none;\r\n        width: 120px;\r\n        -webkit-transition: -webkit-transform 0.1s;\r\n        transition: -webkit-transform 0.1s;\r\n        transition: transform 0.1s;\r\n        transition: transform 0.1s, -webkit-transform 0.1s; }\r\n    .zmiti-main-ui .zmiti-controller > section:nth-of-type(2) {\r\n      margin-top: 120px; }\r\n      .zmiti-main-ui .zmiti-controller > section:nth-of-type(2) img {\r\n        width: 200px; }\r\n\r\n/*# sourceMappingURL=index.css.map */", ""]);
-
-	// exports
-
-
-/***/ }),
+/* 183 */,
+/* 184 */,
 /* 185 */
 /***/ (function(module, exports) {
 
@@ -33281,6 +32981,173 @@
 
 	return jQuery;
 	}));
+
+
+/***/ }),
+/* 194 */,
+/* 195 */,
+/* 196 */,
+/* 197 */,
+/* 198 */,
+/* 199 */,
+/* 200 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(201);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(186)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../../node_modules/css-loader/index.js!./index.css", function() {
+				var newContent = require("!!../../../node_modules/css-loader/index.js!./index.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ }),
+/* 201 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(185)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "@charset \"UTF-8\";\r\n/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {\r\n    background-color: #fff;\r\n    border-color: #bf1616;\r\n    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);\r\n}*/\r\n.lt-full {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  overflow: hidden; }\r\n\r\nhtml, body, div, p, ul, li, ol, dl, dt, dd, header, footer, video, h1, h2, h3, h4, canvas, section, figure {\r\n  padding: 0;\r\n  margin: 0; }\r\n\r\na {\r\n  text-decoration: none; }\r\n\r\nli {\r\n  list-style: none; }\r\n\r\nhtml, body {\r\n  height: 100%; }\r\n\r\nbody {\r\n  font-family: \"Helvetica Neue\", 'Helvetica', \"Microsoft YaHei\", '\\5FAE\\8F6F\\96C5\\9ED1', arial, sans-serif;\r\n  overflow-x: hidden; }\r\n\r\nimg {\r\n  border: none;\r\n  vertical-align: middle;\r\n  width: 100%;\r\n  height: auto; }\r\n\r\ninput, textarea {\r\n  outline: none; }\r\n\r\n/*# sourceMappingURL=index.css.map */", ""]);
+
+	// exports
+
+
+/***/ }),
+/* 202 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	__webpack_require__(203);
+
+	var _jquery = __webpack_require__(193);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var ZmitiIndexApp = (function (_Component) {
+		_inherits(ZmitiIndexApp, _Component);
+
+		function ZmitiIndexApp(props) {
+			_classCallCheck(this, ZmitiIndexApp);
+
+			_get(Object.getPrototypeOf(ZmitiIndexApp.prototype), 'constructor', this).call(this, props);
+			this.state = {};
+			this.viewW = document.documentElement.clientWidth;
+			this.viewH = document.documentElement.clientHeight;
+		}
+
+		_createClass(ZmitiIndexApp, [{
+			key: 'render',
+			value: function render() {
+
+				return _react2['default'].createElement(
+					'div',
+					{ className: 'zmiti-index-main-ui lt-full' },
+					_react2['default'].createElement(
+						'section',
+						{ className: 'zmiti-index' },
+						_react2['default'].createElement(
+							'div',
+							null,
+							_react2['default'].createElement('img', { src: '../assets/images/m-logo.png' })
+						),
+						_react2['default'].createElement(
+							'div',
+							null,
+							_react2['default'].createElement('img', { src: '../assets/images/m-big-screen.png' })
+						),
+						_react2['default'].createElement(
+							'div',
+							null,
+							_react2['default'].createElement('img', { src: '../assets/images/m-single.png' })
+						)
+					)
+				);
+			}
+		}, {
+			key: 'componentDidMount',
+			value: function componentDidMount() {}
+		}]);
+
+		return ZmitiIndexApp;
+	})(_react.Component);
+
+	exports['default'] = ZmitiIndexApp;
+	module.exports = exports['default'];
+
+/***/ }),
+/* 203 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(204);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(186)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../../../node_modules/css-loader/index.js!./index.css", function() {
+				var newContent = require("!!../../../../node_modules/css-loader/index.js!./index.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ }),
+/* 204 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(185)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {\r\n    background-color: #fff;\r\n    border-color: #bf1616;\r\n    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);\r\n}*/\r\n.lt-full {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  overflow: hidden; }\r\n\r\n.zmiti-index-main-ui {\r\n  display: -webkit-box;\r\n  -webkit-box-align: center;\r\n  -webkit-box-pack: center;\r\n  -webkit-box-orient: vertical; }\r\n\r\n.zmiti-index {\r\n  width: 100%; }\r\n  .zmiti-index div:nth-of-type(1) {\r\n    width: 100%; }\r\n  .zmiti-index div:nth-of-type(2), .zmiti-index div:nth-of-type(3) {\r\n    margin: 40px 0;\r\n    text-align: center; }\r\n    .zmiti-index div:nth-of-type(2) img, .zmiti-index div:nth-of-type(3) img {\r\n      width: 200px; }\r\n\r\n/*# sourceMappingURL=index.css.map */", ""]);
+
+	// exports
 
 
 /***/ })

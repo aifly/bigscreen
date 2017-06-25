@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import './assets/css/index.css';
 //import ZmitiIndexApp from './index/index.jsx'
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import $ from 'jquery';
+import './assets/css/index.css';
+import ZmitiIndexApp from './index/index.jsx';
 injectTapEventPlugin();
 
 
@@ -57,178 +58,17 @@ export class App extends Component {
 	render() {
 
 		var mainStyle = {
-			background:'url(./assets/images/bg-c.jpg) no-repeat center top / cover'
+			background:'url(../assets/images/bg-c.jpg) no-repeat center top / cover'
 		}
 		return (
 			<div className='zmiti-main-ui lt-full' style={mainStyle}>
-				<header>
-					<aside>
-						<img src={this.state.headimgurl||'./assets/images/zmiti.jpg'}/>
-						{this.state.nickname||'zmiti'}
-					</aside>
-					<aside>
-						<svg version="1.1" id="" xmlns="http://www.w3.org/2000/svg"
-						 width="100%" viewBox="0 0 1000 500" enableBackground="new 0 0 1000 500">
-					<path transform='translate(-120 -100) scale(1.1)' stroke='#999'  strokeWidth={4} className='path' fill="#fff" d="M985.369,394.032l-13.452-9.474l-23.4-10.656l-20.472-3.552l15.208-21.313l15.207-21.905l8.774-23.09
-	l1.169-16.578l-5.851-25.458l-12.284-17.761l-23.399-22.496l-27.491-16.578L871.3,190.963l-22.813-10.656l-35.684-13.026
-	l-16.712-1.939c-3.497,0.007-6.993-0.073-10.488-0.215c-21.61,0.763-43.08,3.649-64.067,9.81c-0.969,0.285-1.905,0.461-2.824,0.593
-	l-1.254,0.635l-21.645,18.354l-12.87,10.657l-11.697,13.615l-2.342,3.552l-19.883-13.022l-25.154-14.802l-38.021-13.615
-	l-31.588-5.328l-38.021-1.183l-28.663,8.88l-23.985,18.944l-19.304,16.578l-18.135,23.682l-8.774,23.682l-15.208-1.776
-	l-19.304-1.775l-21.645,8.287l-19.303,7.104l-14.625-5.921l-18.717-4.146l-24.568,1.776l-18.718,8.88l-12.871,10.064l-11.115,7.104
-	l-15.791-11.84l-18.717-5.921l-18.718-2.369l-18.717-1.183l-16.38,3.552l-22.227,10.657l-13.453,8.287l-9.977,8.262
-	c-4.227,6.436-9.189,12.389-12.6,19.354c-0.021,0.038-0.048,0.066-0.065,0.104c-0.945,5.936-1.48,11.93-1.792,17.785l1.618,13.105
-	l3.51,12.434l-21.059,4.734l-26.909,9.474l-26.323,12.433l-18.135,20.13L3,425.718c0.278,5.612,0.806,11.159,2.526,15.984
-	c1.107,3.115,2.571,6.063,4.127,8.971l8.785,6.112l25.154,7.104l41.531,5.329h25.737l11.698-1.776l11.116,11.839l14.039,8.287
-	l12.284,5.329L173.448,500h14.625l752.252-5.921l28.664-20.72l15.794-20.13l11.115-20.72v-20.13L985.369,394.032z"/>
-					</svg>
-
-					</aside>
-				</header>
-				<div className='zmiti-cloud-line'>
-					<aside></aside>
-					<aside></aside>
-					<div className='zmiti-duration'>{'积分：'+(this.state.integral||0)}</div>
-				</div>
-
-				<div className='zmiti-text'>您一共找出<span>{this.state.count}</span>项党员气质。</div>
-
-				<div className='zmiti-controller'>
-					<section>
-						<aside>
-							<div style={{background:'url(./assets/images/btn-l.png) no-repeat center / contain'}} onTouchStart={this.leftStart.bind(this)} onTouchEnd={this.leftEnd.bind(this)} className={this.state.lefttap?'active':''}>
-								
-							</div>
-						</aside>
-						<aside>
-							<div style={{background:'url(./assets/images/btn-r.png) no-repeat center / contain'}} onTouchStart={this.rightStart.bind(this)} onTouchEnd={this.rightEnd.bind(this)} className={this.state.righttap?'active':''} >
-								
-							</div>
-						</aside>
-					</section>
-						
-					<section>
-						<aside>
-							<img onTouchTap={this.sure.bind(this)} onTouchStart={this.sureStart.bind(this)} onTouchEnd={this.sureEnd.bind(this)} className={this.state.suretap?'active':''} src='./assets/images/btn-ok.png'/>
-						</aside>
-					</section>
-				</div>
-
-				{this.state.result && <section onTouchStart={this.sendMsg.bind(this)} className='zmiti-mask lt-full'>
-					<img src={'./assets/images/'+this.state.result+'.png'}/>					
-				</section>}
+				<ZmitiIndexApp></ZmitiIndexApp>
 			</div>
 		);
 	}
 
-	sendMsg(){
-
-		switch(this.state.result){
-			case "success":
-				$.ajax({
-					url:'http://api.zmiti.com/v2/msg/send_msg',
-		            data:{
-		                type:this.key,
-		                content:JSON.stringify({type:'finish',openid:this.state.openid,nickname:this.state.nickname,headimgurl:this.state.headimgurl}),
-		                to:''
-		            }
-				});
-
-				this.setState({
-					count:this.state.count+1
-				})
-				
-			break;
-			case 'fail':
-				$.ajax({
-					url:'http://api.zmiti.com/v2/msg/send_msg',
-		            data:{
-		                type:this.key,
-		                content:JSON.stringify({type:'continue',openid:this.state.openid}),
-		                to:''
-		            }
-				});	
-			break;
-		}
-		this.setState({result:''});
-		
-	}
-
-	leftStart(e){
-
-		e.preventDefault();
-		this.setState({
-			lefttap:true
-		});
-		var leftOpt = {
-			type:'left',
-			isOver:false,
-			openid:this.state.openid
-		}
-		$.ajax({
-			url:'http://api.zmiti.com/v2/msg/send_msg',
-            data:{
-                type:this.key,
-                content:JSON.stringify(leftOpt),
-                to:leftOpt.to||''
-            }
-		});
-		return !1;
-	}
-	leftEnd(){
-		this.setState({
-			lefttap:false
-		});
-		return false;
-	}
-	rightStart(e){
-		e.preventDefault();
-		this.setState({
-			righttap:true
-		});
-		var rightOpt = {
-			type:'right',
-			isOver:false,
-			openid:this.state.openid
-		}
-		
-		$.ajax({
-			url:'http://api.zmiti.com/v2/msg/send_msg',
-            data:{
-                type:this.key,
-                content:JSON.stringify(rightOpt),
-                to:rightOpt.to||''
-            }
-		});
-		return false;
-	}
-	rightEnd(){
-		this.setState({
-			righttap:false
-		})
-		return false;
-	}
-	sureStart(){
-		this.setState({
-			suretap:true
-		});
-		return false;
-	}
-	sureEnd(){
-		this.setState({
-			suretap:false
-		})
-	}
-	sure(e){
-		e.preventDefault();
-		$.ajax({
-			url:'http://api.zmiti.com/v2/msg/send_msg',
-            data:{
-                type:this.key,
-                content:JSON.stringify({type:'beginGrab',openid:this.state.openid}),
-                to:''
-            }
-		});
-	}
+	
+	
 	getPos(nickname,headimgurl){
 
 			
@@ -335,23 +175,7 @@ export class App extends Component {
 	        })
     }
 
-    get_userrank(){
-    	var s = this;
-    	$.ajax({
-	   		url:'http://api.zmiti.com/v2/weixin/get_userrank/',
-	   		data:{
-	   			wxopenid:s.openid
-	   		}
-	   	}).done(data=>{
-	   		if(data.getret === 0){
-	   			s.setState({integral:data.integral});
-	   		}else{
-	   			//alert('data.getret => '+data.getret + ' \n data.getmsg => '+data.getmsg);
-	   		}
-	   	},e=>{
-	   		//alert('get_userrank error')
-	   	})
-    }
+   
 
 	wxConfig(title,desc,img,appId='wxfacf4a639d9e3bcc',worksid){
 		   var durl = location.href.split('#')[0]; //window.location;
@@ -486,7 +310,7 @@ export class App extends Component {
 
 		var s = this;
 		$.getJSON({
-			url:'./assets/js/data.json',
+			url:'../assets/js/data.json',
 			data:{},
 
 		}).done(data=>{
@@ -510,10 +334,8 @@ export class App extends Component {
 
 
 
-			s.loadingImg = ['./assets/images/btn-r.png',
-								'./assets/images/btn-l.png',
-								'./assets/images/btn-ok.png',
-								];
+			s.loadingImg = ['../assets/images/bg-c.jpg',
+							];
 
 			if(localStorage.getItem('nickname'+s.worksid) && localStorage.getItem('headimgurl'+s.worksid)&&
 				localStorage.getItem('openid'+s.worksid)){
@@ -521,15 +343,6 @@ export class App extends Component {
 				s.setState({
 					headimgurl:localStorage.getItem('headimgurl'+s.worksid)
 				});
-				
-				/*s.loading(s.loadingImg,(scale)=>{
-							s.setState({
-								progress:(scale*100|0)+'%'
-							})
-						},()=>{
-						
-							
-						});*/
 
 				s.openid = localStorage.getItem('openid'+s.worksid)
 				s.nickname = localStorage.getItem('nickname'+s.worksid);
@@ -542,9 +355,7 @@ export class App extends Component {
 					openid:s.openid
 				});
 
-				s.listen();
-
-				s.login();
+			
 
 				
 				if (wx.posData && wx.posData.longitude) {
@@ -632,8 +443,7 @@ export class App extends Component {
 										window.location.href =  dt.url;
 									}
 									else{
-										s.setDefaultInfo();										
-										s.login();
+										
 									}
 								}
 							})
@@ -660,9 +470,7 @@ export class App extends Component {
 										}
 									}
 								});
-								s.setDefaultInfo();
-								s.login();
-
+							
 
 								s.defaultName =  data.username || '智媒体';
 							
@@ -680,12 +488,6 @@ export class App extends Component {
 
 				}
 			});
-
-
-
-
-
-
 		})
 
 		$(document).on('touchend mouseup',function(e){
@@ -720,37 +522,6 @@ export class App extends Component {
         	s.setState({
         		result:data.msg
         	});
-		});
-	}
-
-	setDefaultInfo(){
-		var s = this;
-		s.openid = s.randomString();
-		s.nickname = 'zmiti';
-		s.headimgurl = './assets/images/zmiti.jpg';
-		s.listen();
-		s.setState({
-			openid:s.openid,
-			nickname:s.nickname,
-			headimgurl:s.headimgurl
-		});
-	}
-
-	login(){
-
-		var s = this;
-		$.ajax({
-			url:'http://api.zmiti.com/v2/msg/send_msg',
-            data:{
-                type:s.key,
-                content:JSON.stringify({
-                	type:'login',
-                	nickname:s.nickname||s.state.nickname,
-            		headimgurl:s.headimgurl||s.state.headimgurl,
-            		openid:s.openid||s.state.openid
-                }),
-                to:''
-            }
 		});
 	}
 

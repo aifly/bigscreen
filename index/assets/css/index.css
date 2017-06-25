@@ -57,57 +57,65 @@ input, textarea {
       border-radius: 50%;
       margin-right: 20px; }
   .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(1) {
-    top: 116px;
-    -webkit-animation: sb 11s linear forwards;
-    animation: sb 11s linear forwards; }
-  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(2) {
-    top: 130px;
-    -webkit-animation: sb 6s linear forwards;
-    animation: sb 6s linear forwards; }
-  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(3) {
-    top: 120px;
-    -webkit-animation: sb 12s linear forwards;
-    animation: sb 12s linear forwards; }
-  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(4) {
-    top: 148px;
-    -webkit-animation: sb 11s linear forwards;
-    animation: sb 11s linear forwards; }
-  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(5) {
-    top: 117px;
-    -webkit-animation: sb 8s linear forwards;
-    animation: sb 8s linear forwards; }
-  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(6) {
-    top: 124px;
-    -webkit-animation: sb 6s linear forwards;
-    animation: sb 6s linear forwards; }
-  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(7) {
-    top: 108px;
-    -webkit-animation: sb 12s linear forwards;
-    animation: sb 12s linear forwards; }
-  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(8) {
-    top: 115px;
-    -webkit-animation: sb 10s linear forwards;
-    animation: sb 10s linear forwards; }
-  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(9) {
-    top: 146px;
-    -webkit-animation: sb 11s linear forwards;
-    animation: sb 11s linear forwards; }
-  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(10) {
-    top: 139px;
-    -webkit-animation: sb 6s linear forwards;
-    animation: sb 6s linear forwards; }
-  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(11) {
-    top: 143px;
-    -webkit-animation: sb 8s linear forwards;
-    animation: sb 8s linear forwards; }
-  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(12) {
-    top: 119px;
+    top: 147px;
     -webkit-animation: sb 13s linear forwards;
     animation: sb 13s linear forwards; }
-  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(13) {
-    top: 149px;
+  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(2) {
+    top: 122px;
+    -webkit-animation: sb 13s linear forwards;
+    animation: sb 13s linear forwards; }
+  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(3) {
+    top: 118px;
     -webkit-animation: sb 7s linear forwards;
     animation: sb 7s linear forwards; }
+  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(4) {
+    top: 113px;
+    -webkit-animation: sb 9s linear forwards;
+    animation: sb 9s linear forwards; }
+  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(5) {
+    top: 113px;
+    -webkit-animation: sb 9s linear forwards;
+    animation: sb 9s linear forwards; }
+  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(6) {
+    top: 127px;
+    -webkit-animation: sb 12s linear forwards;
+    animation: sb 12s linear forwards; }
+  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(7) {
+    top: 143px;
+    -webkit-animation: sb 10s linear forwards;
+    animation: sb 10s linear forwards; }
+  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(8) {
+    top: 133px;
+    -webkit-animation: sb 6s linear forwards;
+    animation: sb 6s linear forwards; }
+  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(9) {
+    top: 111px;
+    -webkit-animation: sb 10s linear forwards;
+    animation: sb 10s linear forwards; }
+  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(10) {
+    top: 152px;
+    -webkit-animation: sb 7s linear forwards;
+    animation: sb 7s linear forwards; }
+  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(11) {
+    top: 152px;
+    -webkit-animation: sb 9s linear forwards;
+    animation: sb 9s linear forwards; }
+  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(12) {
+    top: 131px;
+    -webkit-animation: sb 7s linear forwards;
+    animation: sb 7s linear forwards; }
+  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(13) {
+    top: 133px;
+    -webkit-animation: sb 13s linear forwards;
+    animation: sb 13s linear forwards; }
+  .zmiti-index-main-ui .zmiti-addone {
+    position: absolute;
+    left: 30px;
+    top: 100px;
+    opacity: 0; }
+    .zmiti-index-main-ui .zmiti-addone.active {
+      -webkit-animation: addone 1s 1s forwards;
+      animation: addone 1s 1s forwards; }
   .zmiti-index-main-ui .zmiti-mask {
     z-index: 100;
     background: rgba(0, 0, 0, 0.7);
@@ -119,18 +127,32 @@ input, textarea {
         flex-flow: row; }
     .zmiti-index-main-ui .zmiti-mask > div {
       width: 500px;
+      -webkit-transition: 1s;
+      transition: 1s;
       left: 50%;
       position: absolute;
       top: 50%;
       -webkit-transform: translate3d(-50%, -50%, 0);
       transform: translate3d(-50%, -50%, 0); }
+      .zmiti-index-main-ui .zmiti-mask > div .zmiti-mask-text {
+        width: 63%;
+        text-indent: 2em;
+        max-height: 100px;
+        position: absolute;
+        top: 40%;
+        color: #fff;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%); }
   .zmiti-index-main-ui .zmiti-qrcodeurl {
     position: absolute;
     right: 10px;
     top: 40px;
-    width: 200px;
+    width: 150px;
     z-index: 1; }
   .zmiti-index-main-ui .zmiti-main-bg {
+    -webkit-animation: bgMove 20s linear infinite;
+    animation: bgMove 20s linear infinite;
     -webkit-transform-origin: left;
     transform-origin: left;
     width: 100%;
@@ -146,6 +168,8 @@ input, textarea {
       margin: 0;
       padding: 0;
       margin-left: 0; }
+      .zmiti-index-main-ui .zmiti-main-bg img:last-of-type {
+        margin-left: -1px; }
     .zmiti-index-main-ui .zmiti-main-bg .zmiti-index-grass {
       position: absolute;
       width: 100%;
@@ -153,7 +177,8 @@ input, textarea {
       bottom: 0px; }
   .zmiti-index-main-ui .zmiti-person {
     position: absolute;
-    bottom: 130px; }
+    bottom: 130px;
+    z-index: 100; }
   .zmiti-index-main-ui .zmiti-scroll-bar {
     width: 104vw;
     height: 30px;
@@ -364,5 +389,23 @@ input, textarea {
   to {
     -webkit-transform: translate3d(-2400px, 0, 0);
     transform: translate3d(-2400px, 0, 0); } }
+@-webkit-keyframes addone {
+  from {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+    opacity: 1; }
+  to {
+    -webkit-transform: translate(0, -50px);
+    transform: translate(0, -50px);
+    opacity: 0; } }
+@keyframes addone {
+  from {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+    opacity: 1; }
+  to {
+    -webkit-transform: translate(0, -50px);
+    transform: translate(0, -50px);
+    opacity: 0; } }
 
 /*# sourceMappingURL=index.css.map */

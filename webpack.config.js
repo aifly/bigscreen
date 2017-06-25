@@ -2,7 +2,8 @@ var webpack = require('webpack');
  var config = {
      entry: {
          'index': "./index.jsx",
-         'screen': "./screen.jsx"
+         'screen': "./screen.jsx",
+         'm':'./m/index.jsx'
      },
      output: {
          //publicPath: './static/js',

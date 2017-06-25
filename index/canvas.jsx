@@ -1,16 +1,6 @@
 import React, { Component } from 'react';
 import {PubCom} from '../components/public/pub.jsx';
 
-var data ={
-	count:0,
-	canvas:[],
-	widths:[],
-	heights:[],
-	srcs:[],
-	imgs:[],
-	transX:[]
-};
-window.data = data;
 class ZmitiCanvasApp extends Component {
 	constructor(props) {
 		super(props);
@@ -19,92 +9,155 @@ class ZmitiCanvasApp extends Component {
 		}
 		this.viewW = document.documentElement.clientWidth;
 		this.viewH = document.documentElement.clientHeight;
-
+		this.texts = window.texts;
+		
 	}
 
 	render() {
-
-		this.state.transX = this.state.transX===undefined ? this.props.transX : this.state.transX;
-		this.state.transX += this.props.speed||2;
-
-		if(data.count>=7){
-
-		}
 
 		if(this.state.transX>this.viewW){
 			this.state.transX = 0;
 		}
 
 		var mainStyle = {
-			transform:'translate('+(this.state.transX)+'px,0)'
+			
 		}
 		return (
-			<canvas style={mainStyle} className='zmiti-person zmiti-person1' ref='canvas' width={this.props.width} height={this.props.height}></canvas>
+			<canvas style={mainStyle} className='zmiti-person zmiti-person1' ref='canvas' width={this.viewW} height={this.viewH-130}></canvas>
 		);
 	}
 
 	componentDidMount() {
-	
+		
 		var self = this;
-		let {src,width,height,scale,obserable,personList} = this.props;
+		let {personList,obserable} = this.props;
 		let img = new Image();
 		this.obserable = obserable;
-		data.widths.push(width);
-		data.heights.push(height);
-		data.srcs.push(src);
+		
 		var canvas = self.refs['canvas'];
-				
-				data.canvas.push(canvas);
-			img.onload = function(){
-				
-				data.count++;
-				data.imgs.push(this);
+
+		var arr = ['./assets/images/question.png'];
+		personList.forEach((per,i)=>{
+			arr.push(per.src);
+			per.transX = (this.viewW + 150) / 7 * i;
+		});
+
+		this.loading(arr,null,()=>{
+			var context = canvas.getContext('2d');
+			
+			this.initPerson(personList);
+			var timer = setInterval(()=>{
+				context.clearRect(0,0,this.viewW,this.viewH - 130);
+				personList.forEach((person,i)=>{
+					var img = new Image();
+					img.src=person.src;
+
+					var img1 =new Image();
+					img1.src= arr[0];
 
 
-				if(data.count>=7){
-					self.iNow = 0;
-				
-					self.timer = setInterval(()=>{
-						canvas.transX =self.state.transX;
+					person.iNow = person.iNow || 0;
 
 
+
+					person.transX+=person.speed;
+					if(person.transX>this.viewW ){
+						person.transX = -100;
+						var index = Math.random()*this.texts.length|0;
+						person.question = this.texts[index].text
+						person.result = this.texts[index].result;
+						person.text1 = this.texts[index].text1;
+					}
+
+					if(person.transX>this.viewW / 5 && person.transX < this.viewW /3 ||(person.transX>this.viewW / 2.5 && person.transX < this.viewW /1.5 )){
+						context.fillStyle= 'green';
+						context.font = "bold 14px '微软雅黑'"; //设置字体
+						//context.fillText (person.question, ,200);
+						this.canvasTextAutoLine(person.question,context,person.transX+54,canvas.height - person.style.height-75,20);
+						context.drawImage(img1,0,0,200,136,person.transX,canvas.height - person.style.height-120,200,136);
+					}
+					
+					context.drawImage(img,
+							person.iNow*100,0,
+							100,person.style.height,
+							person.transX,
+							canvas.height - person.style.height,
+							100,person.style.height);	
+
+					person.iNow++;
+					if(person.iNow>=person.style.scale){
+						person.iNow  = 0;
 						
-						personList.map((item,i)=>{
+					}
+				});
 
-							var mycanvas = data.canvas[i];
-							var context = mycanvas.getContext('2d');
-							context.clearRect(0,0,data.widths[i],data.heights[i]);
-							self.iNow+=1;
-							if(self.iNow >= scale){
-								self.iNow = 0;
-							};
-
-							if(self.obserable){
-								self.obserable.trigger({
-									type:'updateTransX',
-									data:{
-										transX:mycanvas
-									}
-								});
-							}
-							context.drawImage(data.imgs[i],-self.iNow*width,0,data.widths[i]*scale,data.heights[i]);
-						});
-						self.forceUpdate();
-						
-
-						/**/
+				
+			},100);
 
 
-						
-					},120);
-				}
+			
+			
+			//var img1 = new createjs.Bitmap(person.src);
+			//stage.addChild(img1);
+			//stage.update();
+		});
+		
 
 		
-			}
-
-			img.src= src;
 		
 	}
+
+	canvasTextAutoLine(str,ctx,initX,initY,lineHeight){
+	    var lineWidth = 0;
+	    var canvasWidth = 200; 
+	    var lastSubStrIndex= 0; 
+	    for(let i=0;i<str.length;i++){ 
+	        lineWidth+=ctx.measureText(str[i]).width; 
+	        if(lineWidth>canvasWidth/8*5){
+	            ctx.fillText(str.substring(lastSubStrIndex,i),initX,initY);
+	            initY+=lineHeight;
+	            lineWidth=0;
+	            lastSubStrIndex=i;
+	        } 
+	        if(i==str.length-1){
+	            ctx.fillText(str.substring(lastSubStrIndex,i+1),initX,initY);
+	        }
+	    }
+  }
+
+	initPerson(personList){
+		personList.forEach((item,i)=>{
+			 
+			var index= Math.random()*this.texts.length|0;
+			item.question = this.texts[index].text;
+			item.result = this.texts[index].result;
+			item.text1 = this.texts[index].text1;
+		})
+	}
+	loading(arr, fn, fnEnd){
+        var len = arr.length;
+        var count = 0;
+        var i = 0;
+        
+        function loadimg() {
+            if (i === len) {
+                return;
+            }
+            var img = new Image();
+            img.onload = img.onerror = function(){
+                count++;
+                if (i < len - 1) {
+                    i++;
+                    loadimg();
+                    fn && fn(i / (len - 1), img.src);
+                } else {
+                    fnEnd && fnEnd(img.src);
+                }
+            };
+            img.src = arr[i];
+        }
+       loadimg();
+    }
 
 	
 }

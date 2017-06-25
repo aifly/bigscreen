@@ -16,6 +16,8 @@ class ZmitiIndexApp extends Component {
 			bgW:0,
 			bgTransX:0,
 			result:'',
+			text1:'',
+			isStopCount:false,//是否停止倒计时
 			waitingList:[
 				
 			],
@@ -25,93 +27,68 @@ class ZmitiIndexApp extends Component {
 						width:100,
 						scale:4,
 						height:234,
-						left:200,
-						transform:'translateX(200px)'
 					},
-					speed:1,
-					id:'canvas1',
-					transX:200,
-					result:'r3',
+					speed:6,
+					transX:0,
 					src:'./assets/images/p1.png'
-				},{
+				}
+				,
+				{
 					style:{
 						width:100,
 						scale:4,
 						height:265,
-						left:100,
-						transform:'translateX(100px)'
 					},
-					speed:.5,
-					id:'canvas2',
-					transX:100,
-					result:'r2',
+					speed:6,
+					transX:200,
 					src:'./assets/images/p2.png'
 				},{
 					style:{
 						width:100,
 						scale:4,
 						height:208,
-						left:400,
-						transform:'translateX(400px)'
 					},
-					speed:1.3,
-					id:'canvas3',
+					speed:6,
 					transX:400 ,
-					result:'r1',
 					src:'./assets/images/p3.png'
 				},{
 					style:{
 						width:100,
 						scale:4,
 						height:236,
-						left:700,
-						transform:'translateX(700px)'
 					},
-					speed:.7,
-					id:'canvas4',
-					transX:700 ,
-					result:'r1',
+					speed:6,
+					transX:600 ,
 					src:'./assets/images/p4.png'
 				},{
 					style:{
 						width:100,
 						scale:4,
 						height:239,
-						left:900,
-						transform:'translateX(900px)'
 					},
-					speed:.9,
-					id:'canvas5',
-					transX:900 ,
-					result:'r3',
+					speed:6,
+					transX:800 ,
 					src:'./assets/images/p5.png'
 				},{
 					style:{
 						width:100,
 						scale:4,
 						height:190,
-						left:500,
-						transform:'translateX(500px)'
 					},
-					speed:.6,
-					id:'canvas6',
-					transX:500 ,
-					result:'r3',
+					speed:6,
+					transX:1000 ,
 					src:'./assets/images/p6.png'
 				},{
 					style:{
 						width:100,
 						scale:4,
 						height:248,
-						left:0,
-						transform:'translateX(0)'
 					},
-					speed:.6,
-					id:'canvas7',
-					transX:0 ,
-					result:'r1',
+					speed:6,
+					transX:1200 ,
 					src:'./assets/images/p7.png'
 				}
+				
 			],
 			currentUser:{
 				
@@ -142,8 +119,15 @@ class ZmitiIndexApp extends Component {
 
 		var mainStyle = {
 			width:this.state.bgW*2,
-			transform:'translate('+this.state.bgTransX+'px,0) scale(1)'
+			//transform:'translate('+this.state.bgTransX+'px,0) scale(1)'
 		};
+
+		var maskClassName = '';
+		if(this.state.maskActive){
+			maskClassName='active';
+		}else if(this.state.maskDelete){
+			maskClassName ='delete';
+		}
 		return (
 			<div  className='zmiti-index-main-ui'>
 				<div className='zmiti-main-bg' style={mainStyle}>
@@ -224,27 +208,23 @@ class ZmitiIndexApp extends Component {
 					</svg>
 				</div>
 
+				<ZmitiCanvasApp obserable={obserable} personList={this.state.personList}></ZmitiCanvasApp>
+ 				
 
-				{this.state.personList.map((p,i)=>{
-					var data = {
-						...p.style,
-						src:p.src,
-						transX:p.transX,
-						speed:p.speed||1,
-						obserable,
-						id:p.id
-					}
-					return 	<ZmitiCanvasApp personList={this.state.personList} key={i} {...data}></ZmitiCanvasApp>
-
-				})}
+ 				{ <div onAnimationEnd={()=>{this.setState({showAddone:false})}} className={'zmiti-addone ' +(this.state.showAddone?'active':'')}>
+ 				 					<img src='./assets/images/1.png'/>
+ 				 				</div>}
 
 				{this.state.qrcodeurl && <img className='zmiti-qrcodeurl' src={this.state.qrcodeurl}/>}
 
-				{this.state.result && <div className='zmiti-mask lt-full'>
-									<div><img src={'./assets/images/'+this.state.result+'.png'}/></div>
+				{this.state.result && <div className={'zmiti-mask lt-full '}>
+									<div className={maskClassName}>
+										<img src={'./assets/images/'+this.state.result+'.png'}/>
+										<div className='zmiti-mask-text'>{this.state.text1}</div>
+									</div>
 								</div>}
 
-				{this.state.submitList.map((item,i)=>{
+				{false && this.state.submitList.map((item,i)=>{
 					return <div onAnimationEnd={this.animationEnd.bind(this,i)} key={i} className='zmiti-submit-item'>
 				        <img src={item.headimgurl}/><span>{item.nickname}同志已成功递交了申请书</span>
 					</div>;
@@ -300,8 +280,10 @@ class ZmitiIndexApp extends Component {
 	            	}
             	break;
             	case 'beginGrab':
+
             		if(s.state.currentUser.openid === data.openid && !s.state.result){
 		            	s.setState({isMove:false,direction:'over'});
+
 	            		s.isMove = false;
 	            		s.beginGrab();
 	            	}
@@ -330,23 +312,34 @@ class ZmitiIndexApp extends Component {
             	break;
             	case "continue"://继续游戏
             		if(s.state.currentUser.openid === data.openid && s.state.result){
-		            	s.setState({
-	            			result:''
-	            		});
+		            	s.state.maskDelete = 'delete';
+
+            			s.forceUpdate();
+            			setTimeout(()=>{
+            				s.setState({
+		            			result:'',
+		            			maskDelete:''
+		            		});	
+		            		s.isStopCount = false;
+            			},1000)
 	            	}
             		
             	break;
             	case "finish":
-            		s.state.submitList.push({
-            			nickname:data.nickname,
-            			headimgurl:data.headimgurl
-            		})
+
             		if(s.state.currentUser.openid === data.openid){
-		            	s.setState({
-	            			result:'',
-	            			duration:30,
-	            			currentUser:{}
-	            		});
+            			
+            			s.state.maskActive = 'active';
+            			s.state.showAddone = true;
+            			s.forceUpdate();
+            			setTimeout(()=>{
+            				s.setState({
+		            			result:'',
+		            			maskActive:''
+		            		});	
+		            		s.isStopCount = false;
+            			},1000)
+		            	
 	            	}
             	break;
             	
@@ -402,6 +395,7 @@ class ZmitiIndexApp extends Component {
 		//this.startGrab = this.startGrab || false;
 		if(!this.startGrab){
 			this.startGrab = true;
+
 			var isStart = true;
 			var speed = 30;
 			var render = function(){
@@ -416,10 +410,16 @@ class ZmitiIndexApp extends Component {
 				}
 				var height = this.state.scrollerHeight;
 				this.state.personList.map((item,i)=>{
-					if(height > item.offsetTop && this.state.transX+70>item.transX+item.style.left && this.state.transX<item.transX+item.style.left+item.style.width){
+					if(height > this.viewH - 130 - item.style.height && this.state.transX+70>item.transX && this.state.transX<item.transX+item.style.width){
 						isStart = false;
 						this.startGrab = false;
-						this.setState({result:item.result});
+						setTimeout(()=>{
+							this.setState({
+								result:item.result,
+								text1:item.text1
+							});
+						},100)
+						this.isStopCount = true;//停止计时
 						this.gameResult(item.result === 'r1' ? 'success' : 'fail');
 						this.initGrab();
 					}
@@ -479,9 +479,9 @@ class ZmitiIndexApp extends Component {
 	}
 
 	initPersonData(){
-		this.state.personList.forEach((item,i)=>{
+		/*this.state.personList.forEach((item,i)=>{
 			item.offsetTop = $('.zmiti-person').eq(i)[0].offsetTop
-		});
+		});*/
 	}
 
 	
@@ -512,9 +512,12 @@ class ZmitiIndexApp extends Component {
 
 			if( this.state.currentUser.openid ){
 
-				this.setState({
-					duration : this.state.duration - 1
-				});	
+				if(!this.isStopCount){
+					this.setState({
+						duration : this.state.duration - 1
+					});	
+				}
+				
 				
 				if(this.state.duration <= 0){
 					if(this.state.waitingList.length<=0){
@@ -548,6 +551,7 @@ class ZmitiIndexApp extends Component {
 		this.state.currentUser = {};//清空当前用户
 		this.state.duration = 30;
 		this.state.isMove = false;
+		this.state.result = '';
 	    this.state.direction = 'over';
 	    this.isMove = false;
 		this.forceUpdate();
@@ -596,7 +600,7 @@ class ZmitiIndexApp extends Component {
 		window.s = this;
 		this.textAnimate();
 		
-		this.bgAnimate();//背景移动
+		//this.bgAnimate();//背景移动
 		
 
 		this.createQrcode();
@@ -607,13 +611,24 @@ class ZmitiIndexApp extends Component {
 			s.setState({
 				bgW:this.width
 			});
+
+			var style  = `
+				@keyframes bgMove{
+					to{transform:translate(-${this.width}px,0)}
+				}
+				.zmiti-mask>div.active{
+					transform-origin:-${(s.viewW-500)/2}px -${(s.viewH-500)/2}px;transform:translate3d(-50%,-50%,0) scale(.1) !important;
+				}
+				.zmiti-mask>div.delete{
+					transform-origin:${s.viewW - 500}px ${s.viewH- 300}px;transform:translate3d(-50%,-50%,0) scale(.1) !important;
+				}
+			`;
+			document.getElementsByTagName('style')[0].innerHTML+=style;
 		}
 		img.src=this.refs['bg'].src;
 
-		obserable.on('updateTransX',(data)=>{
-			this.state.personList.forEach((item,i)=>{
-				item.transX = data.transX;
-			});
+		obserable.on('updatePersonList',(data)=>{
+			this.state.personList = data;
 
 			this.forceUpdate();
 		});

@@ -63,19 +63,43 @@ input, textarea {
    }
  }
 
-
+  .zmiti-addone{
+     @include pos(a);
+     left: 30px;
+     top: 100px;
+     opacity:0;
+     &.active{
+       
+        @include animation(addone 1s 1s forwards);
+       
+     }
+  }
  .zmiti-mask{
    z-index: 100;
    background: rgba(0,0,0,.7);
    @include displayFlex(row);
+
+
    &>div{
     width:500px;
-    
+    @include transition(1s); 
+
     left: 50%;
     @include pos(a);
     top: 50%;
-    @include transform(translate3d(-50%,-50%,0));
-    
+
+    @include transform(translate3d(-50%,-50%,0) );
+    .zmiti-mask-text{
+      width: 63%;
+      text-indent: 2em;
+      max-height: 100px;
+      @include pos(a);
+      top: 40%;
+      color: #fff;
+      left: 50%;
+      
+      @include transform(translate(-50%,-50%));
+    }
    }
    img{
 
@@ -86,10 +110,11 @@ input, textarea {
    @include pos(a);
    right: 10px;
    top:40px;
-   width: 200px;
+   width: 150px;
    z-index: 1;
  }
   .zmiti-main-bg{
+    @include animation(bgMove 20s linear infinite);
     @include transformOrigin(left);
      img{
       width: auto;
@@ -99,7 +124,7 @@ input, textarea {
       padding: 0;
       margin-left:0;
       &:last-of-type{
-       
+       margin-left: -1px;
       }
      }
      width: 100%;
@@ -120,7 +145,8 @@ input, textarea {
   .zmiti-person{
     @include pos(a);
     bottom: 130px;
-    
+    z-index: 100;
+
   }
   
   .zmiti-scroll-bar{
@@ -353,4 +379,15 @@ input, textarea {
    to {
     @include transform(translate3d(-2400px,0,0));
    }
+}
+
+@keyframes addone{
+  from{
+     @include transform(translate(0,0));
+    opacity:1;
+  }
+  to{
+    @include transform(translate(0,-50px));
+    opacity:0;
+  }
 }
