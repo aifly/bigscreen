@@ -22,14 +22,39 @@ export default class ZmitiIndexApp extends Component {
 						<img src='../assets/images/m-logo.png'/>
 					</div>
 					<div>
-						<img src='../assets/images/m-big-screen.png'/>
+						<img className={this.state.bigscreenTap?'active':''} onTouchTap={this.entryBigScreen.bind(this)} src='../assets/images/m-big-screen.png'/>
 					</div>
 					<div>
-						<img src='../assets/images/m-single.png'/>
+						<img className={this.state.singleTap?'active':''} onTouchTap={this.entrySingleGame.bind(this)} src='../assets/images/m-single.png'/>
 					</div>
 				</section>
 			</div>
 		);
+	}
+
+
+	entryBigScreen(){
+		this.setState({
+			bigscreenTap:true
+		});
+
+		setTimeout(()=>{
+			this.setState({
+				bigscreenTap:false
+			});
+		},150)
+	}
+
+	entrySingleGame(){
+		this.setState({
+			singleTap:true
+		});
+
+		setTimeout(()=>{
+			this.setState({
+				singleTap:false
+			});
+		},150)
 	}
 
 

@@ -12,6 +12,10 @@
   div:nth-of-type(2),div:nth-of-type(3){
       img{
         width: 200px;
+          @include transition(.1s);
+        &.active{
+          @include transform(translate3d(0,10px,0) scale(.95));
+        }
       }
       margin: 40px 0;
       text-align: center;

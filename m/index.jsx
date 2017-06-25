@@ -484,27 +484,9 @@ export class App extends Component {
 						}
 
 					}
-
-
 				}
 			});
 		})
-
-		$(document).on('touchend mouseup',function(e){
-			e.preventDefault();
-
-			$.ajax({
-				url:'http://api.zmiti.com/v2/msg/send_msg',
-                data:{
-                    type:s.key,
-                    content:JSON.stringify({type:'over',openid:s.state.openid}),
-                    to:''
-                }
-			});
-			return !1;
-		});
-
-
 	}
 
 	listen(){
