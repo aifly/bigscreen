@@ -71,7 +71,7 @@
 	//import ZmitiIndexApp from './index/index.jsx'
 
 	if (1) {
-		var ZmitiIndexApp = __webpack_require__(194);
+		var ZmitiIndexApp = __webpack_require__(203);
 	}
 
 	var App = (function (_Component) {
@@ -32099,7 +32099,64 @@
 
 
 /***/ }),
-/* 194 */
+/* 194 */,
+/* 195 */,
+/* 196 */,
+/* 197 */,
+/* 198 */,
+/* 199 */,
+/* 200 */,
+/* 201 */,
+/* 202 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Obserable = (function () {
+		function Obserable() {
+			_classCallCheck(this, Obserable);
+
+			this.handlers = {};
+		}
+
+		_createClass(Obserable, [{
+			key: "on",
+			value: function on(type, handler) {
+				this.handlers[type] = this.handlers[type] || [];
+				this.handlers[type].push(handler);
+			}
+		}, {
+			key: "trigger",
+			value: function trigger(event) {
+
+				if (!event.target) {
+					event.target = this;
+				}
+				if (this.handlers[event.type] instanceof Array) {
+					var handlers = this.handlers[event.type]; //检出被观察者注册的观察者
+					for (var i = 0, len = handlers.length; i < len; i++) {
+						return handlers[i](event.data); //回调函数执行，也就是观察者更新自己
+					}
+				}
+			}
+		}]);
+
+		return Obserable;
+	})();
+
+	exports["default"] = Obserable;
+	module.exports = exports["default"];
+
+/***/ }),
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32122,11 +32179,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _componentsPublicPubJsx = __webpack_require__(195);
+	var _componentsPublicPubJsx = __webpack_require__(204);
 
-	__webpack_require__(196);
+	__webpack_require__(205);
 
-	var _canvasJsx = __webpack_require__(198);
+	var _canvasJsx = __webpack_require__(207);
 
 	var _canvasJsx2 = _interopRequireDefault(_canvasJsx);
 
@@ -32134,7 +32191,7 @@
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _assetsLibsObserable = __webpack_require__(199);
+	var _assetsLibsObserable = __webpack_require__(202);
 
 	var _assetsLibsObserable2 = _interopRequireDefault(_assetsLibsObserable);
 
@@ -32150,7 +32207,7 @@
 			this.state = {
 				transX: 200,
 				direction: '',
-				duration: 30,
+				duration: 60,
 				scrollerHeight: 280,
 				bgW: 0,
 				bgTransX: 0,
@@ -32389,7 +32446,7 @@
 							_react2['default'].createElement('img', { src: './assets/images/' + this.state.result + '.png' }),
 							_react2['default'].createElement(
 								'div',
-								{ className: 'zmiti-mask-text' },
+								{ className: 'zmiti-mask-text ' + this.state.result },
 								this.state.text1
 							)
 						)
@@ -32709,7 +32766,7 @@
 								_this4.state.currentUser = {};
 								_this4.countdonwEnd();
 							}
-							_this4.state.duration = 30;
+							_this4.state.duration = 60;
 							_this4.setState({
 								hasController: false
 							});
@@ -32726,7 +32783,7 @@
 			key: 'countdonwEnd',
 			value: function countdonwEnd() {
 				this.state.currentUser = {}; //清空当前用户
-				this.state.duration = 30;
+				this.state.duration = 60;
 				this.state.isMove = false;
 				this.state.result = '';
 				this.state.direction = 'over';
@@ -32856,7 +32913,7 @@
 	module.exports = exports['default'];
 
 /***/ }),
-/* 195 */
+/* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32919,13 +32976,13 @@
 	exports.PubCom = PubCom;
 
 /***/ }),
-/* 196 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(197);
+	var content = __webpack_require__(206);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(186)(content, {});
@@ -32945,7 +33002,7 @@
 	}
 
 /***/ }),
-/* 197 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(185)();
@@ -32953,13 +33010,13 @@
 
 
 	// module
-	exports.push([module.id, "@charset \"UTF-8\";\r\n/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {\r\n    background-color: #fff;\r\n    border-color: #bf1616;\r\n    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);\r\n}*/\r\n.lt-full {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  overflow: hidden; }\r\n\r\nhtml, body, div, p, ul, li, ol, dl, dt, dd, header, footer, video, h1, h2, h3, h4, canvas, section, figure {\r\n  padding: 0;\r\n  margin: 0; }\r\n\r\na {\r\n  text-decoration: none; }\r\n\r\nli {\r\n  list-style: none; }\r\n\r\nhtml, body {\r\n  height: 100%; }\r\n\r\nbody {\r\n  font-family: \"Helvetica Neue\", 'Helvetica', \"Microsoft YaHei\", '\\5FAE\\8F6F\\96C5\\9ED1', arial, sans-serif;\r\n  overflow-x: hidden; }\r\n\r\nimg {\r\n  border: none;\r\n  vertical-align: middle;\r\n  width: 100%;\r\n  height: auto; }\r\n\r\ninput, textarea {\r\n  outline: none; }\r\n\r\n.zmiti-index-main-ui {\r\n  height: 100vh;\r\n  width: 100vw;\r\n  overflow: hidden; }\r\n  .zmiti-index-main-ui .zmiti-submit-item {\r\n    position: absolute;\r\n    left: 1800px;\r\n    background: #664761;\r\n    height: 60px;\r\n    border-radius: 30px;\r\n    color: #fff;\r\n    padding: 0 20px;\r\n    line-height: 60px;\r\n    min-width: 350px; }\r\n    .zmiti-index-main-ui .zmiti-submit-item img {\r\n      width: 40px;\r\n      border-radius: 50%;\r\n      margin-right: 20px; }\r\n  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(1) {\r\n    top: 147px;\r\n    -webkit-animation: sb 13s linear forwards;\r\n    animation: sb 13s linear forwards; }\r\n  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(2) {\r\n    top: 122px;\r\n    -webkit-animation: sb 13s linear forwards;\r\n    animation: sb 13s linear forwards; }\r\n  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(3) {\r\n    top: 118px;\r\n    -webkit-animation: sb 7s linear forwards;\r\n    animation: sb 7s linear forwards; }\r\n  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(4) {\r\n    top: 113px;\r\n    -webkit-animation: sb 9s linear forwards;\r\n    animation: sb 9s linear forwards; }\r\n  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(5) {\r\n    top: 113px;\r\n    -webkit-animation: sb 9s linear forwards;\r\n    animation: sb 9s linear forwards; }\r\n  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(6) {\r\n    top: 127px;\r\n    -webkit-animation: sb 12s linear forwards;\r\n    animation: sb 12s linear forwards; }\r\n  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(7) {\r\n    top: 143px;\r\n    -webkit-animation: sb 10s linear forwards;\r\n    animation: sb 10s linear forwards; }\r\n  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(8) {\r\n    top: 133px;\r\n    -webkit-animation: sb 6s linear forwards;\r\n    animation: sb 6s linear forwards; }\r\n  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(9) {\r\n    top: 111px;\r\n    -webkit-animation: sb 10s linear forwards;\r\n    animation: sb 10s linear forwards; }\r\n  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(10) {\r\n    top: 152px;\r\n    -webkit-animation: sb 7s linear forwards;\r\n    animation: sb 7s linear forwards; }\r\n  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(11) {\r\n    top: 152px;\r\n    -webkit-animation: sb 9s linear forwards;\r\n    animation: sb 9s linear forwards; }\r\n  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(12) {\r\n    top: 131px;\r\n    -webkit-animation: sb 7s linear forwards;\r\n    animation: sb 7s linear forwards; }\r\n  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(13) {\r\n    top: 133px;\r\n    -webkit-animation: sb 13s linear forwards;\r\n    animation: sb 13s linear forwards; }\r\n  .zmiti-index-main-ui .zmiti-addone {\r\n    position: absolute;\r\n    left: 30px;\r\n    top: 100px;\r\n    opacity: 0; }\r\n    .zmiti-index-main-ui .zmiti-addone.active {\r\n      -webkit-animation: addone 1s 1s forwards;\r\n      animation: addone 1s 1s forwards; }\r\n  .zmiti-index-main-ui .zmiti-mask {\r\n    z-index: 100;\r\n    background: rgba(0, 0, 0, 0.7);\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    display: -webkit-flex;\r\n    -ms-flex-flow: row;\r\n        flex-flow: row; }\r\n    .zmiti-index-main-ui .zmiti-mask > div {\r\n      width: 500px;\r\n      -webkit-transition: 1s;\r\n      transition: 1s;\r\n      left: 50%;\r\n      position: absolute;\r\n      top: 50%;\r\n      -webkit-transform: translate3d(-50%, -50%, 0);\r\n      transform: translate3d(-50%, -50%, 0); }\r\n      .zmiti-index-main-ui .zmiti-mask > div .zmiti-mask-text {\r\n        width: 63%;\r\n        text-indent: 2em;\r\n        max-height: 100px;\r\n        position: absolute;\r\n        top: 40%;\r\n        color: #fff;\r\n        left: 50%;\r\n        -webkit-transform: translate(-50%, -50%);\r\n        transform: translate(-50%, -50%); }\r\n  .zmiti-index-main-ui .zmiti-qrcodeurl {\r\n    position: absolute;\r\n    right: 10px;\r\n    top: 40px;\r\n    width: 150px;\r\n    z-index: 1; }\r\n  .zmiti-index-main-ui .zmiti-main-bg {\r\n    -webkit-animation: bgMove 20s linear infinite;\r\n    animation: bgMove 20s linear infinite;\r\n    -webkit-transform-origin: left;\r\n    transform-origin: left;\r\n    width: 100%;\r\n    height: 100%;\r\n    position: absolute;\r\n    left: 0;\r\n    top: 0;\r\n    z-index: 0; }\r\n    .zmiti-index-main-ui .zmiti-main-bg img {\r\n      width: auto;\r\n      height: 100%;\r\n      font-size: 0;\r\n      margin: 0;\r\n      padding: 0;\r\n      margin-left: 0; }\r\n      .zmiti-index-main-ui .zmiti-main-bg img:last-of-type {\r\n        margin-left: -1px; }\r\n    .zmiti-index-main-ui .zmiti-main-bg .zmiti-index-grass {\r\n      position: absolute;\r\n      width: 100%;\r\n      height: 800px;\r\n      bottom: 0px; }\r\n  .zmiti-index-main-ui .zmiti-person {\r\n    position: absolute;\r\n    bottom: 130px;\r\n    z-index: 100; }\r\n  .zmiti-index-main-ui .zmiti-scroll-bar {\r\n    width: 104vw;\r\n    height: 30px;\r\n    position: absolute;\r\n    top: 0;\r\n    z-index: 10;\r\n    background: #fff;\r\n    left: -2vw; }\r\n    .zmiti-index-main-ui .zmiti-scroll-bar div {\r\n      width: 100%;\r\n      height: 24px;\r\n      top: 6px;\r\n      position: absolute;\r\n      box-shadow: 0 0 10px rgba(0, 0, 0, 0.6) inset; }\r\n  .zmiti-index-main-ui .zmiti-logo {\r\n    position: absolute;\r\n    width: 400px;\r\n    left: 50%;\r\n    margin-left: -200px;\r\n    top: 200px;\r\n    -webkit-transform: translate3d(0, -600px, 0);\r\n    transform: translate3d(0, -600px, 0);\r\n    -webkit-transition: 1s;\r\n    transition: 1s;\r\n    -webkit-transition-timing-function: cubic-bezier(1, -0.025, 1, 0.865);\r\n    transition-timing-function: cubic-bezier(1, -0.025, 1, 0.865); }\r\n    .zmiti-index-main-ui .zmiti-logo.active {\r\n      -webkit-transform: translate3d(0, 0, 0);\r\n      transform: translate3d(0, 0, 0); }\r\n    .zmiti-index-main-ui .zmiti-logo svg {\r\n      position: absolute;\r\n      top: 40px;\r\n      width: 100%;\r\n      height: 120px;\r\n      left: 0;\r\n      z-index: 10; }\r\n      .zmiti-index-main-ui .zmiti-logo svg .zmiti-text-path {\r\n        font-size: 50px;\r\n        color: #cf000d;\r\n        font-family: hy; }\r\n  .zmiti-index-main-ui .zmiti-scroller {\r\n    height: 280px;\r\n    width: 70px;\r\n    position: absolute;\r\n    top: 5px;\r\n    z-index: 11;\r\n    left: 0; }\r\n    .zmiti-index-main-ui .zmiti-scroller.transition {\r\n      -webkit-transition: height 1s;\r\n      transition: height 1s; }\r\n    .zmiti-index-main-ui .zmiti-scroller > section {\r\n      height: 100%;\r\n      -webkit-transition: 1s;\r\n      transition: 1s;\r\n      -webkit-transform-origin: center 20px;\r\n      transform-origin: center 20px; }\r\n      .zmiti-index-main-ui .zmiti-scroller > section.right {\r\n        -webkit-transform: rotate(15deg);\r\n        transform: rotate(15deg); }\r\n      .zmiti-index-main-ui .zmiti-scroller > section.left {\r\n        -webkit-transform: rotate(-15deg);\r\n        transform: rotate(-15deg); }\r\n      .zmiti-index-main-ui .zmiti-scroller > section.over {\r\n        -webkit-transition: 0.5s;\r\n        transition: 0.5s;\r\n        -webkit-transition-timing-function: cubic-bezier(0.31, 0.76, 0.72, 1.26);\r\n        transition-timing-function: cubic-bezier(0.31, 0.76, 0.72, 1.26); }\r\n    .zmiti-index-main-ui .zmiti-scroller .zmiti-scroller-gear {\r\n      width: 40px;\r\n      height: 20px;\r\n      background: #f00;\r\n      border-radius: 10px;\r\n      position: absolute;\r\n      top: 3px;\r\n      left: 50%;\r\n      margin-left: -20px; }\r\n      .zmiti-index-main-ui .zmiti-scroller .zmiti-scroller-gear:before {\r\n        content: \"\";\r\n        position: absolute;\r\n        width: 10px;\r\n        height: 10px;\r\n        background: #ece9a7;\r\n        border-radius: 50%;\r\n        left: 50%;\r\n        top: 50%;\r\n        margin-left: -5px;\r\n        margin-top: -5px; }\r\n    .zmiti-index-main-ui .zmiti-scroller .zmiti-scroller-rod {\r\n      width: 8px;\r\n      height: 88%;\r\n      background: #f00;\r\n      position: absolute;\r\n      left: 50%;\r\n      margin-left: -4px;\r\n      top: 22px; }\r\n    .zmiti-index-main-ui .zmiti-scroller .zmiti-scroller-latter {\r\n      position: absolute;\r\n      bottom: 0; }\r\n  .zmiti-index-main-ui .zmiti-controller {\r\n    position: absolute;\r\n    width: 400px;\r\n    height: 100px;\r\n    font-size: 16px;\r\n    top: 50px;\r\n    left: 40px;\r\n    color: #fff;\r\n    -webkit-transform: translate(1920px, 100px);\r\n    transform: translate(1920px, 100px);\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    display: -webkit-flex;\r\n    -ms-flex-flow: row;\r\n        flex-flow: row; }\r\n    .zmiti-index-main-ui .zmiti-controller.active {\r\n      -webkit-transform: translate(0, 0);\r\n      transform: translate(0, 0);\r\n      -webkit-transition: -webkit-transform 1s;\r\n      transition: -webkit-transform 1s;\r\n      transition: transform 1s;\r\n      transition: transform 1s, -webkit-transform 1s; }\r\n    .zmiti-index-main-ui .zmiti-controller > div:last-of-type {\r\n      margin: 5px 0 0 20px;\r\n      height: 40px; }\r\n    .zmiti-index-main-ui .zmiti-controller img {\r\n      width: 50px;\r\n      border-radius: 50%; }\r\n  .zmiti-index-main-ui .zmiti-waitint-list {\r\n    width: 200px;\r\n    position: absolute;\r\n    top: 0;\r\n    z-index: 4;\r\n    right: 230px;\r\n    min-height: 200px; }\r\n    .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line {\r\n      width: 60px;\r\n      height: 95px;\r\n      position: absolute;\r\n      z-index: 1;\r\n      right: 30px;\r\n      -webkit-transform-style: preserve-3d;\r\n      transform-style: preserve-3d;\r\n      perspective: 800px;\r\n      -webkit-perspective: 800px; }\r\n      .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line:last-of-type {\r\n        top: 150px;\r\n        height: 240px; }\r\n        .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line:last-of-type > aside:after {\r\n          display: none; }\r\n      .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line aside {\r\n        width: 2px;\r\n        height: 100%;\r\n        background: #887011;\r\n        position: absolute; }\r\n        .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line aside:after {\r\n          content: '';\r\n          -webkit-transform: rotateX(70deg);\r\n          transform: rotateX(70deg);\r\n          -webkit-transform-origin: bottom;\r\n          transform-origin: bottom;\r\n          position: absolute;\r\n          width: 4px;\r\n          height: 4px;\r\n          border-radius: 50%;\r\n          border: 2px solid #999;\r\n          bottom: -1px;\r\n          left: -3px; }\r\n        .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line aside:nth-of-type(1) {\r\n          left: 0; }\r\n        .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line aside:nth-of-type(2) {\r\n          right: 0; }\r\n    .zmiti-index-main-ui .zmiti-waitint-list .zmiti-waiting-C {\r\n      position: absolute;\r\n      z-index: 12;\r\n      top: 170px;\r\n      right: 0; }\r\n      .zmiti-index-main-ui .zmiti-waitint-list .zmiti-waiting-C li {\r\n        border-radius: 30px;\r\n        margin: 20px 0;\r\n        line-height: 50px;\r\n        width: 200px;\r\n        text-align: center;\r\n        height: 50px;\r\n        background: #fff; }\r\n        .zmiti-index-main-ui .zmiti-waitint-list .zmiti-waiting-C li img {\r\n          margin-right: 20px;\r\n          width: 40px;\r\n          border-radius: 50%; }\r\n    .zmiti-index-main-ui .zmiti-waitint-list .zmiti-duration {\r\n      font-family: hy;\r\n      position: absolute;\r\n      color: #000;\r\n      bottom: -44px;\r\n      text-align: center;\r\n      width: 100%;\r\n      font-size: 40px; }\r\n    .zmiti-index-main-ui .zmiti-waitint-list svg {\r\n      position: absolute;\r\n      width: 400px;\r\n      height: 200px; }\r\n\r\n@-webkit-keyframes sb {\r\n  to {\r\n    -webkit-transform: translate3d(-2400px, 0, 0);\r\n    transform: translate3d(-2400px, 0, 0); } }\r\n\r\n@keyframes sb {\r\n  to {\r\n    -webkit-transform: translate3d(-2400px, 0, 0);\r\n    transform: translate3d(-2400px, 0, 0); } }\r\n@-webkit-keyframes addone {\r\n  from {\r\n    -webkit-transform: translate(0, 0);\r\n    transform: translate(0, 0);\r\n    opacity: 1; }\r\n  to {\r\n    -webkit-transform: translate(0, -50px);\r\n    transform: translate(0, -50px);\r\n    opacity: 0; } }\r\n@keyframes addone {\r\n  from {\r\n    -webkit-transform: translate(0, 0);\r\n    transform: translate(0, 0);\r\n    opacity: 1; }\r\n  to {\r\n    -webkit-transform: translate(0, -50px);\r\n    transform: translate(0, -50px);\r\n    opacity: 0; } }\r\n\r\n/*# sourceMappingURL=index.css.map */", ""]);
+	exports.push([module.id, "@charset \"UTF-8\";\r\n/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {\r\n    background-color: #fff;\r\n    border-color: #bf1616;\r\n    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);\r\n}*/\r\n.lt-full {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  overflow: hidden; }\r\n\r\nhtml, body, div, p, ul, li, ol, dl, dt, dd, header, footer, video, h1, h2, h3, h4, canvas, section, figure {\r\n  padding: 0;\r\n  margin: 0; }\r\n\r\na {\r\n  text-decoration: none; }\r\n\r\nli {\r\n  list-style: none; }\r\n\r\nhtml, body {\r\n  height: 100%; }\r\n\r\nbody {\r\n  font-family: \"Helvetica Neue\", 'Helvetica', \"Microsoft YaHei\", '\\5FAE\\8F6F\\96C5\\9ED1', arial, sans-serif;\r\n  overflow-x: hidden; }\r\n\r\nimg {\r\n  border: none;\r\n  vertical-align: middle;\r\n  width: 100%;\r\n  height: auto; }\r\n\r\ninput, textarea {\r\n  outline: none; }\r\n\r\n.zmiti-index-main-ui {\r\n  height: 100vh;\r\n  width: 100vw;\r\n  overflow: hidden; }\r\n  .zmiti-index-main-ui .zmiti-submit-item {\r\n    position: absolute;\r\n    left: 1800px;\r\n    background: #664761;\r\n    height: 60px;\r\n    border-radius: 30px;\r\n    color: #fff;\r\n    padding: 0 20px;\r\n    line-height: 60px;\r\n    min-width: 350px; }\r\n    .zmiti-index-main-ui .zmiti-submit-item img {\r\n      width: 40px;\r\n      border-radius: 50%;\r\n      margin-right: 20px; }\r\n  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(1) {\r\n    top: 104px;\r\n    -webkit-animation: sb 8s linear forwards;\r\n    animation: sb 8s linear forwards; }\r\n  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(2) {\r\n    top: 145px;\r\n    -webkit-animation: sb 6s linear forwards;\r\n    animation: sb 6s linear forwards; }\r\n  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(3) {\r\n    top: 146px;\r\n    -webkit-animation: sb 6s linear forwards;\r\n    animation: sb 6s linear forwards; }\r\n  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(4) {\r\n    top: 112px;\r\n    -webkit-animation: sb 9s linear forwards;\r\n    animation: sb 9s linear forwards; }\r\n  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(5) {\r\n    top: 104px;\r\n    -webkit-animation: sb 12s linear forwards;\r\n    animation: sb 12s linear forwards; }\r\n  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(6) {\r\n    top: 129px;\r\n    -webkit-animation: sb 9s linear forwards;\r\n    animation: sb 9s linear forwards; }\r\n  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(7) {\r\n    top: 135px;\r\n    -webkit-animation: sb 8s linear forwards;\r\n    animation: sb 8s linear forwards; }\r\n  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(8) {\r\n    top: 137px;\r\n    -webkit-animation: sb 12s linear forwards;\r\n    animation: sb 12s linear forwards; }\r\n  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(9) {\r\n    top: 134px;\r\n    -webkit-animation: sb 8s linear forwards;\r\n    animation: sb 8s linear forwards; }\r\n  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(10) {\r\n    top: 130px;\r\n    -webkit-animation: sb 8s linear forwards;\r\n    animation: sb 8s linear forwards; }\r\n  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(11) {\r\n    top: 110px;\r\n    -webkit-animation: sb 8s linear forwards;\r\n    animation: sb 8s linear forwards; }\r\n  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(12) {\r\n    top: 148px;\r\n    -webkit-animation: sb 8s linear forwards;\r\n    animation: sb 8s linear forwards; }\r\n  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(13) {\r\n    top: 129px;\r\n    -webkit-animation: sb 12s linear forwards;\r\n    animation: sb 12s linear forwards; }\r\n  .zmiti-index-main-ui .zmiti-addone {\r\n    position: absolute;\r\n    left: 30px;\r\n    top: 100px;\r\n    opacity: 0; }\r\n    .zmiti-index-main-ui .zmiti-addone.active {\r\n      -webkit-animation: addone 1s 1s forwards;\r\n      animation: addone 1s 1s forwards; }\r\n  .zmiti-index-main-ui .zmiti-mask {\r\n    z-index: 100;\r\n    background: rgba(0, 0, 0, 0.7);\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    display: -webkit-flex;\r\n    -ms-flex-flow: row;\r\n        flex-flow: row; }\r\n    .zmiti-index-main-ui .zmiti-mask > div {\r\n      width: 500px;\r\n      -webkit-transition: 1s;\r\n      transition: 1s;\r\n      left: 50%;\r\n      position: absolute;\r\n      top: 50%;\r\n      -webkit-transform: translate3d(-50%, -50%, 0);\r\n      transform: translate3d(-50%, -50%, 0); }\r\n      .zmiti-index-main-ui .zmiti-mask > div .zmiti-mask-text {\r\n        width: 63%;\r\n        text-indent: 2em;\r\n        max-height: 100px;\r\n        position: absolute;\r\n        top: 50%;\r\n        color: #f7d793;\r\n        left: 50%;\r\n        -webkit-transform: translate(-50%, -50%);\r\n        transform: translate(-50%, -50%); }\r\n        .zmiti-index-main-ui .zmiti-mask > div .zmiti-mask-text.r2 {\r\n          color: #940000; }\r\n  .zmiti-index-main-ui .zmiti-qrcodeurl {\r\n    position: absolute;\r\n    right: 10px;\r\n    top: 40px;\r\n    width: 150px;\r\n    z-index: 1; }\r\n  .zmiti-index-main-ui .zmiti-main-bg {\r\n    -webkit-animation: bgMove 20s linear infinite;\r\n    animation: bgMove 20s linear infinite;\r\n    -webkit-transform-origin: left;\r\n    transform-origin: left;\r\n    width: 100%;\r\n    height: 100%;\r\n    position: absolute;\r\n    left: 0;\r\n    top: 0;\r\n    z-index: 0; }\r\n    .zmiti-index-main-ui .zmiti-main-bg img {\r\n      width: auto;\r\n      height: 100%;\r\n      font-size: 0;\r\n      margin: 0;\r\n      padding: 0;\r\n      margin-left: 0; }\r\n      .zmiti-index-main-ui .zmiti-main-bg img:last-of-type {\r\n        margin-left: -1px; }\r\n    .zmiti-index-main-ui .zmiti-main-bg .zmiti-index-grass {\r\n      position: absolute;\r\n      width: 100%;\r\n      height: 800px;\r\n      bottom: 0px; }\r\n  .zmiti-index-main-ui .zmiti-person {\r\n    position: absolute;\r\n    bottom: 130px;\r\n    z-index: 100; }\r\n  .zmiti-index-main-ui .zmiti-scroll-bar {\r\n    width: 104vw;\r\n    height: 30px;\r\n    position: absolute;\r\n    top: 0;\r\n    z-index: 10;\r\n    background: #fff;\r\n    left: -2vw; }\r\n    .zmiti-index-main-ui .zmiti-scroll-bar div {\r\n      width: 100%;\r\n      height: 24px;\r\n      top: 6px;\r\n      position: absolute;\r\n      box-shadow: 0 0 10px rgba(0, 0, 0, 0.6) inset; }\r\n  .zmiti-index-main-ui .zmiti-logo {\r\n    position: absolute;\r\n    width: 400px;\r\n    left: 50%;\r\n    margin-left: -200px;\r\n    top: 200px;\r\n    -webkit-transform: translate3d(0, -600px, 0);\r\n    transform: translate3d(0, -600px, 0);\r\n    -webkit-transition: 1s;\r\n    transition: 1s;\r\n    -webkit-transition-timing-function: cubic-bezier(1, -0.025, 1, 0.865);\r\n    transition-timing-function: cubic-bezier(1, -0.025, 1, 0.865); }\r\n    .zmiti-index-main-ui .zmiti-logo.active {\r\n      -webkit-transform: translate3d(0, 0, 0);\r\n      transform: translate3d(0, 0, 0); }\r\n    .zmiti-index-main-ui .zmiti-logo svg {\r\n      position: absolute;\r\n      top: 40px;\r\n      width: 100%;\r\n      height: 120px;\r\n      left: 0;\r\n      z-index: 10; }\r\n      .zmiti-index-main-ui .zmiti-logo svg .zmiti-text-path {\r\n        font-size: 50px;\r\n        color: #cf000d;\r\n        font-family: hy; }\r\n  .zmiti-index-main-ui .zmiti-scroller {\r\n    height: 280px;\r\n    width: 70px;\r\n    position: absolute;\r\n    top: 5px;\r\n    z-index: 11;\r\n    left: 0; }\r\n    .zmiti-index-main-ui .zmiti-scroller.transition {\r\n      -webkit-transition: height 1s;\r\n      transition: height 1s; }\r\n    .zmiti-index-main-ui .zmiti-scroller > section {\r\n      height: 100%;\r\n      -webkit-transition: 1s;\r\n      transition: 1s;\r\n      -webkit-transform-origin: center 20px;\r\n      transform-origin: center 20px; }\r\n      .zmiti-index-main-ui .zmiti-scroller > section.right {\r\n        -webkit-transform: rotate(15deg);\r\n        transform: rotate(15deg); }\r\n      .zmiti-index-main-ui .zmiti-scroller > section.left {\r\n        -webkit-transform: rotate(-15deg);\r\n        transform: rotate(-15deg); }\r\n      .zmiti-index-main-ui .zmiti-scroller > section.over {\r\n        -webkit-transition: 0.5s;\r\n        transition: 0.5s;\r\n        -webkit-transition-timing-function: cubic-bezier(0.31, 0.76, 0.72, 1.26);\r\n        transition-timing-function: cubic-bezier(0.31, 0.76, 0.72, 1.26); }\r\n    .zmiti-index-main-ui .zmiti-scroller .zmiti-scroller-gear {\r\n      width: 40px;\r\n      height: 20px;\r\n      background: #f00;\r\n      border-radius: 10px;\r\n      position: absolute;\r\n      top: 3px;\r\n      left: 50%;\r\n      margin-left: -20px; }\r\n      .zmiti-index-main-ui .zmiti-scroller .zmiti-scroller-gear:before {\r\n        content: \"\";\r\n        position: absolute;\r\n        width: 10px;\r\n        height: 10px;\r\n        background: #ece9a7;\r\n        border-radius: 50%;\r\n        left: 50%;\r\n        top: 50%;\r\n        margin-left: -5px;\r\n        margin-top: -5px; }\r\n    .zmiti-index-main-ui .zmiti-scroller .zmiti-scroller-rod {\r\n      width: 8px;\r\n      height: 88%;\r\n      background: #f00;\r\n      position: absolute;\r\n      left: 50%;\r\n      margin-left: -4px;\r\n      top: 22px; }\r\n    .zmiti-index-main-ui .zmiti-scroller .zmiti-scroller-latter {\r\n      position: absolute;\r\n      bottom: 0; }\r\n  .zmiti-index-main-ui .zmiti-controller {\r\n    position: absolute;\r\n    width: 400px;\r\n    height: 100px;\r\n    font-size: 16px;\r\n    top: 50px;\r\n    left: 40px;\r\n    color: #fff;\r\n    -webkit-transform: translate(1920px, 100px);\r\n    transform: translate(1920px, 100px);\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    display: -webkit-flex;\r\n    -ms-flex-flow: row;\r\n        flex-flow: row; }\r\n    .zmiti-index-main-ui .zmiti-controller.active {\r\n      -webkit-transform: translate(0, 0);\r\n      transform: translate(0, 0);\r\n      -webkit-transition: -webkit-transform 1s;\r\n      transition: -webkit-transform 1s;\r\n      transition: transform 1s;\r\n      transition: transform 1s, -webkit-transform 1s; }\r\n    .zmiti-index-main-ui .zmiti-controller > div:last-of-type {\r\n      margin: 5px 0 0 20px;\r\n      height: 40px; }\r\n    .zmiti-index-main-ui .zmiti-controller img {\r\n      width: 50px;\r\n      border-radius: 50%; }\r\n  .zmiti-index-main-ui .zmiti-waitint-list {\r\n    width: 200px;\r\n    position: absolute;\r\n    top: 0;\r\n    z-index: 4;\r\n    right: 230px;\r\n    min-height: 200px; }\r\n    .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line {\r\n      width: 60px;\r\n      height: 95px;\r\n      position: absolute;\r\n      z-index: 1;\r\n      right: 30px;\r\n      -webkit-transform-style: preserve-3d;\r\n      transform-style: preserve-3d;\r\n      perspective: 800px;\r\n      -webkit-perspective: 800px; }\r\n      .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line:last-of-type {\r\n        top: 150px;\r\n        height: 240px; }\r\n        .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line:last-of-type > aside:after {\r\n          display: none; }\r\n      .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line aside {\r\n        width: 2px;\r\n        height: 100%;\r\n        background: #887011;\r\n        position: absolute; }\r\n        .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line aside:after {\r\n          content: '';\r\n          -webkit-transform: rotateX(70deg);\r\n          transform: rotateX(70deg);\r\n          -webkit-transform-origin: bottom;\r\n          transform-origin: bottom;\r\n          position: absolute;\r\n          width: 4px;\r\n          height: 4px;\r\n          border-radius: 50%;\r\n          border: 2px solid #999;\r\n          bottom: -1px;\r\n          left: -3px; }\r\n        .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line aside:nth-of-type(1) {\r\n          left: 0; }\r\n        .zmiti-index-main-ui .zmiti-waitint-list .zmiti-cloud-line aside:nth-of-type(2) {\r\n          right: 0; }\r\n    .zmiti-index-main-ui .zmiti-waitint-list .zmiti-waiting-C {\r\n      position: absolute;\r\n      z-index: 12;\r\n      top: 170px;\r\n      right: 0; }\r\n      .zmiti-index-main-ui .zmiti-waitint-list .zmiti-waiting-C li {\r\n        border-radius: 30px;\r\n        margin: 20px 0;\r\n        line-height: 50px;\r\n        width: 200px;\r\n        text-align: center;\r\n        height: 50px;\r\n        background: #fff; }\r\n        .zmiti-index-main-ui .zmiti-waitint-list .zmiti-waiting-C li img {\r\n          margin-right: 20px;\r\n          width: 40px;\r\n          border-radius: 50%; }\r\n    .zmiti-index-main-ui .zmiti-waitint-list .zmiti-duration {\r\n      font-family: hy;\r\n      position: absolute;\r\n      color: #000;\r\n      bottom: -44px;\r\n      text-align: center;\r\n      width: 100%;\r\n      font-size: 40px; }\r\n    .zmiti-index-main-ui .zmiti-waitint-list svg {\r\n      position: absolute;\r\n      width: 400px;\r\n      height: 200px; }\r\n\r\n@-webkit-keyframes sb {\r\n  to {\r\n    -webkit-transform: translate3d(-2400px, 0, 0);\r\n    transform: translate3d(-2400px, 0, 0); } }\r\n\r\n@keyframes sb {\r\n  to {\r\n    -webkit-transform: translate3d(-2400px, 0, 0);\r\n    transform: translate3d(-2400px, 0, 0); } }\r\n@-webkit-keyframes addone {\r\n  from {\r\n    -webkit-transform: translate(0, 0);\r\n    transform: translate(0, 0);\r\n    opacity: 1; }\r\n  to {\r\n    -webkit-transform: translate(0, -50px);\r\n    transform: translate(0, -50px);\r\n    opacity: 0; } }\r\n@keyframes addone {\r\n  from {\r\n    -webkit-transform: translate(0, 0);\r\n    transform: translate(0, 0);\r\n    opacity: 1; }\r\n  to {\r\n    -webkit-transform: translate(0, -50px);\r\n    transform: translate(0, -50px);\r\n    opacity: 0; } }\r\n\r\n/*# sourceMappingURL=index.css.map */", ""]);
 
 	// exports
 
 
 /***/ }),
-/* 198 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32982,7 +33039,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _componentsPublicPubJsx = __webpack_require__(195);
+	var _componentsPublicPubJsx = __webpack_require__(204);
 
 	var ZmitiCanvasApp = (function (_Component) {
 		_inherits(ZmitiCanvasApp, _Component);
@@ -33140,55 +33197,6 @@
 
 	exports['default'] = (0, _componentsPublicPubJsx.PubCom)(ZmitiCanvasApp);
 	module.exports = exports['default'];
-
-/***/ }),
-/* 199 */
-/***/ (function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var Obserable = (function () {
-		function Obserable() {
-			_classCallCheck(this, Obserable);
-
-			this.handlers = {};
-		}
-
-		_createClass(Obserable, [{
-			key: "on",
-			value: function on(type, handler) {
-				this.handlers[type] = this.handlers[type] || [];
-				this.handlers[type].push(handler);
-			}
-		}, {
-			key: "trigger",
-			value: function trigger(event) {
-
-				if (!event.target) {
-					event.target = this;
-				}
-				if (this.handlers[event.type] instanceof Array) {
-					var handlers = this.handlers[event.type]; //检出被观察者注册的观察者
-					for (var i = 0, len = handlers.length; i < len; i++) {
-						return handlers[i](event.data); //回调函数执行，也就是观察者更新自己
-					}
-				}
-			}
-		}]);
-
-		return Obserable;
-	})();
-
-	exports["default"] = Obserable;
-	module.exports = exports["default"];
 
 /***/ })
 /******/ ]);

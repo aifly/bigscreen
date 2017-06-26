@@ -5,6 +5,11 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import $ from 'jquery';
 import './assets/css/index.css';
 import ZmitiIndexApp from './index/index.jsx';
+import ZmitiRemarkApp from './remark/index.jsx';
+import ZmitiMainkApp from './main/index.jsx';
+
+import Obserable from '../assets/libs/obserable';
+var obserable = new Obserable();
 injectTapEventPlugin();
 
 
@@ -57,12 +62,16 @@ export class App extends Component {
 	}
 	render() {
 
-		var mainStyle = {
-			background:'url(../assets/images/bg-c.jpg) no-repeat center top / cover'
+		
+		var data ={
+			obserable
 		}
+		
 		return (
-			<div className='zmiti-main-ui lt-full' style={mainStyle}>
-				<ZmitiIndexApp></ZmitiIndexApp>
+			<div className='zmiti-main-ui lt-full'>
+				<ZmitiIndexApp {...data}></ZmitiIndexApp>
+				<ZmitiRemarkApp {...data}></ZmitiRemarkApp>
+				<ZmitiMainkApp {...data}></ZmitiMainkApp>
 			</div>
 		);
 	}
@@ -330,7 +339,7 @@ export class App extends Component {
 			s.worksid = data.worksid;
 			
 			
-			this.wxConfig('寻找党委书记','寻找党委书记','http://h5.zmiti.com/public/xwords/imaegs/300.jpg',this.state.wxappid,this.state.worksid);
+			this.wxConfig('心中的党员','心中的党员','http://h5.zmiti.com/public/xwords/imaegs/300.jpg',this.state.wxappid,this.state.worksid);
 
 
 
@@ -440,7 +449,7 @@ export class App extends Component {
 									if(dt.getret === 0){
 										
 										localStorage.setItem('oauthurl'+s.worksid,dt.url);
-										window.location.href =  dt.url;
+										//window.location.href =  dt.url;
 									}
 									else{
 										

@@ -187,7 +187,7 @@
 		}, {
 			key: 'sendMsg',
 			value: function sendMsg() {
-
+				clearTimeout(this.timer);
 				switch (this.state.result) {
 					case "success":
 						_jquery2['default'].ajax({
@@ -751,6 +751,10 @@
 					s.setState({
 						result: data.msg
 					});
+
+					s.timer = setTimeout(function () {
+						s.sendMsg();
+					}, 5000);
 				});
 			}
 		}, {

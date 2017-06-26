@@ -121,7 +121,7 @@ export class App extends Component {
 	}
 
 	sendMsg(){
-
+		clearTimeout(this.timer);
 		switch(this.state.result){
 			case "success":
 				$.ajax({
@@ -720,6 +720,10 @@ export class App extends Component {
         	s.setState({
         		result:data.msg
         	});
+
+        	s.timer = setTimeout(()=>{
+        		s.sendMsg();
+        	},5000);
 		});
 	}
 

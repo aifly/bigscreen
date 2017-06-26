@@ -1,8 +1,19 @@
 ﻿@import "../../../../assets/css/base.scss";
-
+$viewW:640px;
 .zmiti-index-main-ui{
   @include displayBox(vertical);
-
+   @include transition(.4s);
+ &.left{
+    @include transform(translate3d(-$viewW,0,0) scale(.8));
+  }
+  &.active{
+    opacity:1;
+    @include transform(translate3d(0,0,0));
+  }
+  &.right{
+    @include transform(translate3d($viewW*1.5,0,0) scale(2));
+    opacity:0;
+  }
 }
 .zmiti-index{
   width: 100%;

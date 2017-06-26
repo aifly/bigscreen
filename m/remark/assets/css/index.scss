@@ -1,0 +1,50 @@
+﻿@import "../../../../assets/css/base.scss";
+$viewW:640px;
+.zmiti-remark-main-ui{
+  @include displayBox(vertical);
+  @include transition(.4s);
+  &.left{
+    @include transform(translate3d(-$viewW,0,0) scale(.8));
+  }
+  &.active{
+    @include transform(translate3d(0,0,0));
+    
+    z-index: 1;
+    opacity:1;
+    @include transition(.3s);
+  }
+  &.right{
+    @include transform(translate3d($viewW*1.5,0,0) scale(2));
+    z-index: 0;
+    opacity:0;
+  }
+}
+.zmiti-remark{
+  width: 80%;
+  padding: 30px 0;
+  @include br(10px);
+  background: #fff;
+  section{
+    width: 90%;
+    margin: 40px auto 0;
+    height: 50px;
+    font-size: 28px;
+     word-wrap:break-word; word-break:normal; 
+     border-bottom: 1px dashed #999;
+    &:nth-of-type(1){
+      text-indent: 0;
+       margin: 20px auto 30px;
+       font-family: hy;
+       font-size: 40px;
+       line-height: 40px;
+       text-align: center;;
+       color:#cd091b;
+    }
+    &:nth-of-type(4){
+      
+      line-height: 30px;
+      padding-bottom: 30px;
+    }
+  }
+
+}

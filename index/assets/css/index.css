@@ -57,57 +57,57 @@ input, textarea {
       border-radius: 50%;
       margin-right: 20px; }
   .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(1) {
-    top: 147px;
-    -webkit-animation: sb 13s linear forwards;
-    animation: sb 13s linear forwards; }
+    top: 104px;
+    -webkit-animation: sb 8s linear forwards;
+    animation: sb 8s linear forwards; }
   .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(2) {
-    top: 122px;
-    -webkit-animation: sb 13s linear forwards;
-    animation: sb 13s linear forwards; }
+    top: 145px;
+    -webkit-animation: sb 6s linear forwards;
+    animation: sb 6s linear forwards; }
   .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(3) {
-    top: 118px;
-    -webkit-animation: sb 7s linear forwards;
-    animation: sb 7s linear forwards; }
+    top: 146px;
+    -webkit-animation: sb 6s linear forwards;
+    animation: sb 6s linear forwards; }
   .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(4) {
-    top: 113px;
+    top: 112px;
     -webkit-animation: sb 9s linear forwards;
     animation: sb 9s linear forwards; }
   .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(5) {
-    top: 113px;
-    -webkit-animation: sb 9s linear forwards;
-    animation: sb 9s linear forwards; }
-  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(6) {
-    top: 127px;
+    top: 104px;
     -webkit-animation: sb 12s linear forwards;
     animation: sb 12s linear forwards; }
-  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(7) {
-    top: 143px;
-    -webkit-animation: sb 10s linear forwards;
-    animation: sb 10s linear forwards; }
-  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(8) {
-    top: 133px;
-    -webkit-animation: sb 6s linear forwards;
-    animation: sb 6s linear forwards; }
-  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(9) {
-    top: 111px;
-    -webkit-animation: sb 10s linear forwards;
-    animation: sb 10s linear forwards; }
-  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(10) {
-    top: 152px;
-    -webkit-animation: sb 7s linear forwards;
-    animation: sb 7s linear forwards; }
-  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(11) {
-    top: 152px;
+  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(6) {
+    top: 129px;
     -webkit-animation: sb 9s linear forwards;
     animation: sb 9s linear forwards; }
+  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(7) {
+    top: 135px;
+    -webkit-animation: sb 8s linear forwards;
+    animation: sb 8s linear forwards; }
+  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(8) {
+    top: 137px;
+    -webkit-animation: sb 12s linear forwards;
+    animation: sb 12s linear forwards; }
+  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(9) {
+    top: 134px;
+    -webkit-animation: sb 8s linear forwards;
+    animation: sb 8s linear forwards; }
+  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(10) {
+    top: 130px;
+    -webkit-animation: sb 8s linear forwards;
+    animation: sb 8s linear forwards; }
+  .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(11) {
+    top: 110px;
+    -webkit-animation: sb 8s linear forwards;
+    animation: sb 8s linear forwards; }
   .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(12) {
-    top: 131px;
-    -webkit-animation: sb 7s linear forwards;
-    animation: sb 7s linear forwards; }
+    top: 148px;
+    -webkit-animation: sb 8s linear forwards;
+    animation: sb 8s linear forwards; }
   .zmiti-index-main-ui .zmiti-submit-item:nth-of-type(13) {
-    top: 133px;
-    -webkit-animation: sb 13s linear forwards;
-    animation: sb 13s linear forwards; }
+    top: 129px;
+    -webkit-animation: sb 12s linear forwards;
+    animation: sb 12s linear forwards; }
   .zmiti-index-main-ui .zmiti-addone {
     position: absolute;
     left: 30px;
@@ -139,11 +139,13 @@ input, textarea {
         text-indent: 2em;
         max-height: 100px;
         position: absolute;
-        top: 40%;
-        color: #fff;
+        top: 50%;
+        color: #f7d793;
         left: 50%;
         -webkit-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%); }
+        .zmiti-index-main-ui .zmiti-mask > div .zmiti-mask-text.r2 {
+          color: #940000; }
   .zmiti-index-main-ui .zmiti-qrcodeurl {
     position: absolute;
     right: 10px;
