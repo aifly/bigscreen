@@ -7,13 +7,13 @@ export default class ZmitiMainApp extends Component {
 	constructor(props) {
 		super(props);
 		this.state={
-			transX:200,
+			transY:0,
 			direction:'',
 			duration:60,
-			scrollerHeight:280,
+			scrollerWidth:280,
 			bgH:0,
-			bgTransX:0,
-			mainClass:'right',
+			bgTransY:0,
+			mainClass:'active',
 			result:'',
 			text1:'',
 			isStopCount:false,//是否停止倒计时
@@ -28,7 +28,7 @@ export default class ZmitiMainApp extends Component {
 						width:234,
 					},
 					speed:6,
-					transX:0,
+					transY:0,
 					src:'../assets/images/m-p1.png'
 				}
 				,
@@ -39,7 +39,7 @@ export default class ZmitiMainApp extends Component {
 						width:265,
 					},
 					speed:6,
-					transX:200,
+					transY:200,
 					src:'../assets/images/m-p2.png'
 				},{
 					style:{
@@ -48,7 +48,7 @@ export default class ZmitiMainApp extends Component {
 						width:208,
 					},
 					speed:6,
-					transX:400 ,
+					transY:400 ,
 					src:'../assets/images/m-p3.png'
 				},{
 					style:{
@@ -57,7 +57,7 @@ export default class ZmitiMainApp extends Component {
 						width:236,
 					},
 					speed:6,
-					transX:600 ,
+					transY:600 ,
 					src:'../assets/images/m-p4.png'
 				},{
 					style:{
@@ -66,7 +66,7 @@ export default class ZmitiMainApp extends Component {
 						width:239,
 					},
 					speed:6,
-					transX:800 ,
+					transY:800 ,
 					src:'../assets/images/m-p5.png'
 				},{
 					style:{
@@ -75,7 +75,7 @@ export default class ZmitiMainApp extends Component {
 						width:190,
 					},
 					speed:6,
-					transX:1000 ,
+					transY:1000 ,
 					src:'../assets/images/m-p6.png'
 				},{
 					style:{
@@ -84,7 +84,7 @@ export default class ZmitiMainApp extends Component {
 						width:248,
 					},
 					speed:6,
-					transX:1200 ,
+					transY:1200 ,
 					src:'../assets/images/m-p7.png'
 				}
 				
@@ -108,8 +108,8 @@ export default class ZmitiMainApp extends Component {
 	render() {
 
 		var scollerStyle ={
-			transform:'translate('+this.state.transX+'px,0)',
-			height:this.state.scrollerHeight
+			transform:'translate('+this.state.transY+'px,0)',
+			width:this.state.scrollerWidth
 		}
 
 		var bgStyle ={
@@ -119,7 +119,7 @@ export default class ZmitiMainApp extends Component {
 		var mainStyle = {
 			height:this.state.bgH*2,
 
-			//transform:'translate('+this.state.bgTransX+'px,0) scale(1)'
+			//transform:'translate('+this.state.bgTransY+'px,0) scale(1)'
 		};
 
 		var style ={
@@ -159,7 +159,7 @@ export default class ZmitiMainApp extends Component {
 					<section className={this.state.direction}>
 						<div className='zmiti-scroller-rod'></div>
 						<div className='zmiti-scroller-latter'>
-							<img draggable='false' src={this.state.isMove?'../assets/images/latter1.png':'../assets/images/latter.png'}/>
+							<img draggable='false' src={this.state.isMove?'../assets/images/m-latter.png':'../assets/images/m-latter.png'}/>
 						</div>
 					</section>
 				</section>
@@ -268,15 +268,15 @@ export default class ZmitiMainApp extends Component {
 				this.setState({
 					scrollerTransition:false
 				})
-				if(this.state.scrollerHeight>this.viewH -100 ){
+				if(this.state.scrollerWidth>this.viewW -90 ){
 					isStart = false;
 					this.startGrab = false;
 					this.initGrab();
 					return;
 				}
-				var height = this.state.scrollerHeight;
+				var height = this.state.scrollerWidth;
 				this.state.personList.map((item,i)=>{
-					if(height > this.viewH - 130 - item.style.height && this.state.transX+70>item.transX && this.state.transX<item.transX+item.style.width){
+					if(height > this.viewW - 90 - item.style.width && this.state.transY+70>item.transY && this.state.transY < item.transY+item.style.height){
 						isStart = false;
 						this.startGrab = false;
 						setTimeout(()=>{
@@ -294,7 +294,7 @@ export default class ZmitiMainApp extends Component {
 					speed +=2;
 					speed = Math.min(200,speed);
 					this.setState({
-						scrollerHeight:this.state.scrollerHeight + this.viewH / speed
+						scrollerWidth:this.state.scrollerWidth + this.viewH / speed
 					});
 					
 					requestAnimationFrame(render);	
@@ -308,7 +308,7 @@ export default class ZmitiMainApp extends Component {
 
 	initGrab(){
 		this.setState({
-			scrollerHeight:280,
+			scrollerWidth:280,
 			scrollerTransition:true
 		});
 	}
@@ -330,13 +330,13 @@ export default class ZmitiMainApp extends Component {
 
 	bgAnimate(){
 		var render = function(){
-			var x =this.state.bgTransX;
+			var x =this.state.bgTransY;
 			x-=2;
 			if( -x >= this.state.bgH ){
 				x = 0
 			}
 			this.setState({
-				bgTransX:x
+				bgTransY:x
 			})
 			requestAnimationFrame(render);
 		}.bind(this);
@@ -465,6 +465,37 @@ export default class ZmitiMainApp extends Component {
 		//this.startMove(this.key);
 		window.s = this;
 		
+		$(window).on('deviceorientation',e => {
+
+			 var alpha = event.alpha,
+            beta = event.beta,
+            gamma = event.gamma;
+
+	        if(alpha != null || beta != null || gamma != null){
+	           // dataContainerOrientation.innerHTML = "alpha:" + alpha + "<br />beta:" + beta + "<br />gamma:" + gamma;
+	            //判断屏幕方向
+	            var html = "";
+	            /*if( Math.abs(gamma) < GAMMA_MIN && Math.abs(beta) > BETA_MAX ){
+	                html = "屏幕方向：Portrait";
+	            }
+
+	            if( Math.abs(beta) < BETA_MIN && Math.abs(gamma) > GAMMA_MAX ){
+	                html = "屏幕方向：Landscape";
+	            }*/
+
+	            var gamma_html = "";
+	            if( gamma > 0 ){
+	                gamma_html = "向右倾斜";
+	            }else{
+	                gamma_html = "向左倾斜";
+	            }
+	            html += "<br />"+gamma_html
+	           // stage.innerHTML = html;
+	        }else{
+	            //dataContainerOrientation.innerHTML = "当前浏览器不支持DeviceOrientation";
+	        }
+
+		});
 		
 		//this.bgAnimate();//背景移动
 		

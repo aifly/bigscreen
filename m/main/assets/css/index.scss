@@ -114,17 +114,17 @@
 
 
   .zmiti-scroller{
-     height: 280px;
-     width: 70px;
+     width: 280px;
+     height: 70px;
      @include pos(a);
-     top: 5px;
+     right: 5px;
      z-index: 11;
-     left: 0;
+     top: 0;
      &.transition{
-       @include transition(height 1s);
+       @include transition(width 1s);
      }
      &>section{
-        height: 100%;
+        width: 100%;
         @include transition(1s);  
         @include transformOrigin(center 20px);
         &.right{
@@ -140,14 +140,14 @@
 
      }
      .zmiti-scroller-gear{
-       width: 40px;
-       height: 20px;
+       height: 40px;
+       width: 20px;
        background: #f00;
        @include br(10px);
        @include pos(a);
-       top: 3px;
-       left: 50%;
-       margin-left: -20px;
+       right: 3px;
+       top: 50%;
+       margin-top: -20px;
        &:before{
           content:"";
           @include pos(a);
@@ -162,17 +162,18 @@
        };
      }
      .zmiti-scroller-rod{
-       width: 8px;
-       height: 88%;
+       height: 8px;
+       width: 88%;
        background: #f00;
        @include pos(a);
-       left: 50%;
-       margin-left:-4px;
-       top: 22px;
+       top: 50%;
+       margin-top:-4px;
+       right: 22px;
      }
      .zmiti-scroller-latter{
         @include pos(a);
         bottom: 0;
+        width: 100px;
      }
   }
 
@@ -206,6 +207,7 @@
     width: 200px;
     @include pos(a);
     top: 0;
+    @include transform( translate(200px, 70vh)  rotate(90deg));
     z-index: 4;
     right: 230px;
     min-height: 200px;
