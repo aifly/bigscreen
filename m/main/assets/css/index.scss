@@ -29,7 +29,9 @@
  }
 
   .zmiti-main-bg{
-    @include animation(bgMove 10s linear infinite);
+    &.animate{
+      @include animation(bgMove 10s linear infinite);
+    }
     @include transformOrigin(left);
     backface-visibility:hidden;
 
@@ -78,7 +80,6 @@
     div{
        width: 100%;
        height: 100%;
-       top: 6px;
        @include pos(a);
       box-shadow: 0 0 10px rgba(0,0,0,.6) inset;
     }
@@ -113,8 +114,86 @@
   }
 
 
+  .zmiti-addone{
+     @include pos(a);
+     left: 360px;
+     top: 40px;
+
+     opacity:0;
+     &.active{
+       
+        @include animation(addone 1s .1s forwards);
+       
+     }
+  }
+  
+  .zmiti-begingrab{
+    @include pos(a);
+    left: 20px;
+    bottom: 20px;
+    width: 100px;
+    height: 100px;
+    background: rgba(255,255,255,.7);
+    text-align: center;
+    line-height: 100px;
+    @include br(50%);
+    @include transform(rotate(90deg));
+    &:before{
+      content:'';
+      @include pos(a);
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      @include br(50%);
+      box-shadow: 0 0 40px rgba(0,0,0,.5), 0 0 10px rgba(0,0,0,.5) inset;
+    }
+    z-index: 100;
+    &.active{
+      @include transition_transform(.2s);
+      @include transform(translate3d(-5px,0,0) scale(.98) rotate(90deg));
+    }
+
+  }
+   .zmiti-mask{
+   z-index: 100;
+   background: rgba(0,0,0,.7);
+   @include displayFlex(row);
+
+
+   &>div{
+    width:500px;
+    @include transition(1s); 
+    font-size: 20px;
+    left: 50%;
+    @include pos(a);
+    top: 50%;
+    
+    @include transform(translate3d(-50%,-50%,0) rotate(90deg));
+    .zmiti-mask-text{
+      width: 63%;
+      text-indent: 2em;
+      max-height: 100px;
+      @include pos(a);
+      top: 50%;
+      color: #f7d793;
+      left: 50%;
+      &.r2{
+        color:#940000;
+      }
+
+      
+      @include transform(translate(-50%,-50%));
+    }
+   }
+   img{
+
+   }
+ }
+
+
   .zmiti-scroller{
-     width: 280px;
+     width: 200px;
      height: 70px;
      @include pos(a);
      right: 5px;
@@ -163,7 +242,7 @@
      }
      .zmiti-scroller-rod{
        height: 8px;
-       width: 88%;
+       width: 80%;
        background: #f00;
        @include pos(a);
        top: 50%;
@@ -173,7 +252,7 @@
      .zmiti-scroller-latter{
         @include pos(a);
         bottom: 0;
-        width: 100px;
+        width: 80px;
      }
   }
 
@@ -181,11 +260,12 @@
     @include pos(a);
     width: 400px;
     height: 100px;
-    font-size: 16px;
+    font-size: 28px;
     top: 50px;
     left: 40px;
     color:#fff;
-    @include transform(translate(1920px,100px));
+
+    @include transform(translate(270px,140px) rotate(90deg));
     &.active{
       @include transform(translate(0,0));
       @include transition_transform(1s);
@@ -194,11 +274,12 @@
       &:last-of-type{
         margin:  5px 0 0 20px;
         height: 40px;
+        font-family: hy;
       }
     }
     @include displayFlex(row);
     img{
-      width: 50px;
+      width: 80px;
       @include br(50%);
     }
   }
@@ -303,11 +384,11 @@
 
 @keyframes addone{
   from{
-     @include transform(translate(0,0));
+     @include transform(translate(0,0) rotate(90deg));
     opacity:1;
   }
   to{
-    @include transform(translate(0,-50px));
+    @include transform(translate(50px,0) rotate(90deg));
     opacity:0;
   }
 }

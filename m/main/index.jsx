@@ -7,13 +7,17 @@ export default class ZmitiMainApp extends Component {
 	constructor(props) {
 		super(props);
 		this.state={
-			transY:0,
+			transY:100,
 			direction:'',
 			duration:60,
-			scrollerWidth:280,
+			count:0,
+			defaultScrollerWidth:200,
+			scrollerWidth:200,
 			bgH:0,
 			bgTransY:0,
-			mainClass:'active',
+			isBgMove:false,
+			defaultDuration:60,
+			mainClass:'right',
 			result:'',
 			text1:'',
 			isStopCount:false,//是否停止倒计时
@@ -21,7 +25,7 @@ export default class ZmitiMainApp extends Component {
 				
 			],
 			personList:[
-				{
+				/*{
 					style:{
 						height:100,
 						scale:4,
@@ -30,8 +34,8 @@ export default class ZmitiMainApp extends Component {
 					speed:6,
 					transY:0,
 					src:'../assets/images/m-p1.png'
-				}
-				,
+				}*/
+				
 				{
 					style:{
 						height:100,
@@ -41,7 +45,7 @@ export default class ZmitiMainApp extends Component {
 					speed:6,
 					transY:200,
 					src:'../assets/images/m-p2.png'
-				},{
+				},/*{
 					style:{
 						height:100,
 						scale:4,
@@ -50,7 +54,7 @@ export default class ZmitiMainApp extends Component {
 					speed:6,
 					transY:400 ,
 					src:'../assets/images/m-p3.png'
-				},{
+				},*/{
 					style:{
 						height:100,
 						scale:4,
@@ -68,7 +72,7 @@ export default class ZmitiMainApp extends Component {
 					speed:6,
 					transY:800 ,
 					src:'../assets/images/m-p5.png'
-				},{
+				}/*,{
 					style:{
 						height:100,
 						scale:4,
@@ -77,7 +81,7 @@ export default class ZmitiMainApp extends Component {
 					speed:6,
 					transY:1000 ,
 					src:'../assets/images/m-p6.png'
-				},{
+				}*/,{
 					style:{
 						height:100,
 						scale:4,
@@ -90,7 +94,8 @@ export default class ZmitiMainApp extends Component {
 				
 			],
 			currentUser:{
-				
+				headimgurl:'../assets/images/zmiti.jpg',
+				name:'zmiti'
 			},
 			submitList:[
 				/*{
@@ -103,12 +108,14 @@ export default class ZmitiMainApp extends Component {
 		this.viewW = document.documentElement.clientWidth;
 		this.viewH = document.documentElement.clientHeight;
 
+		this.grabed = true;
+
 	}
 
 	render() {
 
 		var scollerStyle ={
-			transform:'translate('+this.state.transY+'px,0)',
+			transform:'translate(0,'+this.state.transY+'px)',
 			width:this.state.scrollerWidth
 		}
 
@@ -128,14 +135,14 @@ export default class ZmitiMainApp extends Component {
 
 		var maskClassName = '';
 		if(this.state.maskActive){
-			maskClassName='active';
+			//maskClassName='active';
 		}else if(this.state.maskDelete){
-			maskClassName ='delete';
+			//maskClassName ='delete';
 		}
 
 		return (
 			<div style={style} className={'zmiti-main-main-ui lt-full '+(this.state.mainClass)}>
-				<div className='zmiti-main-bg' style={mainStyle}>
+				<div className={'zmiti-main-bg '+(this.state.isBgMove?'animate':'')} style={mainStyle}>
 					<img style={{height:this.state.bgH}} draggable='false' ref='bg'  src='../assets/images/m-bg.png'/>
 					<img style={{height:this.state.bgH}} draggable='false' src='../assets/images/m-bg.png'/>
 					
@@ -153,6 +160,10 @@ export default class ZmitiMainApp extends Component {
 						<div>正在游戏...</div>
 					</div>
 				</div>}
+
+				<section onTouchTap={this.beginGrab.bind(this)} className={'zmiti-begingrab '+(this.state.grabtap?'active':'')}>
+					开始抓取
+				</section>
 
 				<section style={scollerStyle} className={'zmiti-scroller '+ (this.state.scrollerTransition?'transition':'')}>
 					<div className='zmiti-scroller-gear'></div>
@@ -203,7 +214,7 @@ export default class ZmitiMainApp extends Component {
 
 				</div>
 
-				<div className='zmiti-logo'>
+				<div className='zmiti-logo' hidden>
 					<img src='../assets/images/text-bg.png'/>
 					<svg xmlns='http://www.www.w3.org/2000/svg'>
 						<path id='path1' d="M0 0 Q 260 150 400 0" stroke='' fill='none'/>
@@ -216,13 +227,13 @@ export default class ZmitiMainApp extends Component {
 				<ZmitiCanvasApp obserable={this.props.obserable} personList={this.state.personList}></ZmitiCanvasApp>
  				
 
- 				{false && <div onAnimationEnd={()=>{this.setState({showAddone:false})}} className={'zmiti-addone ' +(this.state.showAddone?'active':'')}>
+ 				{ <div onAnimationEnd={()=>{this.setState({showAddone:false})}} className={'zmiti-addone ' +(this.state.showAddone?'active':'')}>
  				 					<img src='../assets/images/1.png'/>
  				 				</div>}
 
 				{this.state.qrcodeurl && <img className='zmiti-qrcodeurl' src={this.state.qrcodeurl}/>}
 
-				{this.state.result && <div className={'zmiti-mask lt-full '}>
+				{this.state.result && <div onTouchTap={this.clearMask.bind(this)} className={'zmiti-mask lt-full '}>
 									<div className={maskClassName}>
 										<img src={'../assets/images/'+this.state.result+'.png'}/>
 										<div className={'zmiti-mask-text ' + this.state.result}>{this.state.text1}</div>
@@ -257,36 +268,67 @@ export default class ZmitiMainApp extends Component {
 		},20);
 	}
 
+	clearMask(){
+		var mask = 'maskActive';
+		if(this.state.result === 'r2'){
+			mask = 'maskDelete';
+		}
+		
+		this.setState({
+			result:'',
+			text1:'',
+			[mask]:'',
+			showAddone:mask === 'maskActive'
+		});
+		
+		this.grabed = true;
+	}
+
 	beginGrab(){//开始抓取
 		//this.startGrab = this.startGrab || false;
-		if(!this.startGrab){
+		this.setState({
+			grabtap:true
+		});
+		this.grabed = false;
+		setTimeout(()=>{
+			this.setState({
+				grabtap:false
+			});
+			if(!this.startGrab){
 			this.startGrab = true;
 
 			var isStart = true;
 			var speed = 30;
+
 			var render = function(){
 				this.setState({
 					scrollerTransition:false
-				})
+				});
 				if(this.state.scrollerWidth>this.viewW -90 ){
 					isStart = false;
 					this.startGrab = false;
 					this.initGrab();
+
 					return;
 				}
 				var height = this.state.scrollerWidth;
 				this.state.personList.map((item,i)=>{
+
+					
 					if(height > this.viewW - 90 - item.style.width && this.state.transY+70>item.transY && this.state.transY < item.transY+item.style.height){
 						isStart = false;
 						this.startGrab = false;
+						this.state.count++;
+
 						setTimeout(()=>{
 							this.setState({
 								result:item.result,
 								text1:item.text1
 							});
+
 						},100)
-						this.isStopCount = true;//停止计时
-						this.gameResult(item.result === 'r1' ? 'success' : 'fail');
+						
+						//this.gameResult(item.result === 'r1' ? 'success' : 'fail');
 						this.initGrab();
 					}
 				});
@@ -303,14 +345,18 @@ export default class ZmitiMainApp extends Component {
 			}.bind(this)
 			render();	
 		}
+
+		},150)
+		
 		
 	}
 
 	initGrab(){
 		this.setState({
-			scrollerWidth:280,
+			scrollerWidth:this.state.defaultScrollerWidth,
 			scrollerTransition:true
 		});
+		this.grabed = true;
 	}
 
 	init(){
@@ -392,7 +438,7 @@ export default class ZmitiMainApp extends Component {
 						this.state.currentUser = {};
 						this.countdonwEnd();
 					}
-					this.state.duration = 60;
+					this.state.duration = this.state.defaultDuration;
 					this.setState({
 						hasController:false
 					})
@@ -415,7 +461,7 @@ export default class ZmitiMainApp extends Component {
 	}
 	countdonwEnd(){
 		this.state.currentUser = {};//清空当前用户
-		this.state.duration = 60;
+		this.state.duration = this.state.defaultDuration;
 		this.state.isMove = false;
 		this.state.result = '';
 	    this.state.direction = 'over';
@@ -462,8 +508,12 @@ export default class ZmitiMainApp extends Component {
 	componentDidMount() {
 		this.key = window.localStorage.getItem('zmiti-bigscreen-key') || this.randomString();
 		window.localStorage.setItem('zmiti-bigscreen-key',this.key);
+		let {wxConfig} = this.props;
+
+
 		//this.startMove(this.key);
 		window.s = this;
+
 		
 		$(window).on('deviceorientation',e => {
 
@@ -472,40 +522,90 @@ export default class ZmitiMainApp extends Component {
             gamma = event.gamma;
 
 	        if(alpha != null || beta != null || gamma != null){
-	           // dataContainerOrientation.innerHTML = "alpha:" + alpha + "<br />beta:" + beta + "<br />gamma:" + gamma;
-	            //判断屏幕方向
-	            var html = "";
-	            /*if( Math.abs(gamma) < GAMMA_MIN && Math.abs(beta) > BETA_MAX ){
-	                html = "屏幕方向：Portrait";
-	            }
-
-	            if( Math.abs(beta) < BETA_MIN && Math.abs(gamma) > GAMMA_MAX ){
-	                html = "屏幕方向：Landscape";
-	            }*/
-
-	            var gamma_html = "";
-	            if( gamma > 0 ){
-	                gamma_html = "向右倾斜";
-	            }else{
-	                gamma_html = "向左倾斜";
-	            }
-	            html += "<br />"+gamma_html
-	           // stage.innerHTML = html;
+	           
+	            this.beta = beta;
+	           
 	        }else{
+	        	$(window).off('deviceorientation');
+	        	this.unSurpport = true;
 	            //dataContainerOrientation.innerHTML = "当前浏览器不支持DeviceOrientation";
 	        }
 
 		});
+	 
 		
 		//this.bgAnimate();//背景移动
 		
 
 		let {obserable} = this.props;
 
-		obserable.on('toggleMain',data =>{
+		 
+
+		obserable.on('controllerAnimate',()=>{
+				
+			
+			if(!this.unSurpport){
+
+				 if(this.grabed){
+					if(this.state.transY > this.viewH - 70){
+		            	this.state.transY = this.viewH - 70
+		            }
+		            if(this.state.transY<0){
+		            	this.state.transY = 0;
+		            }	
+				}
+
+				var beta = (this.beta||0);
+				this.setState({
+	            	transY:this.state.transY + beta
+	            });
+
+			}else{
+				this.beta = this.beta || 10;
+				if(this.state.transY > this.viewH - 70||this.state.transY<0){
+	            	this.beta *=-1;
+	            }
+				this.setState({
+	            	transY:this.state.transY + this.beta
+	            });
+			}
+            
+		});
+
+
+		obserable.on('countdown',()=>{
+			if(this.state.duration <=0){
+				this.state.duration = this.state.defaultDuration;
+				this.state.isBgMove = false;
+				this.forceUpdate();
+				obserable.trigger({
+					type:'stop'
+				});
+				return;
+			}
 			this.setState({
-				mainClass:data
-			})
+				duration:this.state.duration -1
+			});
+		})
+
+		obserable.on('toggleMain',data =>{
+			/*this.state.currentUser={
+				headimgurl:this.props.headimgurl,
+				name:this.props.nickname
+			}*/
+			this.setState({
+				mainClass:data,
+
+			});
+			if(data === 'active'){
+				obserable.trigger({
+					type:'animate'
+				});
+				this.setState({
+					isBgMove:true
+				});	
+			}
+			
 	 	})
 		var s = this;
 		var img = new Image();
@@ -515,7 +615,7 @@ export default class ZmitiMainApp extends Component {
 				bgH:this.height
 			});
 
-			var style  = `
+			/*var style  = `
 				
 				@keyframes bgMove{
 					to{transform:translate3d(0,-${this.height}px,0)}
@@ -526,19 +626,19 @@ export default class ZmitiMainApp extends Component {
 				}
 				
 				.zmiti-mask>div.active{
-					-webkit-transform-origin:-${(s.viewW-500)/2}px -${(s.viewH-500)/2}px;
-					transform-origin:-${(s.viewW-500)/2}px -${(s.viewH-500)/2}px;
-					-webkit-transform:translate3d(-50%,-50%,0) scale(.1) !important;
-					transform:translate3d(-50%,-50%,0) scale(.1) !important;
+					-webkit-transform-origin:-${(s.viewW-400)/2}px -${(s.viewH-400)/2}px;
+					transform-origin:-${(s.viewW-400)/2}px -${(s.viewH-400)/2}px;
+					-webkit-transform:translate3d(68%,-43%,0) scale(.04) rotate(90deg) !important;
+					transform:translate3d(68%,-43%,0) scale(.04) rotate(90deg) !important;
 				}
 				.zmiti-mask>div.delete{
 					-webkit-transform-origin:${s.viewW - 500}px ${s.viewH- 300}px;
 					transform-origin:${s.viewW - 500}px ${s.viewH- 300}px;
-					-webkit-transform:translate3d(-50%,-50%,0) scale(.1) !important;
-					transform:translate3d(-50%,-50%,0) scale(.1) !important;
+					-webkit-transform:translate3d(-50%,-50%,0) scale(.01) rotate(90deg) !important;
+					transform:translate3d(-50%,-50%,0) scale(.01) rotate(90deg) !important;
 				}
 			`;
-			document.getElementsByTagName('style')[0].innerHTML += style;
+			document.getElementsByTagName('style')[0].innerHTML += style;*/
 		}
 		img.src=this.refs['bg'].src;
 		

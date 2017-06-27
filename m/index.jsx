@@ -64,7 +64,10 @@ export class App extends Component {
 
 		
 		var data ={
-			obserable
+			obserable,
+			wxConfig:this.wxConfig.bind(this),
+			nickname:this.state.nickname,
+			headimgurl:this.state.headimgurl
 		}
 		
 		return (
@@ -80,7 +83,6 @@ export class App extends Component {
 	
 	getPos(nickname,headimgurl){
 
-			
 	    	var s = this;
 	    	 $.ajax({
 	        	url:`http://restapi.amap.com/v3/geocode/regeo?key=10df4af5d9266f83b404c007534f0001&location=${wx.posData.longitude},${wx.posData.latitude}&poitype=&radius=100&extensions=base&batch=false&roadlevel=1`+'',
@@ -186,7 +188,7 @@ export class App extends Component {
 
    
 
-	wxConfig(title,desc,img,appId='wxfacf4a639d9e3bcc',worksid){
+	wxConfig(title,desc,img='http://h5.zmiti.com/public/bigscreen/assets/images/300.jpg',appId='wxfacf4a639d9e3bcc',worksid=this.state.worksid){
 		   var durl = location.href.split('#')[0]; //window.location;
 		        var code_durl = encodeURIComponent(durl);
 
@@ -339,16 +341,14 @@ export class App extends Component {
 			s.worksid = data.worksid;
 			
 			
-			this.wxConfig('心中的党员','心中的党员','http://h5.zmiti.com/public/xwords/imaegs/300.jpg',this.state.wxappid,this.state.worksid);
+			this.wxConfig('党在我心中','党在我心中','http://h5.zmiti.com/public/bigscreen/assets/images/300.jpg',this.state.wxappid,this.state.worksid);
 
 
 
 			s.loadingImg = ['../assets/images/bg-c.jpg',
 							];
-
 			if(localStorage.getItem('nickname'+s.worksid) && localStorage.getItem('headimgurl'+s.worksid)&&
 				localStorage.getItem('openid'+s.worksid)){
-			
 				s.setState({
 					headimgurl:localStorage.getItem('headimgurl'+s.worksid)
 				});
@@ -363,9 +363,6 @@ export class App extends Component {
 					headimgurl:s.headimgurl,
 					openid:s.openid
 				});
-
-			
-
 				
 				if (wx.posData && wx.posData.longitude) {
 					s.getPos(s.nickname, s.headimgurl);
@@ -409,9 +406,7 @@ export class App extends Component {
 								headimgurl:s.headimgurl,
 								openid:s.openid
 							});
-							s.listen();
-							s.login();
-
+							
 							if (wx.posData && wx.posData.longitude) {
 								s.getPos(dt.userinfo.nickname, dt.userinfo.headimgurl);
 							}
@@ -434,6 +429,8 @@ export class App extends Component {
 								return;
 							}*/
 
+						
+
 							$.ajax({
 								url:'http://api.zmiti.com/v2/weixin/getoauthurl/',
 								type:'post',
@@ -449,10 +446,12 @@ export class App extends Component {
 									if(dt.getret === 0){
 										
 										localStorage.setItem('oauthurl'+s.worksid,dt.url);
-										//window.location.href =  dt.url;
+										if(!window.location.href.indexOf(':8080')<=-1){
+											//window.location.href =  dt.url;
+										}
 									}
 									else{
-										
+										alert('getoauthurl => getret => '+data.getet + ' => value =>'+data.getmsg);
 									}
 								}
 							})
@@ -499,6 +498,8 @@ export class App extends Component {
 	}
 
 	listen(){
+
+		return;
 		var socket = io('http://socket.zmiti.com:2120');
 		var s = this;
 		

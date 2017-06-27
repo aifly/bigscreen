@@ -71,7 +71,7 @@
 	//import ZmitiIndexApp from './index/index.jsx'
 
 	if (1) {
-		var ZmitiIndexApp = __webpack_require__(203);
+		var ZmitiIndexApp = __webpack_require__(207);
 	}
 
 	var App = (function (_Component) {
@@ -32107,7 +32107,11 @@
 /* 199 */,
 /* 200 */,
 /* 201 */,
-/* 202 */
+/* 202 */,
+/* 203 */,
+/* 204 */,
+/* 205 */,
+/* 206 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -32156,7 +32160,7 @@
 	module.exports = exports["default"];
 
 /***/ }),
-/* 203 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32179,11 +32183,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _componentsPublicPubJsx = __webpack_require__(204);
+	var _componentsPublicPubJsx = __webpack_require__(208);
 
-	__webpack_require__(205);
+	__webpack_require__(209);
 
-	var _canvasJsx = __webpack_require__(207);
+	var _canvasJsx = __webpack_require__(211);
 
 	var _canvasJsx2 = _interopRequireDefault(_canvasJsx);
 
@@ -32191,7 +32195,7 @@
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	var _assetsLibsObserable = __webpack_require__(202);
+	var _assetsLibsObserable = __webpack_require__(206);
 
 	var _assetsLibsObserable2 = _interopRequireDefault(_assetsLibsObserable);
 
@@ -32913,7 +32917,7 @@
 	module.exports = exports['default'];
 
 /***/ }),
-/* 204 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32976,13 +32980,13 @@
 	exports.PubCom = PubCom;
 
 /***/ }),
-/* 205 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(206);
+	var content = __webpack_require__(210);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
 	var update = __webpack_require__(186)(content, {});
@@ -33002,7 +33006,7 @@
 	}
 
 /***/ }),
-/* 206 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	exports = module.exports = __webpack_require__(185)();
@@ -33016,7 +33020,7 @@
 
 
 /***/ }),
-/* 207 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -33039,7 +33043,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _componentsPublicPubJsx = __webpack_require__(204);
+	var _componentsPublicPubJsx = __webpack_require__(208);
 
 	var ZmitiCanvasApp = (function (_Component) {
 		_inherits(ZmitiCanvasApp, _Component);

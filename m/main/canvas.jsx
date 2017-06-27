@@ -28,12 +28,19 @@ export default class ZmitiCanvasApp extends Component {
 		let img = new Image();
 		this.obserable = obserable;
 		
-		var canvas = self.refs['canvas'];
+		var canvas = document.createElement('canvas');
+
+
+		var myCavnas = self.refs['canvas'];;
+
+		canvas.width = myCavnas.width,
+		canvas.height = myCavnas.height;
 
 		var arr = ['../assets/images/question.png'];
 		personList.forEach((per,i)=>{
 			arr.push(per.src);
-			per.transY = (this.viewH + 150) / 7 * i;
+			per.transY = (this.viewH + 150) / personList.length * i;
+
 		});
 
 		var width = canvas.width,
@@ -41,20 +48,47 @@ export default class ZmitiCanvasApp extends Component {
 		this.loading(arr,null,()=>{
 			var context = canvas.getContext('2d');
 			
+		
 			this.initPerson(personList);
-			var timer = setInterval(()=>{
+			
+
+			obserable.on('animate',()=>{
+
+				this.timer = this.timerFn(context,personList,width,height,arr,myCavnas);	
+			})
+			obserable.on('stop',()=>{
+				clearInterval(this.timer);
+			});
+
+
+
+			
+			
+			//var img1 = new createjs.Bitmap(person.src);
+			//stage.addChild(img1);
+			//stage.update();
+		});
+		
+
+		
+		
+	}
+
+	timerFn(context,personList,width,height,arr,myCavnas){
+		var iNow = 0;
+
+
+		var myContext = myCavnas.getContext('2d');
+		
+		let {obserable} = this.props;
+		personList.forEach((person,i)=>{
+			person.img = new Image();
+			person.img.src = person.src;
+			person.iNow = 0;
+		})
+		var timer = setInterval(()=>{
 				context.clearRect(0,0,width,height);
 				personList.forEach((person,i)=>{
-					var img = new Image();
-					img.src=person.src;
-
-					var img1 =new Image();
-					img1.src= arr[0];
-
-
-					person.iNow = person.iNow || 0;
-
-
 
 					person.transY+=person.speed;
 					if(person.transY>this.viewH ){
@@ -65,15 +99,15 @@ export default class ZmitiCanvasApp extends Component {
 						person.text1 = this.texts[index].text1;
 					}
 
-					if(person.transY>this.viewW / 5 && person.transY < this.viewW /3 ||(person.transY>this.viewW / 2.5 && person.transY < this.viewW /1.5 )){
+					/*if(person.transY>this.viewW / 5 && person.transY < this.viewW /3 ||(person.transY>this.viewW / 2.5 && person.transY < this.viewW /1.5 )){
 						context.fillStyle= 'green';
 						context.font = "bold 14px '微软雅黑'"; //设置字体
 						//context.fillText (person.question, ,200);
 						//this.canvasTextAutoLine(person.question,context,person.transY+54,canvas.height - person.style.height-75,20);
 						//context.drawImage(img1,0,0,200,136,person.transY,canvas.height - person.style.height-120,200,136);
-					}
+					}*/
 					
-					context.drawImage(img,
+					context.drawImage(person.img,
 							0,person.iNow*100,
 							person.style.width,100,
 							0,person.transY,
@@ -87,21 +121,20 @@ export default class ZmitiCanvasApp extends Component {
 						
 					}
 				});
+				myContext.clearRect(0,0,width,height);
+				myContext.drawImage(context.canvas,0,0);
 
-				
+				obserable.trigger({
+					type:'controllerAnimate'
+				})
+				if(iNow++%10 === 0){
+
+					obserable.trigger({
+						type:'countdown'
+					});
+				}
 			},100);
-
-
-			
-			
-			//var img1 = new createjs.Bitmap(person.src);
-			//stage.addChild(img1);
-			//stage.update();
-		});
-		
-
-		
-		
+			return timer;
 	}
 
 	canvasTextAutoLine(str,ctx,initX,initY,lineHeight){

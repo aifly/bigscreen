@@ -569,7 +569,7 @@
 					});
 					s.worksid = data.worksid;
 
-					_this.wxConfig('寻找党委书记', '寻找党委书记', 'http://h5.zmiti.com/public/xwords/imaegs/300.jpg', _this.state.wxappid, _this.state.worksid);
+					_this.wxConfig('党在我心中', '党在我心中', 'http://h5.zmiti.com/public/bigscreen/assets/images/300.jpg', _this.state.wxappid, _this.state.worksid);
 
 					s.loadingImg = ['./assets/images/btn-r.png', './assets/images/btn-l.png', './assets/images/btn-ok.png'];
 

@@ -506,7 +506,7 @@ export class App extends Component {
 			s.worksid = data.worksid;
 			
 			
-			this.wxConfig('寻找党委书记','寻找党委书记','http://h5.zmiti.com/public/xwords/imaegs/300.jpg',this.state.wxappid,this.state.worksid);
+			this.wxConfig('党在我心中','党在我心中','http://h5.zmiti.com/public/bigscreen/assets/images/300.jpg',this.state.wxappid,this.state.worksid);
 
 
 
