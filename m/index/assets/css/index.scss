@@ -17,10 +17,15 @@ $viewW:640px;
 }
 .zmiti-index{
   width: 100%;
+  @include transform(rotate(90deg));
   div:nth-of-type(1){
-    width: 100%;
+    text-align: center;
+
   }
   div:nth-of-type(2),div:nth-of-type(3){
+      color:#e01329;
+      font-size: 30px;
+      white-space:nowrap;
       img{
         width: 200px;
           @include transition(.1s);

@@ -5,8 +5,8 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import $ from 'jquery';
 import './assets/css/index.css';
 import ZmitiIndexApp from './index/index.jsx';
-import ZmitiRemarkApp from './remark/index.jsx';
 import ZmitiMainkApp from './main/index.jsx';
+import ZmitiLoadingkApp from './loading/index.jsx';
 
 import Obserable from '../assets/libs/obserable';
 var obserable = new Obserable();
@@ -20,7 +20,9 @@ export class App extends Component {
 		this.state = {
 			score:0,
 			count:0,
-			result:''
+			result:'',
+			showLoading:true,
+			progress:0
 		};
 
 		this.zmitiMap = [
@@ -72,9 +74,9 @@ export class App extends Component {
 		
 		return (
 			<div className='zmiti-main-ui lt-full'>
-				<ZmitiIndexApp {...data}></ZmitiIndexApp>
-				<ZmitiRemarkApp {...data}></ZmitiRemarkApp>
-				<ZmitiMainkApp {...data}></ZmitiMainkApp>
+				{this.state.showLoading && <ZmitiLoadingkApp progress={this.state.progress}></ZmitiLoadingkApp>}
+				{!this.state.showLoading && <ZmitiIndexApp {...data}></ZmitiIndexApp>}
+				{!this.state.showLoading && <ZmitiMainkApp {...data}></ZmitiMainkApp>}
 			</div>
 		);
 	}
@@ -340,13 +342,26 @@ export class App extends Component {
 			});
 			s.worksid = data.worksid;
 			
-			
-			this.wxConfig('党在我心中','党在我心中','http://h5.zmiti.com/public/bigscreen/assets/images/300.jpg',this.state.wxappid,this.state.worksid);
+			s.loadingImg = [
+				'../assets/images/bg-c.jpg',
+				'../assets/images/1.png',
+				'../assets/images/m-bg.png',
+				'../assets/images/m-latter.png',
+				'../assets/images/m-logo.png',
+				'../assets/images/m-p2.png',
+				'../assets/images/m-p4.png',
+				'../assets/images/m-p5.png',
+				'../assets/images/m-p7.png',
+				'../assets/images/r1.png',
 
-
-
-			s.loadingImg = ['../assets/images/bg-c.jpg',
-							];
+				'../assets/images/result-bg.png',
+				'../assets/images/m-question.png',
+				'../assets/images/m-restart.png',
+				'../assets/images/m-single.png',
+				'../assets/images/m-share.png',
+				'../assets/images/m-share-ico.png',
+				'../assets/images/zmiti.png'
+			];
 			if(localStorage.getItem('nickname'+s.worksid) && localStorage.getItem('headimgurl'+s.worksid)&&
 				localStorage.getItem('openid'+s.worksid)){
 				s.setState({
@@ -415,12 +430,6 @@ export class App extends Component {
 						
 					}
 					else{
-						
-						s.setState({
-							showLoading:true
-						});
-
-
 
 						if( s.isWeiXin() ){
 
@@ -430,8 +439,17 @@ export class App extends Component {
 							}*/
 
 						
+							s.loading(s.loadingImg,(scale)=>{
+								s.setState({
+									progress:(scale*100|0)+'%'
+								})
+							},()=>{
 
-							$.ajax({
+								s.setState({
+									showLoading:false
+								});
+							});
+						/*	$.ajax({
 								url:'http://api.zmiti.com/v2/weixin/getoauthurl/',
 								type:'post',
 								data:{
@@ -454,7 +472,7 @@ export class App extends Component {
 										alert('getoauthurl => getret => '+data.getet + ' => value =>'+data.getmsg);
 									}
 								}
-							})
+							})*/
 						}
 						else{
 
@@ -463,29 +481,11 @@ export class App extends Component {
 									progress:(scale*100|0)+'%'
 								})
 							},()=>{
+
 								s.setState({
 									showLoading:false
 								});
-
-								$.ajax({
-									url:'http://api.zmiti.com/v2/works/update_pvnum/',
-									data:{
-										worksid:s.worksid
-									},
-									success(data){
-										if(data.getret === 0){
-											console.log(data);
-										}
-									}
-								});
-							
-
-								s.defaultName =  data.username || '智媒体';
-							
-								
-								s.forceUpdate();
-
-						});
+							});
 
 
 						 

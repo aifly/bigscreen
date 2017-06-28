@@ -59,10 +59,6 @@ export default class ZmitiCanvasApp extends Component {
 			obserable.on('stop',()=>{
 				clearInterval(this.timer);
 			});
-
-
-
-			
 			
 			//var img1 = new createjs.Bitmap(person.src);
 			//stage.addChild(img1);

@@ -16,10 +16,11 @@ export default class ZmitiMainApp extends Component {
 			bgH:0,
 			bgTransY:0,
 			isBgMove:false,
+			showQ:true,
 			defaultDuration:60,
 			mainClass:'right',
 			result:'',
-			text1:'',
+			showResult:false,
 			isStopCount:false,//是否停止倒计时
 			waitingList:[
 				
@@ -94,20 +95,16 @@ export default class ZmitiMainApp extends Component {
 				
 			],
 			currentUser:{
-				headimgurl:'../assets/images/zmiti.jpg',
-				name:'zmiti'
+				headimgurl:'../assets/images/zmiti.png',
 			},
-			submitList:[
-				/*{
-					
-					nickname:'fly',
-					headimgurl:'../assets/images/zmiti.jpg'
-				}*/
-			]
+			currentQ:{
+				text:'',
+				text1:''
+			}
 		};
 		this.viewW = document.documentElement.clientWidth;
 		this.viewH = document.documentElement.clientHeight;
-
+		this.texts = window.texts;
 		this.grabed = true;
 
 	}
@@ -157,12 +154,12 @@ export default class ZmitiMainApp extends Component {
 					</div>
 					<div>
 						<div>{this.state.currentUser.name}</div>
-						<div>正在游戏...</div>
+						<div>答对了<span>{this.state.count}</span>道题目</div>
 					</div>
 				</div>}
 
 				<section onTouchTap={this.beginGrab.bind(this)} className={'zmiti-begingrab '+(this.state.grabtap?'active':'')}>
-					开始抓取
+					点名答题
 				</section>
 
 				<section style={scollerStyle} className={'zmiti-scroller '+ (this.state.scrollerTransition?'transition':'')}>
@@ -173,6 +170,10 @@ export default class ZmitiMainApp extends Component {
 							<img draggable='false' src={this.state.isMove?'../assets/images/m-latter.png':'../assets/images/m-latter.png'}/>
 						</div>
 					</section>
+					{this.state.showQ && <div className='zmiti-question'>
+											<img src='../assets/images/m-question.png'/>
+											<span>{this.state.currentQ.text}</span>
+										</div>}
 				</section>
 				<div className='zmiti-waitint-list'>
 					<svg version="1.1" id="" xmlns="http://www.w3.org/2000/svg"
@@ -204,26 +205,9 @@ export default class ZmitiMainApp extends Component {
 						<aside></aside>
 					</div>
 
-					<ul className='zmiti-waiting-C'>
-						{this.state.waitingList.map((item,i)=>{
-							return <li key={i}>
-								<img src={item.headimgurl}/>{i===0?this.state.duration+'S后进入游戏':'正在等待......'}
-							</li>
-						})}
-					</ul>
-
 				</div>
 
-				<div className='zmiti-logo' hidden>
-					<img src='../assets/images/text-bg.png'/>
-					<svg xmlns='http://www.www.w3.org/2000/svg'>
-						<path id='path1' d="M0 0 Q 260 150 400 0" stroke='' fill='none'/>
-						<text x='-280' ref='zmiti-text-path' className='zmiti-text-path' fill='#cf000d'>
-							<textPath className='zmiti-text-path' xlinkHref='#path1'>寻找党委书记</textPath>
-						</text>
-					</svg>
-				</div>
-
+				
 				<ZmitiCanvasApp obserable={this.props.obserable} personList={this.state.personList}></ZmitiCanvasApp>
  				
 
@@ -236,13 +220,35 @@ export default class ZmitiMainApp extends Component {
 				{this.state.result && <div onTouchTap={this.clearMask.bind(this)} className={'zmiti-mask lt-full '}>
 									<div className={maskClassName}>
 										<img src={'../assets/images/'+this.state.result+'.png'}/>
-										<div className={'zmiti-mask-text ' + this.state.result}>{this.state.text1}</div>
+										<div className={'zmiti-mask-text1 ' + this.state.result}>{this.state.currentQ.text}</div>
+										<div className={'zmiti-mask-text ' + this.state.result}>{this.state.currentQ.text1}</div>
 									</div>
 								</div>}
-
+				{this.state.showResult && <div onTouchTap={this.closeShare.bind(this)} className='zmiti-result-C lt-full'>
+					 {!this.state.showShare &&  <div>
+					 	<img src='../assets/images/result-bg.png'/>
+					 	<span>恭喜你在您在“建党96周年”游戏中答对了{this.state.count}道题目</span>
+					 	<img className='zmiti-restart' onTouchTap={this.restart.bind(this)} src='../assets/images/m-restart.png'/>
+					 	<img className='zmiti-share' onTouchTap={()=>{this.setState({showShare:true})}} src='../assets/images/m-share.png'/>
+					 </div>}
+					 {this.state.showShare && <div className='zmiti-share-ar'>
+					 	<img src='../assets/images/m-share-ico.png'/>
+					 </div>}
+				</div>}
 				
 			</div>
+
 		);
+	}
+
+
+	closeShare(){
+		if(this.state.showShare){
+			this.setState({
+				showShare:false,
+				showResult:false
+			})
+		}
 	}
 
 	animationEnd(i){
@@ -280,71 +286,87 @@ export default class ZmitiMainApp extends Component {
 			[mask]:'',
 			showAddone:mask === 'maskActive'
 		});
-		
+		this.renderText();
 		this.grabed = true;
+	}
+
+	renderText(){
+		this.defaultText = this.defaultText || this.texts.concat([]);
+		this.defaultText.length <=0 && (this.defaultText = this.texts.concat([]));
+		var index = Math.random()*texts.length|0;
+		var data = this.defaultText.splice(index,1)[0];
+
+		this.setState({
+			currentQ:{
+				text:data.text,
+				text1:data.text1
+			}
+		})
+		return data;
 	}
 
 	beginGrab(){//开始抓取
 		//this.startGrab = this.startGrab || false;
 		this.setState({
-			grabtap:true
+			grabtap:true,
+			showQ:false
 		});
 		this.grabed = false;
 		setTimeout(()=>{
 			this.setState({
 				grabtap:false
 			});
-			if(!this.startGrab){
-			this.startGrab = true;
+			if(!this.startGrab && this.state.isBgMove){
+				this.startGrab = true;
 
-			var isStart = true;
-			var speed = 30;
+				var isStart = true;
+				var speed = 30;
 
-			var render = function(){
-				this.setState({
-					scrollerTransition:false
-				});
-				if(this.state.scrollerWidth>this.viewW -90 ){
-					isStart = false;
-					this.startGrab = false;
-					this.initGrab();
-
-					return;
-				}
-				var height = this.state.scrollerWidth;
-				this.state.personList.map((item,i)=>{
-
-					
-					if(height > this.viewW - 90 - item.style.width && this.state.transY+70>item.transY && this.state.transY < item.transY+item.style.height){
+				var render = function(){
+					this.setState({
+						scrollerTransition:false
+					});
+					if(this.state.scrollerWidth>this.viewW -90 ){
 						isStart = false;
 						this.startGrab = false;
-						this.state.count++;
-
-						setTimeout(()=>{
-							this.setState({
-								result:item.result,
-								text1:item.text1
-							});
-
-						},100)
-						
-						//this.gameResult(item.result === 'r1' ? 'success' : 'fail');
 						this.initGrab();
+
+						return;
 					}
-				});
-				if(this.startGrab){
-					speed +=2;
-					speed = Math.min(200,speed);
-					this.setState({
-						scrollerWidth:this.state.scrollerWidth + this.viewH / speed
+					var height = this.state.scrollerWidth;
+					this.state.personList.map((item,i)=>{
+
+						
+						if(height > this.viewW - 90 - item.style.width && this.state.transY+70>item.transY && this.state.transY < item.transY+item.style.height){
+							isStart = false;
+							this.startGrab = false;
+							this.state.count++;
+
+							setTimeout(()=>{
+								this.setState({
+									result:item.result,
+									text1:item.text1
+								});
+
+							},100)
+							
+							//this.gameResult(item.result === 'r1' ? 'success' : 'fail');
+							this.initGrab();
+						}
 					});
+					if(this.startGrab){
+						speed +=2;
+						speed = Math.min(200,speed);
+						this.setState({
+							scrollerWidth:this.state.scrollerWidth + this.viewH / speed
+						});
+						
+						requestAnimationFrame(render);	
+					}
 					
-					requestAnimationFrame(render);	
-				}
-				
-			}.bind(this)
-			render();	
-		}
+				}.bind(this)
+				render();	
+			}
 
 		},150)
 		
@@ -356,6 +378,12 @@ export default class ZmitiMainApp extends Component {
 			scrollerWidth:this.state.defaultScrollerWidth,
 			scrollerTransition:true
 		});
+		setTimeout(()=>{
+			this.setState({
+				showQ:true
+			})
+			
+		},500)
 		this.grabed = true;
 	}
 
@@ -416,105 +444,20 @@ export default class ZmitiMainApp extends Component {
 	}
 
 	
-
-	countdonwStart(){
-		clearInterval(this.durationTimer);
-		this.durationTimer = setInterval(()=>{
-			
-
-			if( this.state.currentUser.openid ){
-
-				if(!this.isStopCount){
-					this.setState({
-						duration : this.state.duration - 1
-					});	
-				}
-				
-				
-				if(this.state.duration <= 0){
-					if(this.state.waitingList.length<=0){
-						this.gameResult('timeout');//时间到了、
-						this.state.result = '';
-						this.state.currentUser = {};
-						this.countdonwEnd();
-					}
-					this.state.duration = this.state.defaultDuration;
-					this.setState({
-						hasController:false
-					})
-					if(this.state.waitingList.length<=0){
-						//clearInterval(this.durationTimer);
-					}
-					else{
-						this.init();
-					}
-				}
-				
-			}
-			else{
-				
-				
-			}
-
-			
-		},1000);
-	}
-	countdonwEnd(){
-		this.state.currentUser = {};//清空当前用户
-		this.state.duration = this.state.defaultDuration;
-		this.state.isMove = false;
-		this.state.result = '';
-	    this.state.direction = 'over';
-	    this.isMove = false;
-		this.forceUpdate();
-		clearInterval(this.durationTimer);
-	}
-
-	createQrcode(){
-		var s = this;
-		var code = window.localStorage.getItem('zmiti-bigscreen-qrcode');
-		if(code){
-
-			var img = new Image();
-			img.onerror = function(){
-				s.requestQrcode();
-			}
-			img.src = code;
-
-			s.setState({
-				qrcodeurl:code
-			})
-		}else{
-			s.requestQrcode();
-		}
-		
-	}
-
-	requestQrcode(){
-		$.ajax({
-			url:'http://api.zmiti.com/v2/share/create_qrcode',
-			data:{
-				url:window.href+ '?key=' + this.key
-			}
-		}).done(data=>{
-			this.setState({
-				qrcodeurl:data.qrcodeurl
-			});
-			window.localStorage.setItem('zmiti-bigscreen-qrcode',data.qrcodeurl);
-
-		});
-	}
-
+ 
+ 
 	componentDidMount() {
 		this.key = window.localStorage.getItem('zmiti-bigscreen-key') || this.randomString();
 		window.localStorage.setItem('zmiti-bigscreen-key',this.key);
 		let {wxConfig} = this.props;
 
+		wxConfig('点名答题，建党96周年之际你来当主考官','一起来学理论知识吧！');
 
+		this.renderText();
 		//this.startMove(this.key);
 		window.s = this;
 
-		
+
 		$(window).on('deviceorientation',e => {
 
 			 var alpha = event.alpha,
@@ -524,7 +467,7 @@ export default class ZmitiMainApp extends Component {
 	        if(alpha != null || beta != null || gamma != null){
 	           
 	            this.beta = beta;
-	           
+	            
 	        }else{
 	        	$(window).off('deviceorientation');
 	        	this.unSurpport = true;
@@ -577,6 +520,7 @@ export default class ZmitiMainApp extends Component {
 			if(this.state.duration <=0){
 				this.state.duration = this.state.defaultDuration;
 				this.state.isBgMove = false;
+				this.state.showResult = true;
 				this.forceUpdate();
 				obserable.trigger({
 					type:'stop'
@@ -601,6 +545,7 @@ export default class ZmitiMainApp extends Component {
 				obserable.trigger({
 					type:'animate'
 				});
+
 				this.setState({
 					isBgMove:true
 				});	
@@ -615,30 +560,17 @@ export default class ZmitiMainApp extends Component {
 				bgH:this.height
 			});
 
-			/*var style  = `
+			var style  = `
 				
 				@keyframes bgMove{
 					to{transform:translate3d(0,-${this.height}px,0)}
 				}
-
 				@-webkit-keyframes bgMove{
 					to{-webkit-transform:translate3d(0,-${this.height}px,0)}
 				}
-				
-				.zmiti-mask>div.active{
-					-webkit-transform-origin:-${(s.viewW-400)/2}px -${(s.viewH-400)/2}px;
-					transform-origin:-${(s.viewW-400)/2}px -${(s.viewH-400)/2}px;
-					-webkit-transform:translate3d(68%,-43%,0) scale(.04) rotate(90deg) !important;
-					transform:translate3d(68%,-43%,0) scale(.04) rotate(90deg) !important;
-				}
-				.zmiti-mask>div.delete{
-					-webkit-transform-origin:${s.viewW - 500}px ${s.viewH- 300}px;
-					transform-origin:${s.viewW - 500}px ${s.viewH- 300}px;
-					-webkit-transform:translate3d(-50%,-50%,0) scale(.01) rotate(90deg) !important;
-					transform:translate3d(-50%,-50%,0) scale(.01) rotate(90deg) !important;
-				}
 			`;
-			document.getElementsByTagName('style')[0].innerHTML += style;*/
+			document.getElementsByTagName('style')[0].innerHTML += style;
+ 
 		}
 		img.src=this.refs['bg'].src;
 		
@@ -648,6 +580,21 @@ export default class ZmitiMainApp extends Component {
 			this.forceUpdate();
 		});
  
+	}
+
+	restart(){//重新开始游戏
+
+		let {obserable} = this.props;
+		obserable.trigger({
+			type:'animate',
+
+		});
+		this.setState({
+			duration:this.state.defaultDuration,
+			count:0,
+			isBgMove:true,
+			showResult:false
+		})
 	}
 
 	randomString(len){

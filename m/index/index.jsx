@@ -15,7 +15,7 @@ export default class ZmitiIndexApp extends Component {
 	render() {
 
 		var mainStyle = {
-			background:'url(../assets/images/bg-c.jpg) no-repeat center top / cover'
+			background:'url(../assets/images/m-bg.png) no-repeat center top / cover'
 		}
 		return (
 			<div style={mainStyle} className={'zmiti-index-main-ui lt-full '+ this.state.mainClass}>
@@ -23,9 +23,7 @@ export default class ZmitiIndexApp extends Component {
 					<div>
 						<img src='../assets/images/m-logo.png'/>
 					</div>
-					<div>
-						<img className={this.state.bigscreenTap?'active':''} onTouchTap={this.entryBigScreen.bind(this)} src='../assets/images/m-big-screen.png'/>
-					</div>
+					
 					<div>
 						<img className={this.state.singleTap?'active':''} onTouchTap={this.entrySingleGame.bind(this)} src='../assets/images/m-single.png'/>
 					</div>

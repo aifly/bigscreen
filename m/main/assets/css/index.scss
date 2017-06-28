@@ -170,13 +170,23 @@
     top: 50%;
     
     @include transform(translate3d(-50%,-50%,0) rotate(90deg));
+    .zmiti-mask-text1{
+      color:#e01329;
+      @include pos(a);
+      font-size: 28px;
+      top: 30%;
+      left: 20%;
+    }
     .zmiti-mask-text{
+      
+      color:#000;
+      font-size: 28px;
+       
       width: 63%;
-      text-indent: 2em;
+     
       max-height: 100px;
       @include pos(a);
-      top: 50%;
-      color: #f7d793;
+      top: 54%;
       left: 50%;
       &.r2{
         color:#940000;
@@ -190,7 +200,43 @@
 
    }
  }
+  
+  .zmiti-result-C{
+    
+    z-index: 1000;
+    background: rgba(0,0,0,.5);
+    div{
+      width: 80%;
+      @include pos(a);
+      left: 50%;
+      top: 50%;
+      @include transform(translate(-50%,-50%) rotate(90deg) );
+      span{
+        top: 50%;
+        font-size: 28px;
+        @include pos(a);
+        width: 65%;
+        left: 22%;
+        text-indent: 2em;
+      }
+      .zmiti-restart,.zmiti-share{
+         @include pos(a);
+         width: 100px;
+         left: 180px;
+         top: 76%;
+      }
+      .zmiti-share{
+        left: 320px;
+      }
+    }
 
+    .zmiti-share-ar{
+      top: 5%;
+      left:28%;
+      @include transform(translate(0,0) rotate(90deg) );
+    }
+
+  }
 
   .zmiti-scroller{
      width: 200px;
@@ -251,9 +297,25 @@
      }
      .zmiti-scroller-latter{
         @include pos(a);
-        bottom: 0;
+        bottom: 10px;
+        left: -5px;
         width: 80px;
      }
+      .zmiti-question{
+        @include pos(r);
+        bottom: -88px;
+        left: 30px;
+        @include transform(rotate(90deg));
+        span{
+          @include pos(a);
+          width: 100%;
+          left: 0;
+          text-align: center;
+          top: 30px;
+          text-indent: 1em;
+          color:#446b9a;
+        }
+      }
   }
 
   .zmiti-controller{
@@ -275,11 +337,17 @@
         margin:  5px 0 0 20px;
         height: 40px;
         font-family: hy;
+        span{
+          color:#f00;
+          font-size: 44px;
+          margin: 0 10px;
+        }
       }
     }
     @include displayFlex(row);
     img{
       width: 80px;
+      border:2px solid #fff;
       @include br(50%);
     }
   }
