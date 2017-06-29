@@ -23,10 +23,10 @@ export default class ZmitiLoadingApp extends Component {
 				        <div className="line1"></div>
 				        <div className="line2"></div>
 				        <div className="line3"></div>
-				        <div className='zmiti-progress'>{this.props.progress}</div>
+				        <div className='zmiti-progress' style={{fontFamily:'hy'}}>{this.props.progress}</div>
 				    </a>
 
-				    {<div className='zmiti-screen'>
+				    {<div className='zmiti-screen' style={{fontFamily:'hy'}}>
 				    				    	<img src='../assets/images/screen.png'/>
 				    				    	请横屏浏览
 				    				    </div>}

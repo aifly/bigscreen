@@ -35,57 +35,57 @@
     transform: translate3d(960px, 0, 0) scale(2);
     z-index: 0; }
   .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(1) {
-    top: 109px;
-    -webkit-animation: sb 6s linear forwards;
-    animation: sb 6s linear forwards; }
+    top: 132px;
+    -webkit-animation: sb 7s linear forwards;
+    animation: sb 7s linear forwards; }
   .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(2) {
-    top: 116px;
-    -webkit-animation: sb 12s linear forwards;
-    animation: sb 12s linear forwards; }
+    top: 125px;
+    -webkit-animation: sb 13s linear forwards;
+    animation: sb 13s linear forwards; }
   .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(3) {
     top: 145px;
-    -webkit-animation: sb 6s linear forwards;
-    animation: sb 6s linear forwards; }
-  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(4) {
-    top: 133px;
-    -webkit-animation: sb 7s linear forwards;
-    animation: sb 7s linear forwards; }
-  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(5) {
-    top: 133px;
-    -webkit-animation: sb 7s linear forwards;
-    animation: sb 7s linear forwards; }
-  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(6) {
-    top: 140px;
-    -webkit-animation: sb 7s linear forwards;
-    animation: sb 7s linear forwards; }
-  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(7) {
-    top: 118px;
-    -webkit-animation: sb 9s linear forwards;
-    animation: sb 9s linear forwards; }
-  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(8) {
-    top: 143px;
-    -webkit-animation: sb 12s linear forwards;
-    animation: sb 12s linear forwards; }
-  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(9) {
-    top: 122px;
-    -webkit-animation: sb 11s linear forwards;
-    animation: sb 11s linear forwards; }
-  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(10) {
-    top: 126px;
-    -webkit-animation: sb 12s linear forwards;
-    animation: sb 12s linear forwards; }
-  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(11) {
-    top: 141px;
-    -webkit-animation: sb 6s linear forwards;
-    animation: sb 6s linear forwards; }
-  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(12) {
-    top: 105px;
     -webkit-animation: sb 8s linear forwards;
     animation: sb 8s linear forwards; }
-  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(13) {
-    top: 120px;
+  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(4) {
+    top: 125px;
+    -webkit-animation: sb 8s linear forwards;
+    animation: sb 8s linear forwards; }
+  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(5) {
+    top: 130px;
+    -webkit-animation: sb 8s linear forwards;
+    animation: sb 8s linear forwards; }
+  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(6) {
+    top: 125px;
+    -webkit-animation: sb 10s linear forwards;
+    animation: sb 10s linear forwards; }
+  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(7) {
+    top: 148px;
     -webkit-animation: sb 12s linear forwards;
     animation: sb 12s linear forwards; }
+  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(8) {
+    top: 136px;
+    -webkit-animation: sb 9s linear forwards;
+    animation: sb 9s linear forwards; }
+  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(9) {
+    top: 149px;
+    -webkit-animation: sb 7s linear forwards;
+    animation: sb 7s linear forwards; }
+  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(10) {
+    top: 114px;
+    -webkit-animation: sb 9s linear forwards;
+    animation: sb 9s linear forwards; }
+  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(11) {
+    top: 137px;
+    -webkit-animation: sb 9s linear forwards;
+    animation: sb 9s linear forwards; }
+  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(12) {
+    top: 129px;
+    -webkit-animation: sb 11s linear forwards;
+    animation: sb 11s linear forwards; }
+  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(13) {
+    top: 143px;
+    -webkit-animation: sb 10s linear forwards;
+    animation: sb 10s linear forwards; }
   .zmiti-main-main-ui .zmiti-main-bg {
     -webkit-transform-origin: left;
     transform-origin: left;
@@ -165,19 +165,36 @@
     .zmiti-main-main-ui .zmiti-addone.active {
       -webkit-animation: addone 1s 0.1s forwards;
       animation: addone 1s 0.1s forwards; }
+  .zmiti-main-main-ui .zmiti-restart-btn {
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    width: 60px; }
+  .zmiti-main-main-ui .zmiti-cotyright {
+    position: absolute;
+    -webkit-transform: translate(0, -50%) rotate(90deg);
+    transform: translate(0, -50%) rotate(90deg);
+    top: 50%;
+    color: #fff;
+    left: -110px;
+    font-size: 24px; }
+    .zmiti-main-main-ui .zmiti-cotyright img {
+      margin-right: 10px;
+      width: 40px; }
   .zmiti-main-main-ui .zmiti-begingrab {
     position: absolute;
     left: 20px;
     bottom: 20px;
     width: 100px;
     height: 100px;
+    font-size: 30px;
     background: rgba(255, 255, 255, 0.7);
     text-align: center;
     line-height: 100px;
     border-radius: 50%;
     -webkit-transform: rotate(90deg);
     transform: rotate(90deg);
-    z-index: 100; }
+    z-index: 103; }
     .zmiti-main-main-ui .zmiti-begingrab:before {
       content: '';
       position: absolute;
@@ -216,17 +233,17 @@
       .zmiti-main-main-ui .zmiti-mask > div .zmiti-mask-text1 {
         color: #e01329;
         position: absolute;
-        font-size: 28px;
-        top: 30%;
-        left: 20%; }
+        font-size: 32px;
+        top: 28%;
+        left: 12%; }
       .zmiti-main-main-ui .zmiti-mask > div .zmiti-mask-text {
         color: #000;
-        font-size: 28px;
+        font-size: 26px;
         width: 63%;
         max-height: 100px;
         position: absolute;
-        top: 54%;
-        left: 50%;
+        top: 56%;
+        left: 44%;
         -webkit-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%); }
         .zmiti-main-main-ui .zmiti-mask > div .zmiti-mask-text.r2 {
@@ -235,7 +252,7 @@
     z-index: 1000;
     background: rgba(0, 0, 0, 0.5); }
     .zmiti-main-main-ui .zmiti-result-C div {
-      width: 80%;
+      width: 86%;
       position: absolute;
       left: 50%;
       top: 50%;
@@ -246,20 +263,35 @@
         font-size: 28px;
         position: absolute;
         width: 65%;
-        left: 22%;
+        left: 17%;
         text-indent: 2em; }
       .zmiti-main-main-ui .zmiti-result-C div .zmiti-restart, .zmiti-main-main-ui .zmiti-result-C div .zmiti-share {
         position: absolute;
-        width: 100px;
-        left: 180px;
-        top: 76%; }
+        width: 120px;
+        left: 120px;
+        top: 72%; }
       .zmiti-main-main-ui .zmiti-result-C div .zmiti-share {
-        left: 320px; }
+        left: 300px; }
     .zmiti-main-main-ui .zmiti-result-C .zmiti-share-ar {
       top: 5%;
-      left: 28%;
+      left: 23%;
       -webkit-transform: translate(0, 0) rotate(90deg);
-      transform: translate(0, 0) rotate(90deg); }
+      transform: translate(0, 0) rotate(90deg);
+      z-index: 100; }
+  .zmiti-main-main-ui .zmiti-tips {
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 102; }
+    .zmiti-main-main-ui .zmiti-tips img {
+      position: absolute; }
+      .zmiti-main-main-ui .zmiti-tips img:nth-of-type(1) {
+        height: 80%;
+        top: 10%;
+        width: auto;
+        right: 0; }
+      .zmiti-main-main-ui .zmiti-tips img:nth-of-type(2) {
+        width: 50%;
+        bottom: 30px;
+        left: 100px; }
   .zmiti-main-main-ui .zmiti-scroller {
     width: 200px;
     height: 70px;
@@ -323,17 +355,25 @@
     .zmiti-main-main-ui .zmiti-scroller .zmiti-question {
       position: relative;
       bottom: -88px;
-      left: 30px;
+      width: 230px;
+      left: 0;
       -webkit-transform: rotate(90deg);
       transform: rotate(90deg); }
       .zmiti-main-main-ui .zmiti-scroller .zmiti-question span {
+        word-break: break-all;
         position: absolute;
-        width: 100%;
-        left: 0;
-        text-align: center;
-        top: 30px;
-        text-indent: 1em;
-        color: #446b9a; }
+        display: -webkit-box;
+        -webkit-box-align: center;
+        -webkit-box-pack: center;
+        -webkit-box-orient: horizontal;
+        left: 28px;
+        text-align: left;
+        height: 70px;
+        top: 18px;
+        text-indent: 0;
+        color: #446b9a;
+        width: 184px;
+        font-size: 28px; }
   .zmiti-main-main-ui .zmiti-controller {
     position: absolute;
     width: 400px;
@@ -366,7 +406,7 @@
         font-size: 44px;
         margin: 0 10px; }
     .zmiti-main-main-ui .zmiti-controller img {
-      width: 80px;
+      width: 60px;
       border: 2px solid #fff;
       border-radius: 50%; }
   .zmiti-main-main-ui .zmiti-waitint-list {

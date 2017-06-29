@@ -3,13 +3,14 @@ import './assets/css/index.css';
 import ZmitiCanvasApp from './canvas.jsx';
 import $ from 'jquery';
  
+var time = 60;
 export default class ZmitiMainApp extends Component {
 	constructor(props) {
 		super(props);
 		this.state={
 			transY:100,
 			direction:'',
-			duration:60,
+			duration:time,
 			count:0,
 			defaultScrollerWidth:200,
 			scrollerWidth:200,
@@ -17,9 +18,11 @@ export default class ZmitiMainApp extends Component {
 			bgTransY:0,
 			isBgMove:false,
 			showQ:true,
-			defaultDuration:60,
+			showAnswer:true,
+			defaultDuration:time,
 			mainClass:'right',
 			result:'',
+			tips:0,
 			showResult:false,
 			isStopCount:false,//是否停止倒计时
 			waitingList:[
@@ -158,8 +161,12 @@ export default class ZmitiMainApp extends Component {
 					</div>
 				</div>}
 
-				<section onTouchTap={this.beginGrab.bind(this)} className={'zmiti-begingrab '+(this.state.grabtap?'active':'')}>
-					点名答题
+				<section style={{zIndex:this.state.tips === 1 ? 104 : 100,display:this.state.showAnswer?'block':'none'}} onTouchTap={this.beginGrab.bind(this)} className={'zmiti-begingrab '+(this.state.grabtap?'active':'')}>
+					答题
+				</section>
+
+				<section style={{display:this.state.showAnswer?'none':'block'}} onTouchTap={this.restart.bind(this)} className='zmiti-restart-btn'>
+					<img src='../assets/images/restart.png'/>
 				</section>
 
 				<section style={scollerStyle} className={'zmiti-scroller '+ (this.state.scrollerTransition?'transition':'')}>
@@ -220,14 +227,14 @@ export default class ZmitiMainApp extends Component {
 				{this.state.result && <div onTouchTap={this.clearMask.bind(this)} className={'zmiti-mask lt-full '}>
 									<div className={maskClassName}>
 										<img src={'../assets/images/'+this.state.result+'.png'}/>
-										<div className={'zmiti-mask-text1 ' + this.state.result}>{this.state.currentQ.text}</div>
-										<div className={'zmiti-mask-text ' + this.state.result}>{this.state.currentQ.text1}</div>
+										<div className={'zmiti-mask-text1 ' + this.state.result}>Q：{this.state.currentQ.text}</div>
+										<div className={'zmiti-mask-text ' + this.state.result}>A：{this.state.currentQ.text1}</div>
 									</div>
 								</div>}
 				{this.state.showResult && <div onTouchTap={this.closeShare.bind(this)} className='zmiti-result-C lt-full'>
 					 {!this.state.showShare &&  <div>
 					 	<img src='../assets/images/result-bg.png'/>
-					 	<span>恭喜你在您在“建党96周年”游戏中答对了{this.state.count}道题目</span>
+					 	<span>恭喜您在“建党96周年知识问答”中答对了{this.state.count}道题目</span>
 					 	<img className='zmiti-restart' onTouchTap={this.restart.bind(this)} src='../assets/images/m-restart.png'/>
 					 	<img className='zmiti-share' onTouchTap={()=>{this.setState({showShare:true})}} src='../assets/images/m-share.png'/>
 					 </div>}
@@ -235,10 +242,39 @@ export default class ZmitiMainApp extends Component {
 					 	<img src='../assets/images/m-share-ico.png'/>
 					 </div>}
 				</div>}
-				
+
+
+				{this.state.tips<2 && <div onTouchTap={this.clearTips.bind(this)} className='zmiti-tips lt-full'>
+					<img style={{display:this.state.tips === 0 ?'block':'none'}} src='../assets/images/tips1.png'/>
+					<img style={{display:this.state.tips === 1 ?'block':'none'}} src='../assets/images/tips2.png'/>
+				</div>}
+				<div className='zmiti-cotyright'>
+					<img src='../assets/images/zmiti.png'/>
+					新华社新媒体中心出品
+				</div>
 			</div>
 
 		);
+	}
+
+	clearTips(){
+		let {obserable} = this.props;
+		this.setState({
+			tips:this.state.tips+1
+		},()=>{
+			if(this.state.tips>1){
+				obserable.trigger({
+					type:'animate'
+				});
+				this.setState({
+					isBgMove:true
+				});
+
+				
+			 	
+			}
+		});
+
 	}
 
 
@@ -246,8 +282,9 @@ export default class ZmitiMainApp extends Component {
 		if(this.state.showShare){
 			this.setState({
 				showShare:false,
-				showResult:false
-			})
+				showResult:false,
+				showAnswer:false
+			});
 		}
 	}
 
@@ -258,21 +295,7 @@ export default class ZmitiMainApp extends Component {
 
  
 
-	textAnimate(){
-		var textPath = this.refs['zmiti-text-path'];
-		var x = textPath.getAttribute('x');
-		var speed = 40;
-		var timer = setInterval(()=>{
-			x++;
-			x = x + speed;
-			speed*=.88;
-			if(x>=70){
-				x = 70;
-				clearInterval(timer);
-			}
-			textPath.setAttribute('x',x);
-		},20);
-	}
+ 
 
 	clearMask(){
 		var mask = 'maskActive';
@@ -293,7 +316,7 @@ export default class ZmitiMainApp extends Component {
 	renderText(){
 		this.defaultText = this.defaultText || this.texts.concat([]);
 		this.defaultText.length <=0 && (this.defaultText = this.texts.concat([]));
-		var index = Math.random()*texts.length|0;
+		var index = Math.random()*this.defaultText.length|0;
 		var data = this.defaultText.splice(index,1)[0];
 
 		this.setState({
@@ -307,6 +330,15 @@ export default class ZmitiMainApp extends Component {
 
 	beginGrab(){//开始抓取
 		//this.startGrab = this.startGrab || false;
+		if(this.state.tips === 1){
+			this.clearTips();
+
+			return;
+		}
+		if(!this.state.isBgMove){
+			return;
+		}
+
 		this.setState({
 			grabtap:true,
 			showQ:false
@@ -418,17 +450,11 @@ export default class ZmitiMainApp extends Component {
 		
 	}
 
-	initPersonData(){
-		/*this.state.personList.forEach((item,i)=>{
-			item.offsetTop = $('.zmiti-person').eq(i)[0].offsetTop
-		});*/
-	}
-
-	
+	 
 	/**
-		游戏结果。失败 成功 超时
+		结果。失败 成功 超时
 	*/
-	gameResult(type){//type:游戏类型：success fail timeout
+	gameResult(type){//type:类型：success fail timeout
 		var s = this;
 		
 		$.ajax({
@@ -458,24 +484,37 @@ export default class ZmitiMainApp extends Component {
 		window.s = this;
 
 
+		var lastBeta = 0,
+			m = Math;
+
 		$(window).on('deviceorientation',e => {
 
-			 var alpha = event.alpha,
-            beta = event.beta,
-            gamma = event.gamma;
+				var alpha = event.alpha,
+	            beta = event.beta,
+	            gamma = event.gamma; 
 
-	        if(alpha != null || beta != null || gamma != null){
-	           
-	            this.beta = beta;
-	            
-	        }else{
-	        	$(window).off('deviceorientation');
-	        	this.unSurpport = true;
-	            //dataContainerOrientation.innerHTML = "当前浏览器不支持DeviceOrientation";
-	        }
+		        if(alpha != null || beta != null || gamma != null){
+		           	//beta = m[beta<0?'max':'min'](beta,40);
+		           	if(beta>40){
+		           		beta = 40;
+		           	}
+		           	if(beta<-40){
+		           		beta = -40;
+		           	}
+		           	
 
-		});
-	 
+		           	if(m.abs(lastBeta - beta ) < 40){
+		           		this.beta = beta;
+		           	}
+		           	
+		            lastBeta = beta;
+		        }else{
+		        	$(window).off('deviceorientation');
+		        	this.unSurpport = true;
+		            //dataContainerOrientation.innerHTML = "当前浏览器不支持DeviceOrientation";
+		        }
+
+			});
 		
 		//this.bgAnimate();//背景移动
 		
@@ -490,10 +529,10 @@ export default class ZmitiMainApp extends Component {
 			if(!this.unSurpport){
 
 				 if(this.grabed){
-					if(this.state.transY > this.viewH - 70){
-		            	this.state.transY = this.viewH - 70
+					if(this.state.transY > this.viewH - 100){
+		            	this.state.transY = this.viewH - 100
 		            }
-		            if(this.state.transY<0){
+		            if(this.state.transY<20){
 		            	this.state.transY = 0;
 		            }	
 				}
@@ -505,7 +544,7 @@ export default class ZmitiMainApp extends Component {
 
 			}else{
 				this.beta = this.beta || 10;
-				if(this.state.transY > this.viewH - 70||this.state.transY<0){
+				if(this.state.transY > this.viewH - 100||this.state.transY< 20){
 	            	this.beta *=-1;
 	            }
 				this.setState({
@@ -521,6 +560,8 @@ export default class ZmitiMainApp extends Component {
 				this.state.duration = this.state.defaultDuration;
 				this.state.isBgMove = false;
 				this.state.showResult = true;
+				this.state.result = '';
+
 				this.forceUpdate();
 				obserable.trigger({
 					type:'stop'
@@ -541,21 +582,13 @@ export default class ZmitiMainApp extends Component {
 				mainClass:data,
 
 			});
-			if(data === 'active'){
-				obserable.trigger({
-					type:'animate'
-				});
-
-				this.setState({
-					isBgMove:true
-				});	
-			}
+			 
 			
 	 	})
 		var s = this;
 		var img = new Image();
 		img.onload = function(){
-			s.initPersonData();
+			
 			s.setState({
 				bgH:this.height
 			});
@@ -582,7 +615,7 @@ export default class ZmitiMainApp extends Component {
  
 	}
 
-	restart(){//重新开始游戏
+	restart(){//重新开始
 
 		let {obserable} = this.props;
 		obserable.trigger({
@@ -593,7 +626,8 @@ export default class ZmitiMainApp extends Component {
 			duration:this.state.defaultDuration,
 			count:0,
 			isBgMove:true,
-			showResult:false
+			showResult:false,
+			showAnswer:true
 		})
 	}
 
