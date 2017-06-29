@@ -34,6 +34,8 @@ export default class ZmitiIndexApp extends Component {
 
 
 	entryBigScreen(){
+
+		this.refs['bg'].play();
 		let {obserable} = this.props;
 		this.setState({
 			bigscreenTap:true
@@ -83,6 +85,10 @@ export default class ZmitiIndexApp extends Component {
 			this.setState({
 				mainClass:data
 			});
+		});
+
+		obserable.on('getBgSource',()=>{
+			return this.refs['bg'];
 		});
 	}
 }

@@ -252,6 +252,9 @@ export default class ZmitiMainApp extends Component {
 					<img src='../assets/images/zmiti.png'/>
 					新华社新媒体中心出品
 				</div>
+
+				<audio src='../assets/music/bg.mp3' loop='loop'  ref='bg'></audio>
+				<audio src='../assets/music/success.mp3' ref='success'></audio>	
 			</div>
 
 		);
@@ -269,9 +272,7 @@ export default class ZmitiMainApp extends Component {
 				this.setState({
 					isBgMove:true
 				});
-
-				
-			 	
+				this.refs['bg'].play();
 			}
 		});
 
@@ -338,7 +339,7 @@ export default class ZmitiMainApp extends Component {
 		if(!this.state.isBgMove){
 			return;
 		}
-
+		this.refs['success'].play();
 		this.setState({
 			grabtap:true,
 			showQ:false
@@ -561,6 +562,7 @@ export default class ZmitiMainApp extends Component {
 				this.state.isBgMove = false;
 				this.state.showResult = true;
 				this.state.result = '';
+				this.refs['bg'].pause();
 
 				this.forceUpdate();
 				obserable.trigger({
@@ -628,7 +630,8 @@ export default class ZmitiMainApp extends Component {
 			isBgMove:true,
 			showResult:false,
 			showAnswer:true
-		})
+		});
+		this.refs['bg'].play();
 	}
 
 	randomString(len){
