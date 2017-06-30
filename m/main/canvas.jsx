@@ -53,7 +53,6 @@ export default class ZmitiCanvasApp extends Component {
 			
 
 			obserable.on('animate',()=>{
-
 				this.timer = this.timerFn(context,personList,width,height,arr,myCavnas);	
 			})
 			obserable.on('stop',()=>{
@@ -77,12 +76,20 @@ export default class ZmitiCanvasApp extends Component {
 		var myContext = myCavnas.getContext('2d');
 		
 		let {obserable} = this.props;
+		var count =0;
 		personList.forEach((person,i)=>{
 			person.img = new Image();
+			person.img.onload = function(){
+				count++;
+			}
 			person.img.src = person.src;
 			person.iNow = 0;
-		})
+		});
+
 		var timer = setInterval(()=>{
+				if(count < personList.length){
+					return;
+				}
 				context.clearRect(0,0,width,height);
 				personList.forEach((person,i)=>{
 

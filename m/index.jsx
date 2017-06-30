@@ -128,10 +128,10 @@ export class App extends Component {
 							if(data.getret === 0 ){
 								
 							}else{
-								alert('save_userview getret : '+ data.getret +' msg : '+ data.getmsg)
+								//  window.debug && alert('save_userview getret : '+ data.getret +' msg : '+ data.getmsg)
 							}
 						},()=>{
-							//alert('save_userview error');
+							//  window.debug && alert('save_userview error');
 						})
 
 					   	$.ajax({
@@ -149,7 +149,7 @@ export class App extends Component {
 					   			integral:localStorage.getItem('nickname'+s.worksid)?0:10
 					   		},
 					   		error(){
-					   			alert('add_wxuser: 服务器返回错误');
+					   		//	  window.debug && alert('add_wxuser: 服务器返回错误');
 					   		},
 					   		success(data){
 					   			if(data.getret === 0){
@@ -158,7 +158,7 @@ export class App extends Component {
 									});
 					   				
 					   			}else{
-					   				alert('getret  : '+ data.getret + ' msg : ' + data.getmsg+ ' .....');
+					   				//  window.debug && alert('getret  : '+ data.getret + ' msg : ' + data.getmsg+ ' .....');
 					   			}
 					   		}
 					   	});
@@ -182,7 +182,7 @@ export class App extends Component {
 						})
 					}
 					else{
-						alert('地址信息获取失败')
+						  window.debug && alert('地址信息获取失败')
 					}
 				}						        	
 	        })
@@ -190,11 +190,11 @@ export class App extends Component {
 
    
 
-	wxConfig(title,desc,img='http://h5.zmiti.com/public/bigscreen/assets/images/300.jpg',appId='wxfacf4a639d9e3bcc',worksid=this.state.worksid){
+	wxConfig(title,desc,img='http://h5.zmiti.com/public/bigscreen/assets/images/301.jpg',appId='wxfacf4a639d9e3bcc',worksid=this.state.worksid){
 		   var durl = location.href.split('#')[0]; //window.location;
 		        var code_durl = encodeURIComponent(durl);
 
-		       // alert('title => '+ title +  '\n'+ 'desc => '+ desc + '\n'+ 'img => '+img+'\n appId => '+appId+'\n worksid => '+worksid);
+		       //   window.debug && alert('title => '+ title +  '\n'+ 'desc => '+ desc + '\n'+ 'img => '+img+'\n appId => '+appId+'\n worksid => '+worksid);
 		        var s = this;
 
 			$.ajax({
@@ -207,7 +207,7 @@ export class App extends Component {
 			    },
 			    success(data){
 			    	wx.config({
-							    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+							    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端  window.debug && alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
 							    appId:appId, // 必填，公众号的唯一标识
 							    timestamp:'1488558145' , // 必填，生成签名的时间戳
 							    nonceStr: 'Wm3WZYTPz0wzccnW', // 必填，生成签名的随机串
@@ -226,10 +226,10 @@ export class App extends Component {
 
 			    	wx.ready(()=>{
 
-			    		wx.getLocation({
+			    		/*wx.getLocation({
 						    type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
 						    fail(){
-						    	//alert('location fail');
+						    	//  window.debug && alert('location fail');
 						    	var idx = Math.random()*s.zmitiMap.length|0;
 
 						    	var latitude = s.zmitiMap[idx].lat; // 纬度，浮点数，范围为90 ~ -90
@@ -243,7 +243,7 @@ export class App extends Component {
 						        	accuracy
 						        };
 						        if((s.nickname || s.headimgurl) && s.openid){
-						        	s.getPos(s.nickname,s.headimgurl);
+						        	//s.getPos(s.nickname,s.headimgurl);
 						        }
 						    },
 						    cancel:function(){
@@ -260,7 +260,7 @@ export class App extends Component {
 						        	accuracy
 						        };
 						        if((s.nickname || s.headimgurl) && s.openid){
-						        	s.getPos(s.nickname,s.headimgurl);
+						        	////////s.getPos(s.nickname,s.headimgurl);
 						        }
 						    },
 						    success: function (res) {
@@ -275,11 +275,11 @@ export class App extends Component {
 						        	accuracy
 						        };
 						        if((s.nickname || s.headimgurl) && s.openid){
-						        	s.getPos(s.nickname,s.headimgurl);
+						        	//////s.getPos(s.nickname,s.headimgurl);
 						        }
 						       
 						    }
-						});
+						});*/
 
 			    			 		//朋友圈
 	                    wx.onMenuShareTimeline({
@@ -320,7 +320,7 @@ export class App extends Component {
 	componentDidMount() {
 
 		this.key = this.getQueryString('key');
-
+		this.wxConfig('庆祝建党96周年知识问答','一起来学习吧！');
 		var s = this;
 		$.getJSON({
 			url:'../assets/js/data.json',
@@ -347,8 +347,8 @@ export class App extends Component {
 				'../assets/images/1.png',
 				'../assets/images/m-bg.png',
 				'../assets/images/m-latter.png',
-				'../assets/images/m-logo.png',
-				'../assets/images/m-p2.png',
+				'../assets/images/m-logo1.png',
+				'../assets/images/m-p21.png',
 				'../assets/images/m-p4.png',
 				'../assets/images/m-p5.png',
 				'../assets/images/m-p7.png',
@@ -380,7 +380,7 @@ export class App extends Component {
 				});
 				
 				if (wx.posData && wx.posData.longitude) {
-					s.getPos(s.nickname, s.headimgurl);
+					////s.getPos(s.nickname, s.headimgurl);
 				}
 				return;
 			}
@@ -423,7 +423,7 @@ export class App extends Component {
 							});
 							
 							if (wx.posData && wx.posData.longitude) {
-								s.getPos(dt.userinfo.nickname, dt.userinfo.headimgurl);
+								//s.getPos(dt.userinfo.nickname, dt.userinfo.headimgurl);
 							}
 
 						});
@@ -469,7 +469,7 @@ export class App extends Component {
 										}
 									}
 									else{
-										alert('getoauthurl => getret => '+data.getet + ' => value =>'+data.getmsg);
+										  window.debug && alert('getoauthurl => getret => '+data.getet + ' => value =>'+data.getmsg);
 									}
 								}
 							})*/

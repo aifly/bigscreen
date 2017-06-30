@@ -17,7 +17,7 @@ export default class ZmitiLoadingApp extends Component {
 			background:'url(../assets/images/loading.jpg) no-repeat center / cover'
 		}
 		return (
-			<div className='zmiti-loading-ui' style={mainStyle}>
+			<div className='zmiti-loading-ui lt-full' style={mainStyle}>
 				  <a href="#">
 				  		<section className='zmiti-head' style={{background:'url('+(this.props.myHeadImg || '../assets/images/zmiti.png')+') no-repeat center / cover'}}></section>
 				        <div className="line1"></div>

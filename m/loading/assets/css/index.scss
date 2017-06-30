@@ -2,13 +2,7 @@
 
 .zmiti-loading-ui{
   
-  @include pos(f);
-  left:50%;
-  top:0;
-  margin-left: -320px;
-  z-index:  100;
-  width:640px;
-  height: 100%;
+  z-index:  1001;
 
   .zmiti-screen{
     @include pos(a);

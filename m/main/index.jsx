@@ -44,11 +44,11 @@ export default class ZmitiMainApp extends Component {
 					style:{
 						height:100,
 						scale:4,
-						width:265,
+						width:211,
 					},
 					speed:6,
 					transY:200,
-					src:'../assets/images/m-p2.png'
+					src:'../assets/images/m-p21.png'
 				},/*{
 					style:{
 						height:100,
@@ -143,7 +143,7 @@ export default class ZmitiMainApp extends Component {
 		return (
 			<div style={style} className={'zmiti-main-main-ui lt-full '+(this.state.mainClass)}>
 				<div className={'zmiti-main-bg '+(this.state.isBgMove?'animate':'')} style={mainStyle}>
-					<img style={{height:this.state.bgH}} draggable='false' ref='bg'  src='../assets/images/m-bg.png'/>
+					<img style={{height:this.state.bgH}} draggable='false' ref='bg1'  src='../assets/images/m-bg.png'/>
 					<img style={{height:this.state.bgH}} draggable='false' src='../assets/images/m-bg.png'/>
 					
 				</div>
@@ -157,7 +157,7 @@ export default class ZmitiMainApp extends Component {
 					</div>
 					<div>
 						<div>{this.state.currentUser.name}</div>
-						<div>答对了<span>{this.state.count}</span>道题目</div>
+						<div>学习了<span>{this.state.count}</span>道题</div>
 					</div>
 				</div>}
 
@@ -227,14 +227,15 @@ export default class ZmitiMainApp extends Component {
 				{this.state.result && <div onTouchTap={this.clearMask.bind(this)} className={'zmiti-mask lt-full '}>
 									<div className={maskClassName}>
 										<img src={'../assets/images/'+this.state.result+'.png'}/>
-										<div className={'zmiti-mask-text1 ' + this.state.result}>Q：{this.state.currentQ.text}</div>
-										<div className={'zmiti-mask-text ' + this.state.result}>A：{this.state.currentQ.text1}</div>
+										<div className={'zmiti-mask-text1 ' + this.state.result}>问：{this.state.currentQ.text}</div>
+										<div className={'zmiti-mask-text ' + (this.state.showA?'r1':'')}>答：{this.state.currentQ.text1}</div>
 									</div>
 								</div>}
 				{this.state.showResult && <div onTouchTap={this.closeShare.bind(this)} className='zmiti-result-C lt-full'>
 					 {!this.state.showShare &&  <div>
 					 	<img src='../assets/images/result-bg.png'/>
-					 	<span>恭喜您在“建党96周年知识问答”中答对了{this.state.count}道题目</span>
+					 	<span>恭喜您在“庆祝建党96周年知识问答”中学习了{this.state.count}道题
+					 	</span>
 					 	<img className='zmiti-restart' onTouchTap={this.restart.bind(this)} src='../assets/images/m-restart.png'/>
 					 	<img className='zmiti-share' onTouchTap={()=>{this.setState({showShare:true})}} src='../assets/images/m-share.png'/>
 					 </div>}
@@ -253,7 +254,7 @@ export default class ZmitiMainApp extends Component {
 					新华社新媒体中心出品
 				</div>
 
-				<audio src='../assets/music/bg.mp3' loop='loop'  ref='bg'></audio>
+				<audio src='../assets/music/bg.mp3' loop='loop'  ref='bgSound'></audio>
 				<audio src='../assets/music/success.mp3' ref='success'></audio>	
 			</div>
 
@@ -272,7 +273,7 @@ export default class ZmitiMainApp extends Component {
 				this.setState({
 					isBgMove:true
 				});
-				this.refs['bg'].play();
+				this.refs['bgSound'].play();
 			}
 		});
 
@@ -299,6 +300,10 @@ export default class ZmitiMainApp extends Component {
  
 
 	clearMask(){
+		if(!this.canCloseMask){
+			return;
+		}
+		this.canCloseMask = false;
 		var mask = 'maskActive';
 		if(this.state.result === 'r2'){
 			mask = 'maskDelete';
@@ -306,6 +311,7 @@ export default class ZmitiMainApp extends Component {
 		
 		this.setState({
 			result:'',
+			showA:false,
 			text1:'',
 			[mask]:'',
 			showAddone:mask === 'maskActive'
@@ -349,6 +355,7 @@ export default class ZmitiMainApp extends Component {
 			this.setState({
 				grabtap:false
 			});
+			let {wxConfig} = this.props;
 			if(!this.startGrab && this.state.isBgMove){
 				this.startGrab = true;
 
@@ -375,13 +382,23 @@ export default class ZmitiMainApp extends Component {
 							this.startGrab = false;
 							this.state.count++;
 
+							this.setState({
+								result:item.result,
+								text1:item.text1
+							});
 							setTimeout(()=>{
 								this.setState({
-									result:item.result,
-									text1:item.text1
+									showA:true
 								});
+										//我在建党96周年知识问答中学习了X道题，
 
-							},100)
+								wxConfig('我在“庆祝建党96周年知识问答”中学习了'+this.state.count+'道题，一起来学习吧！','一起来学习吧！');
+
+							},100);
+
+							setTimeout(()=>{
+								this.canCloseMask = true;
+							},2000);
 							
 							//this.gameResult(item.result === 'r1' ? 'success' : 'fail');
 							this.initGrab();
@@ -409,8 +426,10 @@ export default class ZmitiMainApp extends Component {
 	initGrab(){
 		this.setState({
 			scrollerWidth:this.state.defaultScrollerWidth,
-			scrollerTransition:true
+			scrollerTransition:true,
 		});
+
+		
 		setTimeout(()=>{
 			this.setState({
 				showQ:true
@@ -477,8 +496,6 @@ export default class ZmitiMainApp extends Component {
 		this.key = window.localStorage.getItem('zmiti-bigscreen-key') || this.randomString();
 		window.localStorage.setItem('zmiti-bigscreen-key',this.key);
 		let {wxConfig} = this.props;
-
-		wxConfig('点名答题，建党96周年之际你来当主考官','一起来学理论知识吧！');
 
 		this.renderText();
 		//this.startMove(this.key);
@@ -562,7 +579,7 @@ export default class ZmitiMainApp extends Component {
 				this.state.isBgMove = false;
 				this.state.showResult = true;
 				this.state.result = '';
-				this.refs['bg'].pause();
+				this.refs['bgSound'].pause();
 
 				this.forceUpdate();
 				obserable.trigger({
@@ -607,7 +624,7 @@ export default class ZmitiMainApp extends Component {
 			document.getElementsByTagName('style')[0].innerHTML += style;
  
 		}
-		img.src=this.refs['bg'].src;
+		img.src = this.refs['bg1'].src;
 		
 		obserable.on('updatePersonList',(data)=>{
 			this.state.personList = data;
@@ -619,7 +636,7 @@ export default class ZmitiMainApp extends Component {
 
 	restart(){//重新开始
 
-		let {obserable} = this.props;
+		let {obserable,wxConfig} = this.props;
 		obserable.trigger({
 			type:'animate',
 
@@ -631,7 +648,8 @@ export default class ZmitiMainApp extends Component {
 			showResult:false,
 			showAnswer:true
 		});
-		this.refs['bg'].play();
+		this.refs['bgSound'].play();
+		wxConfig('庆祝建党96周年知识问答','一起来学习吧！');
 	}
 
 	randomString(len){

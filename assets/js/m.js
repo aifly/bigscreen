@@ -179,10 +179,10 @@
 								}
 							}).done(function (data) {
 								if (data.getret === 0) {} else {
-									alert('save_userview getret : ' + data.getret + ' msg : ' + data.getmsg);
+									//  window.debug && alert('save_userview getret : '+ data.getret +' msg : '+ data.getmsg)
 								}
 							}, function () {
-								//alert('save_userview error');
+								//  window.debug && alert('save_userview error');
 							});
 
 							_jquery2['default'].ajax({
@@ -200,7 +200,7 @@
 									integral: localStorage.getItem('nickname' + s.worksid) ? 0 : 10
 								},
 								error: function error() {
-									alert('add_wxuser: 服务器返回错误');
+									//	  window.debug && alert('add_wxuser: 服务器返回错误');
 								},
 								success: function success(data) {
 									if (data.getret === 0) {
@@ -208,7 +208,7 @@
 											integral: data['userinfo'].totalintegral
 										});
 									} else {
-										alert('getret  : ' + data.getret + ' msg : ' + data.getmsg + ' .....');
+										//  window.debug && alert('getret  : '+ data.getret + ' msg : ' + data.getmsg+ ' .....');
 									}
 								}
 							});
@@ -229,7 +229,7 @@
 								}
 							});
 						} else {
-								alert('地址信息获取失败');
+								window.debug && alert('地址信息获取失败');
 							}
 					}
 				});
@@ -237,14 +237,14 @@
 		}, {
 			key: 'wxConfig',
 			value: function wxConfig(title, desc) {
-				var img = arguments.length <= 2 || arguments[2] === undefined ? 'http://h5.zmiti.com/public/bigscreen/assets/images/300.jpg' : arguments[2];
+				var img = arguments.length <= 2 || arguments[2] === undefined ? 'http://h5.zmiti.com/public/bigscreen/assets/images/301.jpg' : arguments[2];
 				var appId = arguments.length <= 3 || arguments[3] === undefined ? 'wxfacf4a639d9e3bcc' : arguments[3];
 				var worksid = arguments.length <= 4 || arguments[4] === undefined ? this.state.worksid : arguments[4];
 
 				var durl = location.href.split('#')[0]; //window.location;
 				var code_durl = encodeURIComponent(durl);
 
-				// alert('title => '+ title +  '\n'+ 'desc => '+ desc + '\n'+ 'img => '+img+'\n appId => '+appId+'\n worksid => '+worksid);
+				//   window.debug && alert('title => '+ title +  '\n'+ 'desc => '+ desc + '\n'+ 'img => '+img+'\n appId => '+appId+'\n worksid => '+worksid);
 				var s = this;
 
 				_jquery2['default'].ajax({
@@ -256,7 +256,7 @@
 					error: function error() {},
 					success: function success(data) {
 						wx.config({
-							debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+							debug: false, // 开启调试模式,调用的所有api的返回值会在客户端  window.debug && alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
 							appId: appId, // 必填，公众号的唯一标识
 							timestamp: '1488558145', // 必填，生成签名的时间戳
 							nonceStr: 'Wm3WZYTPz0wzccnW', // 必填，生成签名的随机串
@@ -266,59 +266,57 @@
 
 						wx.ready(function () {
 
-							wx.getLocation({
-								type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
-								fail: function fail() {
-									//alert('location fail');
-									var idx = Math.random() * s.zmitiMap.length | 0;
-
-									var latitude = s.zmitiMap[idx].lat; // 纬度，浮点数，范围为90 ~ -90
-
-									var longitude = s.zmitiMap[idx].log; // 经度，浮点数，范围为180 ~ -180。
-
-									var accuracy = 100; // 位置精度
-									wx.posData = {
-										longitude: longitude,
-										latitude: latitude,
-										accuracy: accuracy
-									};
-									if ((s.nickname || s.headimgurl) && s.openid) {
-										s.getPos(s.nickname, s.headimgurl);
-									}
-								},
-								cancel: function cancel() {
-									var idx = Math.random() * s.zmitiMap.length | 0;
-
-									var latitude = s.zmitiMap[idx].lat; // 纬度，浮点数，范围为90 ~ -90
-
-									var longitude = s.zmitiMap[idx].log; // 经度，浮点数，范围为180 ~ -180。
-
-									var accuracy = 100; // 位置精度
-									wx.posData = {
-										longitude: longitude,
-										latitude: latitude,
-										accuracy: accuracy
-									};
-									if ((s.nickname || s.headimgurl) && s.openid) {
-										s.getPos(s.nickname, s.headimgurl);
-									}
-								},
-								success: function success(res) {
-									var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
-									var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
-									var speed = res.speed; // 速度，以米/每秒计
-									var accuracy = res.accuracy; // 位置精度
-
-									wx.posData = {
-										longitude: longitude,
-										latitude: latitude,
-										accuracy: accuracy
-									};
-									if ((s.nickname || s.headimgurl) && s.openid) {
-										s.getPos(s.nickname, s.headimgurl);
-									}
-								}
-							});
+							/*wx.getLocation({
+	       type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+	       fail(){
+	       	//  window.debug && alert('location fail');
+	       	var idx = Math.random()*s.zmitiMap.length|0;
+	         	var latitude = s.zmitiMap[idx].lat; // 纬度，浮点数，范围为90 ~ -90
+	           
+	           var longitude = s.zmitiMap[idx].log; // 经度，浮点数，范围为180 ~ -180。
+	          
+	           var accuracy = 100; // 位置精度
+	       	wx.posData = {
+	           	longitude,
+	           	latitude,
+	           	accuracy
+	           };
+	           if((s.nickname || s.headimgurl) && s.openid){
+	           	//s.getPos(s.nickname,s.headimgurl);
+	           }
+	       },
+	       cancel:function(){
+	       	var idx = Math.random()*s.zmitiMap.length|0;
+	         	var latitude = s.zmitiMap[idx].lat; // 纬度，浮点数，范围为90 ~ -90
+	           
+	           var longitude = s.zmitiMap[idx].log; // 经度，浮点数，范围为180 ~ -180。
+	          
+	           var accuracy = 100; // 位置精度
+	       	wx.posData = {
+	           	longitude,
+	           	latitude,
+	           	accuracy
+	           };
+	           if((s.nickname || s.headimgurl) && s.openid){
+	           	////////s.getPos(s.nickname,s.headimgurl);
+	           }
+	       },
+	       success: function (res) {
+	           var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+	           var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+	           var speed = res.speed; // 速度，以米/每秒计
+	           var accuracy = res.accuracy; // 位置精度
+	             wx.posData = {
+	           	longitude,
+	           	latitude,
+	           	accuracy
+	           };
+	           if((s.nickname || s.headimgurl) && s.openid){
+	           	//////s.getPos(s.nickname,s.headimgurl);
+	           }
+	          
+	       }
+	      });*/
 
 							//朋友圈
 							wx.onMenuShareTimeline({
@@ -359,7 +357,7 @@
 				var _this = this;
 
 				this.key = this.getQueryString('key');
-
+				this.wxConfig('庆祝建党96周年知识问答', '一起来学习吧！');
 				var s = this;
 				_jquery2['default'].getJSON({
 					url: '../assets/js/data.json',
@@ -381,7 +379,7 @@
 					});
 					s.worksid = data.worksid;
 
-					s.loadingImg = ['../assets/images/bg-c.jpg', '../assets/images/1.png', '../assets/images/m-bg.png', '../assets/images/m-latter.png', '../assets/images/m-logo.png', '../assets/images/m-p2.png', '../assets/images/m-p4.png', '../assets/images/m-p5.png', '../assets/images/m-p7.png', '../assets/images/r1.png', '../assets/images/result-bg.png', '../assets/images/m-question.png', '../assets/images/m-restart.png', '../assets/images/m-single.png', '../assets/images/m-share.png', '../assets/images/m-share-ico.png', '../assets/images/zmiti.png'];
+					s.loadingImg = ['../assets/images/bg-c.jpg', '../assets/images/1.png', '../assets/images/m-bg.png', '../assets/images/m-latter.png', '../assets/images/m-logo1.png', '../assets/images/m-p21.png', '../assets/images/m-p4.png', '../assets/images/m-p5.png', '../assets/images/m-p7.png', '../assets/images/r1.png', '../assets/images/result-bg.png', '../assets/images/m-question.png', '../assets/images/m-restart.png', '../assets/images/m-single.png', '../assets/images/m-share.png', '../assets/images/m-share-ico.png', '../assets/images/zmiti.png'];
 					if (localStorage.getItem('nickname' + s.worksid) && localStorage.getItem('headimgurl' + s.worksid) && localStorage.getItem('openid' + s.worksid)) {
 						s.setState({
 							headimgurl: localStorage.getItem('headimgurl' + s.worksid)
@@ -399,7 +397,7 @@
 						});
 
 						if (wx.posData && wx.posData.longitude) {
-							s.getPos(s.nickname, s.headimgurl);
+							////s.getPos(s.nickname, s.headimgurl);
 						}
 						return;
 					}
@@ -441,53 +439,17 @@
 									});
 
 									if (wx.posData && wx.posData.longitude) {
-										s.getPos(dt.userinfo.nickname, dt.userinfo.headimgurl);
+										//s.getPos(dt.userinfo.nickname, dt.userinfo.headimgurl);
 									}
 								});
 							} else {
 
-								if (s.isWeiXin()) {
+									if (s.isWeiXin()) {
 
-									/*if(localStorage.getItem('oauthurl'+s.worksid)){
-	        	window.location.href = localStorage.getItem('oauthurl'+s.worksid);
-	        	return;
-	        }*/
-
-									s.loading(s.loadingImg, function (scale) {
-										s.setState({
-											progress: (scale * 100 | 0) + '%'
-										});
-									}, function () {
-
-										s.setState({
-											showLoading: false
-										});
-									});
-									/*	$.ajax({
-	        		url:'http://api.zmiti.com/v2/weixin/getoauthurl/',
-	        		type:'post',
-	        		data:{
-	        			redirect_uri:window.location.href.replace(/code/ig,'zmiti'),
-	        			scope:'snsapi_userinfo',
-	        			worksid:s.worksid,
-	        			state:new Date().getTime()+''
-	        		},
-	        		error(){
-	        		},
-	        		success(dt){
-	        			if(dt.getret === 0){
-	        				
-	        				localStorage.setItem('oauthurl'+s.worksid,dt.url);
-	        				if(!window.location.href.indexOf(':8080')<=-1){
-	        					//window.location.href =  dt.url;
-	        				}
-	        			}
-	        			else{
-	        				alert('getoauthurl => getret => '+data.getet + ' => value =>'+data.getmsg);
-	        			}
-	        		}
-	        	})*/
-								} else {
+										/*if(localStorage.getItem('oauthurl'+s.worksid)){
+	         	window.location.href = localStorage.getItem('oauthurl'+s.worksid);
+	         	return;
+	         }*/
 
 										s.loading(s.loadingImg, function (scale) {
 											s.setState({
@@ -499,8 +461,44 @@
 												showLoading: false
 											});
 										});
-									}
-							}
+										/*	$.ajax({
+	         		url:'http://api.zmiti.com/v2/weixin/getoauthurl/',
+	         		type:'post',
+	         		data:{
+	         			redirect_uri:window.location.href.replace(/code/ig,'zmiti'),
+	         			scope:'snsapi_userinfo',
+	         			worksid:s.worksid,
+	         			state:new Date().getTime()+''
+	         		},
+	         		error(){
+	         		},
+	         		success(dt){
+	         			if(dt.getret === 0){
+	         				
+	         				localStorage.setItem('oauthurl'+s.worksid,dt.url);
+	         				if(!window.location.href.indexOf(':8080')<=-1){
+	         					//window.location.href =  dt.url;
+	         				}
+	         			}
+	         			else{
+	         				  window.debug && alert('getoauthurl => getret => '+data.getet + ' => value =>'+data.getmsg);
+	         			}
+	         		}
+	         	})*/
+									} else {
+
+											s.loading(s.loadingImg, function (scale) {
+												s.setState({
+													progress: (scale * 100 | 0) + '%'
+												});
+											}, function () {
+
+												s.setState({
+													showLoading: false
+												});
+											});
+										}
+								}
 						}
 					});
 				});
@@ -32989,7 +32987,7 @@
 						_react2['default'].createElement(
 							'div',
 							null,
-							_react2['default'].createElement('img', { src: '../assets/images/m-logo.png' })
+							_react2['default'].createElement('img', { src: '../assets/images/m-logo1.png' })
 						),
 						_react2['default'].createElement(
 							'div',
@@ -33195,11 +33193,11 @@
 					style: {
 						height: 100,
 						scale: 4,
-						width: 265
+						width: 211
 					},
 					speed: 6,
 					transY: 200,
-					src: '../assets/images/m-p2.png'
+					src: '../assets/images/m-p21.png'
 				}, /*{
 	      style:{
 	      height:100,
@@ -33297,7 +33295,7 @@
 					_react2['default'].createElement(
 						'div',
 						{ className: 'zmiti-main-bg ' + (this.state.isBgMove ? 'animate' : ''), style: mainStyle },
-						_react2['default'].createElement('img', { style: { height: this.state.bgH }, draggable: 'false', ref: 'bg', src: '../assets/images/m-bg.png' }),
+						_react2['default'].createElement('img', { style: { height: this.state.bgH }, draggable: 'false', ref: 'bg1', src: '../assets/images/m-bg.png' }),
 						_react2['default'].createElement('img', { style: { height: this.state.bgH }, draggable: 'false', src: '../assets/images/m-bg.png' })
 					),
 					_react2['default'].createElement(
@@ -33324,13 +33322,13 @@
 							_react2['default'].createElement(
 								'div',
 								null,
-								'答对了',
+								'学习了',
 								_react2['default'].createElement(
 									'span',
 									null,
 									this.state.count
 								),
-								'道题目'
+								'道题'
 							)
 						)
 					),
@@ -33416,13 +33414,13 @@
 							_react2['default'].createElement(
 								'div',
 								{ className: 'zmiti-mask-text1 ' + this.state.result },
-								'Q：',
+								'问：',
 								this.state.currentQ.text
 							),
 							_react2['default'].createElement(
 								'div',
-								{ className: 'zmiti-mask-text ' + this.state.result },
-								'A：',
+								{ className: 'zmiti-mask-text ' + (this.state.showA ? 'r1' : '') },
+								'答：',
 								this.state.currentQ.text1
 							)
 						)
@@ -33437,9 +33435,9 @@
 							_react2['default'].createElement(
 								'span',
 								null,
-								'恭喜您在“建党96周年知识问答”中答对了',
+								'恭喜您在“庆祝建党96周年知识问答”中学习了',
 								this.state.count,
-								'道题目'
+								'道题'
 							),
 							_react2['default'].createElement('img', { className: 'zmiti-restart', onTouchTap: this.restart.bind(this), src: '../assets/images/m-restart.png' }),
 							_react2['default'].createElement('img', { className: 'zmiti-share', onTouchTap: function () {
@@ -33464,7 +33462,7 @@
 						_react2['default'].createElement('img', { src: '../assets/images/zmiti.png' }),
 						'新华社新媒体中心出品'
 					),
-					_react2['default'].createElement('audio', { src: '../assets/music/bg.mp3', loop: 'loop', ref: 'bg' }),
+					_react2['default'].createElement('audio', { src: '../assets/music/bg.mp3', loop: 'loop', ref: 'bgSound' }),
 					_react2['default'].createElement('audio', { src: '../assets/music/success.mp3', ref: 'success' })
 				);
 			}
@@ -33485,7 +33483,7 @@
 						_this2.setState({
 							isBgMove: true
 						});
-						_this2.refs['bg'].play();
+						_this2.refs['bgSound'].play();
 					}
 				});
 			}
@@ -33511,6 +33509,10 @@
 			value: function clearMask() {
 				var _setState;
 
+				if (!this.canCloseMask) {
+					return;
+				}
+				this.canCloseMask = false;
 				var mask = 'maskActive';
 				if (this.state.result === 'r2') {
 					mask = 'maskDelete';
@@ -33518,6 +33520,7 @@
 
 				this.setState((_setState = {
 					result: '',
+					showA: false,
 					text1: ''
 				}, _defineProperty(_setState, mask, ''), _defineProperty(_setState, 'showAddone', mask === 'maskActive'), _setState));
 				this.renderText();
@@ -33564,6 +33567,8 @@
 					_this3.setState({
 						grabtap: false
 					});
+					var wxConfig = _this3.props.wxConfig;
+
 					if (!_this3.startGrab && _this3.state.isBgMove) {
 						_this3.startGrab = true;
 
@@ -33591,12 +33596,22 @@
 									_this4.startGrab = false;
 									_this4.state.count++;
 
+									_this4.setState({
+										result: item.result,
+										text1: item.text1
+									});
 									setTimeout(function () {
 										_this4.setState({
-											result: item.result,
-											text1: item.text1
+											showA: true
 										});
+										//我在建党96周年知识问答中学习了X道题，
+
+										wxConfig('我在“庆祝建党96周年知识问答”中学习了' + _this4.state.count + '道题，一起来学习吧！', '一起来学习吧！');
 									}, 100);
+
+									setTimeout(function () {
+										_this4.canCloseMask = true;
+									}, 2000);
 
 									//this.gameResult(item.result === 'r1' ? 'success' : 'fail');
 									_this4.initGrab();
@@ -33625,6 +33640,7 @@
 					scrollerWidth: this.state.defaultScrollerWidth,
 					scrollerTransition: true
 				});
+
 				setTimeout(function () {
 					_this5.setState({
 						showQ: true
@@ -33692,8 +33708,6 @@
 				this.key = window.localStorage.getItem('zmiti-bigscreen-key') || this.randomString();
 				window.localStorage.setItem('zmiti-bigscreen-key', this.key);
 				var wxConfig = this.props.wxConfig;
-
-				wxConfig('点名答题，建党96周年之际你来当主考官', '一起来学理论知识吧！');
 
 				this.renderText();
 				//this.startMove(this.key);
@@ -33767,7 +33781,7 @@
 						_this7.state.isBgMove = false;
 						_this7.state.showResult = true;
 						_this7.state.result = '';
-						_this7.refs['bg'].pause();
+						_this7.refs['bgSound'].pause();
 
 						_this7.forceUpdate();
 						obserable.trigger({
@@ -33801,7 +33815,7 @@
 					var style = '\n\t\t\t\t\n\t\t\t\t@keyframes bgMove{\n\t\t\t\t\tto{transform:translate3d(0,-' + this.height + 'px,0)}\n\t\t\t\t}\n\t\t\t\t@-webkit-keyframes bgMove{\n\t\t\t\t\tto{-webkit-transform:translate3d(0,-' + this.height + 'px,0)}\n\t\t\t\t}\n\t\t\t';
 					document.getElementsByTagName('style')[0].innerHTML += style;
 				};
-				img.src = this.refs['bg'].src;
+				img.src = this.refs['bg1'].src;
 
 				obserable.on('updatePersonList', function (data) {
 					_this7.state.personList = data;
@@ -33814,7 +33828,9 @@
 			value: function restart() {
 				//重新开始
 
-				var obserable = this.props.obserable;
+				var _props = this.props;
+				var obserable = _props.obserable;
+				var wxConfig = _props.wxConfig;
 
 				obserable.trigger({
 					type: 'animate'
@@ -33827,7 +33843,8 @@
 					showResult: false,
 					showAnswer: true
 				});
-				this.refs['bg'].play();
+				this.refs['bgSound'].play();
+				wxConfig('庆祝建党96周年知识问答', '一起来学习吧！');
 			}
 		}, {
 			key: 'randomString',
@@ -33884,7 +33901,7 @@
 
 
 	// module
-	exports.push([module.id, "/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {\r\n    background-color: #fff;\r\n    border-color: #bf1616;\r\n    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);\r\n}*/\r\n.lt-full {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  overflow: hidden; }\r\n\r\n.zmiti-main-main-ui {\r\n  -webkit-transform-style: preserve-3d;\r\n  transform-style: preserve-3d;\r\n  perspective: 800px;\r\n  -webkit-perspective: 800px;\r\n  height: 100vh;\r\n  width: 100vw;\r\n  -webkit-transition: 0.4s;\r\n  transition: 0.4s;\r\n  overflow: hidden; }\r\n  .zmiti-main-main-ui.left {\r\n    -webkit-transform: translate3d(-640px, 0, 0) scale(0.8);\r\n    transform: translate3d(-640px, 0, 0) scale(0.8); }\r\n  .zmiti-main-main-ui.active {\r\n    -webkit-transform: translate3d(0, 0, 0);\r\n    transform: translate3d(0, 0, 0);\r\n    z-index: 1;\r\n    -webkit-transition: 0.3s;\r\n    transition: 0.3s; }\r\n  .zmiti-main-main-ui.right {\r\n    -webkit-transform: translate3d(960px, 0, 0) scale(2);\r\n    transform: translate3d(960px, 0, 0) scale(2);\r\n    z-index: 0; }\r\n  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(1) {\r\n    top: 132px;\r\n    -webkit-animation: sb 7s linear forwards;\r\n    animation: sb 7s linear forwards; }\r\n  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(2) {\r\n    top: 125px;\r\n    -webkit-animation: sb 13s linear forwards;\r\n    animation: sb 13s linear forwards; }\r\n  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(3) {\r\n    top: 145px;\r\n    -webkit-animation: sb 8s linear forwards;\r\n    animation: sb 8s linear forwards; }\r\n  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(4) {\r\n    top: 125px;\r\n    -webkit-animation: sb 8s linear forwards;\r\n    animation: sb 8s linear forwards; }\r\n  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(5) {\r\n    top: 130px;\r\n    -webkit-animation: sb 8s linear forwards;\r\n    animation: sb 8s linear forwards; }\r\n  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(6) {\r\n    top: 125px;\r\n    -webkit-animation: sb 10s linear forwards;\r\n    animation: sb 10s linear forwards; }\r\n  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(7) {\r\n    top: 148px;\r\n    -webkit-animation: sb 12s linear forwards;\r\n    animation: sb 12s linear forwards; }\r\n  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(8) {\r\n    top: 136px;\r\n    -webkit-animation: sb 9s linear forwards;\r\n    animation: sb 9s linear forwards; }\r\n  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(9) {\r\n    top: 149px;\r\n    -webkit-animation: sb 7s linear forwards;\r\n    animation: sb 7s linear forwards; }\r\n  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(10) {\r\n    top: 114px;\r\n    -webkit-animation: sb 9s linear forwards;\r\n    animation: sb 9s linear forwards; }\r\n  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(11) {\r\n    top: 137px;\r\n    -webkit-animation: sb 9s linear forwards;\r\n    animation: sb 9s linear forwards; }\r\n  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(12) {\r\n    top: 129px;\r\n    -webkit-animation: sb 11s linear forwards;\r\n    animation: sb 11s linear forwards; }\r\n  .zmiti-main-main-ui .zmiti-submit-item:nth-of-type(13) {\r\n    top: 143px;\r\n    -webkit-animation: sb 10s linear forwards;\r\n    animation: sb 10s linear forwards; }\r\n  .zmiti-main-main-ui .zmiti-main-bg {\r\n    -webkit-transform-origin: left;\r\n    transform-origin: left;\r\n    -webkit-backface-visibility: hidden;\r\n            backface-visibility: hidden;\r\n    width: 100%;\r\n    height: 100%;\r\n    position: absolute;\r\n    left: 0;\r\n    top: 0;\r\n    z-index: 0; }\r\n    .zmiti-main-main-ui .zmiti-main-bg.animate {\r\n      -webkit-animation: bgMove 10s linear infinite;\r\n      animation: bgMove 10s linear infinite; }\r\n    .zmiti-main-main-ui .zmiti-main-bg img {\r\n      width: auto;\r\n      height: 100%;\r\n      font-size: 0;\r\n      margin: 0;\r\n      padding: 0;\r\n      margin-left: 0; }\r\n      .zmiti-main-main-ui .zmiti-main-bg img:last-of-type {\r\n        margin-top: -1px; }\r\n    .zmiti-main-main-ui .zmiti-main-bg .zmiti-index-grass {\r\n      position: absolute;\r\n      width: 100%;\r\n      height: 800px;\r\n      bottom: 0px; }\r\n  .zmiti-main-main-ui .zmiti-person {\r\n    position: absolute;\r\n    left: 90px;\r\n    z-index: 100; }\r\n  .zmiti-main-main-ui .zmiti-scroll-bar {\r\n    width: 30px;\r\n    height: 100vh;\r\n    position: absolute;\r\n    top: 0;\r\n    z-index: 10;\r\n    background: #fff;\r\n    right: 0; }\r\n    .zmiti-main-main-ui .zmiti-scroll-bar div {\r\n      width: 100%;\r\n      height: 100%;\r\n      position: absolute;\r\n      box-shadow: 0 0 10px rgba(0, 0, 0, 0.6) inset; }\r\n  .zmiti-main-main-ui .zmiti-logo {\r\n    position: absolute;\r\n    width: 400px;\r\n    left: 50%;\r\n    margin-left: -200px;\r\n    top: 200px;\r\n    -webkit-transform: translate3d(0, -600px, 0);\r\n    transform: translate3d(0, -600px, 0);\r\n    -webkit-transition: 1s;\r\n    transition: 1s;\r\n    -webkit-transition-timing-function: cubic-bezier(1, -0.025, 1, 0.865);\r\n    transition-timing-function: cubic-bezier(1, -0.025, 1, 0.865); }\r\n    .zmiti-main-main-ui .zmiti-logo.active {\r\n      -webkit-transform: translate3d(0, 0, 0);\r\n      transform: translate3d(0, 0, 0); }\r\n    .zmiti-main-main-ui .zmiti-logo svg {\r\n      position: absolute;\r\n      top: 40px;\r\n      width: 100%;\r\n      height: 120px;\r\n      left: 0;\r\n      z-index: 10; }\r\n      .zmiti-main-main-ui .zmiti-logo svg .zmiti-text-path {\r\n        font-size: 50px;\r\n        color: #cf000d;\r\n        font-family: hy; }\r\n  .zmiti-main-main-ui .zmiti-addone {\r\n    position: absolute;\r\n    left: 360px;\r\n    top: 40px;\r\n    opacity: 0; }\r\n    .zmiti-main-main-ui .zmiti-addone.active {\r\n      -webkit-animation: addone 1s 0.1s forwards;\r\n      animation: addone 1s 0.1s forwards; }\r\n  .zmiti-main-main-ui .zmiti-restart-btn {\r\n    position: absolute;\r\n    left: 20px;\r\n    bottom: 20px;\r\n    width: 60px; }\r\n  .zmiti-main-main-ui .zmiti-cotyright {\r\n    position: absolute;\r\n    -webkit-transform: translate(0, -50%) rotate(90deg);\r\n    transform: translate(0, -50%) rotate(90deg);\r\n    top: 50%;\r\n    color: #fff;\r\n    left: -110px;\r\n    font-size: 24px; }\r\n    .zmiti-main-main-ui .zmiti-cotyright img {\r\n      margin-right: 10px;\r\n      width: 40px; }\r\n  .zmiti-main-main-ui .zmiti-begingrab {\r\n    position: absolute;\r\n    left: 20px;\r\n    bottom: 20px;\r\n    width: 100px;\r\n    height: 100px;\r\n    font-size: 30px;\r\n    background: rgba(255, 255, 255, 0.7);\r\n    text-align: center;\r\n    line-height: 100px;\r\n    border-radius: 50%;\r\n    -webkit-transform: rotate(90deg);\r\n    transform: rotate(90deg);\r\n    z-index: 103; }\r\n    .zmiti-main-main-ui .zmiti-begingrab:before {\r\n      content: '';\r\n      position: absolute;\r\n      width: 100%;\r\n      height: 100%;\r\n      left: 0;\r\n      top: 0;\r\n      border-radius: 50%;\r\n      box-shadow: 0 0 40px rgba(0, 0, 0, 0.5), 0 0 10px rgba(0, 0, 0, 0.5) inset; }\r\n    .zmiti-main-main-ui .zmiti-begingrab.active {\r\n      -webkit-transition: -webkit-transform 0.2s;\r\n      transition: -webkit-transform 0.2s;\r\n      transition: transform 0.2s;\r\n      transition: transform 0.2s, -webkit-transform 0.2s;\r\n      -webkit-transform: translate3d(-5px, 0, 0) scale(0.98) rotate(90deg);\r\n      transform: translate3d(-5px, 0, 0) scale(0.98) rotate(90deg); }\r\n  .zmiti-main-main-ui .zmiti-mask {\r\n    z-index: 100;\r\n    background: rgba(0, 0, 0, 0.7);\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    display: -webkit-flex;\r\n    -ms-flex-flow: row;\r\n        flex-flow: row; }\r\n    .zmiti-main-main-ui .zmiti-mask > div {\r\n      width: 500px;\r\n      -webkit-transition: 1s;\r\n      transition: 1s;\r\n      font-size: 20px;\r\n      left: 50%;\r\n      position: absolute;\r\n      top: 50%;\r\n      -webkit-transform: translate3d(-50%, -50%, 0) rotate(90deg);\r\n      transform: translate3d(-50%, -50%, 0) rotate(90deg); }\r\n      .zmiti-main-main-ui .zmiti-mask > div .zmiti-mask-text1 {\r\n        color: #e01329;\r\n        position: absolute;\r\n        font-size: 32px;\r\n        top: 28%;\r\n        left: 12%; }\r\n      .zmiti-main-main-ui .zmiti-mask > div .zmiti-mask-text {\r\n        color: #000;\r\n        font-size: 26px;\r\n        width: 63%;\r\n        max-height: 100px;\r\n        position: absolute;\r\n        top: 56%;\r\n        left: 44%;\r\n        -webkit-transform: translate(-50%, -50%);\r\n        transform: translate(-50%, -50%); }\r\n        .zmiti-main-main-ui .zmiti-mask > div .zmiti-mask-text.r2 {\r\n          color: #940000; }\r\n  .zmiti-main-main-ui .zmiti-result-C {\r\n    z-index: 1000;\r\n    background: rgba(0, 0, 0, 0.5); }\r\n    .zmiti-main-main-ui .zmiti-result-C div {\r\n      width: 86%;\r\n      position: absolute;\r\n      left: 50%;\r\n      top: 50%;\r\n      -webkit-transform: translate(-50%, -50%) rotate(90deg);\r\n      transform: translate(-50%, -50%) rotate(90deg); }\r\n      .zmiti-main-main-ui .zmiti-result-C div span {\r\n        top: 50%;\r\n        font-size: 28px;\r\n        position: absolute;\r\n        width: 65%;\r\n        left: 17%;\r\n        text-indent: 2em; }\r\n      .zmiti-main-main-ui .zmiti-result-C div .zmiti-restart, .zmiti-main-main-ui .zmiti-result-C div .zmiti-share {\r\n        position: absolute;\r\n        width: 120px;\r\n        left: 120px;\r\n        top: 72%; }\r\n      .zmiti-main-main-ui .zmiti-result-C div .zmiti-share {\r\n        left: 300px; }\r\n    .zmiti-main-main-ui .zmiti-result-C .zmiti-share-ar {\r\n      top: 5%;\r\n      left: 23%;\r\n      -webkit-transform: translate(0, 0) rotate(90deg);\r\n      transform: translate(0, 0) rotate(90deg);\r\n      z-index: 100; }\r\n  .zmiti-main-main-ui .zmiti-tips {\r\n    background: rgba(0, 0, 0, 0.7);\r\n    z-index: 102; }\r\n    .zmiti-main-main-ui .zmiti-tips img {\r\n      position: absolute; }\r\n      .zmiti-main-main-ui .zmiti-tips img:nth-of-type(1) {\r\n        height: 80%;\r\n        top: 10%;\r\n        width: auto;\r\n        right: 0; }\r\n      .zmiti-main-main-ui .zmiti-tips img:nth-of-type(2) {\r\n        width: 50%;\r\n        bottom: 30px;\r\n        left: 100px; }\r\n  .zmiti-main-main-ui .zmiti-scroller {\r\n    width: 200px;\r\n    height: 70px;\r\n    position: absolute;\r\n    right: 5px;\r\n    z-index: 11;\r\n    top: 0; }\r\n    .zmiti-main-main-ui .zmiti-scroller.transition {\r\n      -webkit-transition: width 1s;\r\n      transition: width 1s; }\r\n    .zmiti-main-main-ui .zmiti-scroller > section {\r\n      width: 100%;\r\n      -webkit-transition: 1s;\r\n      transition: 1s;\r\n      -webkit-transform-origin: center 20px;\r\n      transform-origin: center 20px; }\r\n      .zmiti-main-main-ui .zmiti-scroller > section.right {\r\n        -webkit-transform: rotate(15deg);\r\n        transform: rotate(15deg); }\r\n      .zmiti-main-main-ui .zmiti-scroller > section.left {\r\n        -webkit-transform: rotate(-15deg);\r\n        transform: rotate(-15deg); }\r\n      .zmiti-main-main-ui .zmiti-scroller > section.over {\r\n        -webkit-transition: 0.5s;\r\n        transition: 0.5s;\r\n        -webkit-transition-timing-function: cubic-bezier(0.31, 0.76, 0.72, 1.26);\r\n        transition-timing-function: cubic-bezier(0.31, 0.76, 0.72, 1.26); }\r\n    .zmiti-main-main-ui .zmiti-scroller .zmiti-scroller-gear {\r\n      height: 40px;\r\n      width: 20px;\r\n      background: #f00;\r\n      border-radius: 10px;\r\n      position: absolute;\r\n      right: 3px;\r\n      top: 50%;\r\n      margin-top: -20px; }\r\n      .zmiti-main-main-ui .zmiti-scroller .zmiti-scroller-gear:before {\r\n        content: \"\";\r\n        position: absolute;\r\n        width: 10px;\r\n        height: 10px;\r\n        background: #ece9a7;\r\n        border-radius: 50%;\r\n        left: 50%;\r\n        top: 50%;\r\n        margin-left: -5px;\r\n        margin-top: -5px; }\r\n    .zmiti-main-main-ui .zmiti-scroller .zmiti-scroller-rod {\r\n      height: 8px;\r\n      width: 80%;\r\n      background: #f00;\r\n      position: absolute;\r\n      top: 50%;\r\n      margin-top: -4px;\r\n      right: 22px; }\r\n    .zmiti-main-main-ui .zmiti-scroller .zmiti-scroller-latter {\r\n      position: absolute;\r\n      bottom: 10px;\r\n      left: -5px;\r\n      width: 80px; }\r\n    .zmiti-main-main-ui .zmiti-scroller .zmiti-question {\r\n      position: relative;\r\n      bottom: -88px;\r\n      width: 230px;\r\n      left: 0;\r\n      -webkit-transform: rotate(90deg);\r\n      transform: rotate(90deg); }\r\n      .zmiti-main-main-ui .zmiti-scroller .zmiti-question span {\r\n        word-break: break-all;\r\n        position: absolute;\r\n        display: -webkit-box;\r\n        -webkit-box-align: center;\r\n        -webkit-box-pack: center;\r\n        -webkit-box-orient: horizontal;\r\n        left: 28px;\r\n        text-align: left;\r\n        height: 70px;\r\n        top: 18px;\r\n        text-indent: 0;\r\n        color: #446b9a;\r\n        width: 184px;\r\n        font-size: 28px; }\r\n  .zmiti-main-main-ui .zmiti-controller {\r\n    position: absolute;\r\n    width: 400px;\r\n    height: 100px;\r\n    font-size: 28px;\r\n    top: 50px;\r\n    left: 40px;\r\n    color: #fff;\r\n    -webkit-transform: translate(270px, 140px) rotate(90deg);\r\n    transform: translate(270px, 140px) rotate(90deg);\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    display: -webkit-flex;\r\n    -ms-flex-flow: row;\r\n        flex-flow: row; }\r\n    .zmiti-main-main-ui .zmiti-controller.active {\r\n      -webkit-transform: translate(0, 0);\r\n      transform: translate(0, 0);\r\n      -webkit-transition: -webkit-transform 1s;\r\n      transition: -webkit-transform 1s;\r\n      transition: transform 1s;\r\n      transition: transform 1s, -webkit-transform 1s; }\r\n    .zmiti-main-main-ui .zmiti-controller > div:last-of-type {\r\n      margin: 5px 0 0 20px;\r\n      height: 40px;\r\n      font-family: hy; }\r\n      .zmiti-main-main-ui .zmiti-controller > div:last-of-type span {\r\n        color: #f00;\r\n        font-size: 44px;\r\n        margin: 0 10px; }\r\n    .zmiti-main-main-ui .zmiti-controller img {\r\n      width: 60px;\r\n      border: 2px solid #fff;\r\n      border-radius: 50%; }\r\n  .zmiti-main-main-ui .zmiti-waitint-list {\r\n    width: 200px;\r\n    position: absolute;\r\n    top: 0;\r\n    -webkit-transform: translate(200px, 70vh) rotate(90deg);\r\n    transform: translate(200px, 70vh) rotate(90deg);\r\n    z-index: 4;\r\n    right: 230px;\r\n    min-height: 200px; }\r\n    .zmiti-main-main-ui .zmiti-waitint-list .zmiti-cloud-line {\r\n      width: 60px;\r\n      height: 95px;\r\n      position: absolute;\r\n      z-index: 1;\r\n      right: 30px;\r\n      -webkit-transform-style: preserve-3d;\r\n      transform-style: preserve-3d;\r\n      perspective: 800px;\r\n      -webkit-perspective: 800px; }\r\n      .zmiti-main-main-ui .zmiti-waitint-list .zmiti-cloud-line:last-of-type {\r\n        top: 150px;\r\n        height: 240px; }\r\n        .zmiti-main-main-ui .zmiti-waitint-list .zmiti-cloud-line:last-of-type > aside:after {\r\n          display: none; }\r\n      .zmiti-main-main-ui .zmiti-waitint-list .zmiti-cloud-line aside {\r\n        width: 2px;\r\n        height: 100%;\r\n        background: #887011;\r\n        position: absolute; }\r\n        .zmiti-main-main-ui .zmiti-waitint-list .zmiti-cloud-line aside:after {\r\n          content: '';\r\n          -webkit-transform: rotateX(70deg);\r\n          transform: rotateX(70deg);\r\n          -webkit-transform-origin: bottom;\r\n          transform-origin: bottom;\r\n          position: absolute;\r\n          width: 4px;\r\n          height: 4px;\r\n          border-radius: 50%;\r\n          border: 2px solid #999;\r\n          bottom: -1px;\r\n          left: -3px; }\r\n        .zmiti-main-main-ui .zmiti-waitint-list .zmiti-cloud-line aside:nth-of-type(1) {\r\n          left: 0; }\r\n        .zmiti-main-main-ui .zmiti-waitint-list .zmiti-cloud-line aside:nth-of-type(2) {\r\n          right: 0; }\r\n    .zmiti-main-main-ui .zmiti-waitint-list .zmiti-waiting-C {\r\n      position: absolute;\r\n      z-index: 12;\r\n      top: 170px;\r\n      right: 0; }\r\n      .zmiti-main-main-ui .zmiti-waitint-list .zmiti-waiting-C li {\r\n        border-radius: 30px;\r\n        margin: 20px 0;\r\n        line-height: 50px;\r\n        width: 200px;\r\n        text-align: center;\r\n        height: 50px;\r\n        background: #fff; }\r\n        .zmiti-main-main-ui .zmiti-waitint-list .zmiti-waiting-C li img {\r\n          margin-right: 20px;\r\n          width: 40px;\r\n          border-radius: 50%; }\r\n    .zmiti-main-main-ui .zmiti-waitint-list .zmiti-duration {\r\n      font-family: hy;\r\n      position: absolute;\r\n      color: #000;\r\n      bottom: -44px;\r\n      text-align: center;\r\n      width: 100%;\r\n      font-size: 40px; }\r\n    .zmiti-main-main-ui .zmiti-waitint-list svg {\r\n      position: absolute;\r\n      width: 400px;\r\n      height: 200px; }\r\n\r\n@-webkit-keyframes sb {\r\n  to {\r\n    -webkit-transform: translate3d(-2400px, 0, 0);\r\n    transform: translate3d(-2400px, 0, 0); } }\r\n\r\n@keyframes sb {\r\n  to {\r\n    -webkit-transform: translate3d(-2400px, 0, 0);\r\n    transform: translate3d(-2400px, 0, 0); } }\r\n@-webkit-keyframes addone {\r\n  from {\r\n    -webkit-transform: translate(0, 0) rotate(90deg);\r\n    transform: translate(0, 0) rotate(90deg);\r\n    opacity: 1; }\r\n  to {\r\n    -webkit-transform: translate(50px, 0) rotate(90deg);\r\n    transform: translate(50px, 0) rotate(90deg);\r\n    opacity: 0; } }\r\n@keyframes addone {\r\n  from {\r\n    -webkit-transform: translate(0, 0) rotate(90deg);\r\n    transform: translate(0, 0) rotate(90deg);\r\n    opacity: 1; }\r\n  to {\r\n    -webkit-transform: translate(50px, 0) rotate(90deg);\r\n    transform: translate(50px, 0) rotate(90deg);\r\n    opacity: 0; } }\r\n\r\n/*# sourceMappingURL=index.css.map */", ""]);
+	exports.push([module.id, ".lt-full{width:100%;height:100%;position:absolute;left:0;top:0;overflow:hidden}.zmiti-main-main-ui{-webkit-transform-style:preserve-3d;transform-style:preserve-3d;perspective:800px;-webkit-perspective:800px;height:100vh;width:100vw;-webkit-transition:.4s;transition:.4s;overflow:hidden}.zmiti-main-main-ui.left{-webkit-transform:translate3d(-640px, 0, 0) scale(0.8);transform:translate3d(-640px, 0, 0) scale(0.8)}.zmiti-main-main-ui.active{-webkit-transform:translate3d(0, 0, 0);transform:translate3d(0, 0, 0);z-index:1;-webkit-transition:.3s;transition:.3s}.zmiti-main-main-ui.right{-webkit-transform:translate3d(960px, 0, 0) scale(2);transform:translate3d(960px, 0, 0) scale(2);z-index:0}.zmiti-main-main-ui .zmiti-submit-item:nth-of-type(1){top:108px;-webkit-animation:sb 7s linear forwards;animation:sb 7s linear forwards}.zmiti-main-main-ui .zmiti-submit-item:nth-of-type(2){top:129px;-webkit-animation:sb 11s linear forwards;animation:sb 11s linear forwards}.zmiti-main-main-ui .zmiti-submit-item:nth-of-type(3){top:150px;-webkit-animation:sb 9s linear forwards;animation:sb 9s linear forwards}.zmiti-main-main-ui .zmiti-submit-item:nth-of-type(4){top:120px;-webkit-animation:sb 13s linear forwards;animation:sb 13s linear forwards}.zmiti-main-main-ui .zmiti-submit-item:nth-of-type(5){top:140px;-webkit-animation:sb 8s linear forwards;animation:sb 8s linear forwards}.zmiti-main-main-ui .zmiti-submit-item:nth-of-type(6){top:109px;-webkit-animation:sb 11s linear forwards;animation:sb 11s linear forwards}.zmiti-main-main-ui .zmiti-submit-item:nth-of-type(7){top:143px;-webkit-animation:sb 6s linear forwards;animation:sb 6s linear forwards}.zmiti-main-main-ui .zmiti-submit-item:nth-of-type(8){top:132px;-webkit-animation:sb 11s linear forwards;animation:sb 11s linear forwards}.zmiti-main-main-ui .zmiti-submit-item:nth-of-type(9){top:137px;-webkit-animation:sb 9s linear forwards;animation:sb 9s linear forwards}.zmiti-main-main-ui .zmiti-submit-item:nth-of-type(10){top:106px;-webkit-animation:sb 6s linear forwards;animation:sb 6s linear forwards}.zmiti-main-main-ui .zmiti-submit-item:nth-of-type(11){top:108px;-webkit-animation:sb 12s linear forwards;animation:sb 12s linear forwards}.zmiti-main-main-ui .zmiti-submit-item:nth-of-type(12){top:132px;-webkit-animation:sb 13s linear forwards;animation:sb 13s linear forwards}.zmiti-main-main-ui .zmiti-submit-item:nth-of-type(13){top:137px;-webkit-animation:sb 9s linear forwards;animation:sb 9s linear forwards}.zmiti-main-main-ui .zmiti-main-bg{-webkit-transform-origin:left;transform-origin:left;backface-visibility:hidden;width:100%;height:100%;position:absolute;left:0;top:0;z-index:0}.zmiti-main-main-ui .zmiti-main-bg.animate{-webkit-animation:bgMove 10s linear infinite;animation:bgMove 10s linear infinite}.zmiti-main-main-ui .zmiti-main-bg img{width:auto;height:100%;font-size:0;margin:0;padding:0;margin-left:0}.zmiti-main-main-ui .zmiti-main-bg img:last-of-type{margin-top:-1px}.zmiti-main-main-ui .zmiti-main-bg .zmiti-index-grass{position:absolute;width:100%;height:800px;bottom:0px}.zmiti-main-main-ui .zmiti-person{position:absolute;left:90px;z-index:100}.zmiti-main-main-ui .zmiti-scroll-bar{width:30px;height:100vh;position:absolute;top:0;z-index:10;background:#fff;right:0}.zmiti-main-main-ui .zmiti-scroll-bar div{width:100%;height:100%;position:absolute;box-shadow:0 0 10px rgba(0,0,0,0.6) inset}.zmiti-main-main-ui .zmiti-logo{position:absolute;width:400px;left:50%;margin-left:-200px;top:200px;-webkit-transform:translate3d(0, -600px, 0);transform:translate3d(0, -600px, 0);-webkit-transition:1s;transition:1s;-webkit-transition-timing-function:cubic-bezier(1, -0.025, 1, 0.865);transition-timing-function:cubic-bezier(1, -0.025, 1, 0.865)}.zmiti-main-main-ui .zmiti-logo.active{-webkit-transform:translate3d(0, 0, 0);transform:translate3d(0, 0, 0)}.zmiti-main-main-ui .zmiti-logo svg{position:absolute;top:40px;width:100%;height:120px;left:0;z-index:10}.zmiti-main-main-ui .zmiti-logo svg .zmiti-text-path{font-size:50px;color:#cf000d;font-family:hy}.zmiti-main-main-ui .zmiti-addone{position:absolute;left:360px;top:40px;opacity:0}.zmiti-main-main-ui .zmiti-addone.active{-webkit-animation:addone 1s 0.1s forwards;animation:addone 1s 0.1s forwards}.zmiti-main-main-ui .zmiti-restart-btn{position:absolute;left:20px;bottom:20px;width:60px}.zmiti-main-main-ui .zmiti-cotyright{position:absolute;-webkit-transform:translate(0, -50%) rotate(90deg);transform:translate(0, -50%) rotate(90deg);top:50%;color:#fff;left:-110px;font-size:24px}.zmiti-main-main-ui .zmiti-cotyright img{margin-right:10px;width:40px}.zmiti-main-main-ui .zmiti-begingrab{position:absolute;left:20px;bottom:20px;width:100px;height:100px;font-size:30px;background:rgba(255,255,255,0.7);text-align:center;line-height:100px;border-radius:50%;-webkit-transform:rotate(90deg);transform:rotate(90deg);z-index:103}.zmiti-main-main-ui .zmiti-begingrab:before{content:'';position:absolute;width:100%;height:100%;left:0;top:0;border-radius:50%;box-shadow:0 0 40px rgba(0,0,0,0.5),0 0 10px rgba(0,0,0,0.5) inset}.zmiti-main-main-ui .zmiti-begingrab.active{-webkit-transition:-webkit-transform .2s;transition:transform .2s;-webkit-transform:translate3d(-5px, 0, 0) scale(0.98) rotate(90deg);transform:translate3d(-5px, 0, 0) scale(0.98) rotate(90deg)}.zmiti-main-main-ui .zmiti-mask{z-index:100;background:rgba(0,0,0,0.7);display:flex;display:-webkit-flex;flex-flow:row}.zmiti-main-main-ui .zmiti-mask>div{width:680px;-webkit-transition:1s;transition:1s;font-size:20px;left:50%;position:absolute;top:50%;-webkit-transform:translate3d(-50%, -50%, 0) rotate(90deg);transform:translate3d(-50%, -50%, 0) rotate(90deg)}.zmiti-main-main-ui .zmiti-mask>div .zmiti-mask-text1{color:#e01329;position:absolute;font-size:34px;top:28%;left:12%;width:520px}.zmiti-main-main-ui .zmiti-mask>div .zmiti-mask-text{color:#000;font-size:26px;width:70%;max-height:100px;position:absolute;top:56%;left:47%;opacity:0;-webkit-transform:translate(-50%, -50%);transform:translate(-50%, -50%)}.zmiti-main-main-ui .zmiti-mask>div .zmiti-mask-text.r2{color:#940000}.zmiti-main-main-ui .zmiti-mask>div .zmiti-mask-text.r1{opacity:1;-webkit-transition:opacity 0.5s 1s;transition:opacity 0.5s 1s}.zmiti-main-main-ui .zmiti-result-C{z-index:1000;background:rgba(0,0,0,0.5)}.zmiti-main-main-ui .zmiti-result-C div{width:86%;position:absolute;left:50%;top:50%;-webkit-transform:translate(-50%, -50%) rotate(90deg);transform:translate(-50%, -50%) rotate(90deg)}.zmiti-main-main-ui .zmiti-result-C div span{top:50%;font-size:28px;position:absolute;width:65%;left:17%;text-indent:2em}.zmiti-main-main-ui .zmiti-result-C div .zmiti-restart,.zmiti-main-main-ui .zmiti-result-C div .zmiti-share{position:absolute;width:120px;left:120px;top:72%}.zmiti-main-main-ui .zmiti-result-C div .zmiti-share{left:300px}.zmiti-main-main-ui .zmiti-result-C .zmiti-share-ar{top:5%;left:23%;-webkit-transform:translate(0, 0) rotate(90deg);transform:translate(0, 0) rotate(90deg);z-index:100}.zmiti-main-main-ui .zmiti-tips{background:rgba(0,0,0,0.7);z-index:102}.zmiti-main-main-ui .zmiti-tips img{position:absolute}.zmiti-main-main-ui .zmiti-tips img:nth-of-type(1){height:80%;top:10%;width:auto;right:0}.zmiti-main-main-ui .zmiti-tips img:nth-of-type(2){width:50%;bottom:30px;left:100px}.zmiti-main-main-ui .zmiti-scroller{width:200px;height:70px;position:absolute;right:5px;z-index:11;top:0}.zmiti-main-main-ui .zmiti-scroller.transition{-webkit-transition:width 1s;transition:width 1s}.zmiti-main-main-ui .zmiti-scroller>section{width:100%;-webkit-transition:1s;transition:1s;-webkit-transform-origin:center 20px;transform-origin:center 20px}.zmiti-main-main-ui .zmiti-scroller>section.right{-webkit-transform:rotate(15deg);transform:rotate(15deg)}.zmiti-main-main-ui .zmiti-scroller>section.left{-webkit-transform:rotate(-15deg);transform:rotate(-15deg)}.zmiti-main-main-ui .zmiti-scroller>section.over{-webkit-transition:.5s;transition:.5s;-webkit-transition-timing-function:cubic-bezier(0.31, 0.76, 0.72, 1.26);transition-timing-function:cubic-bezier(0.31, 0.76, 0.72, 1.26)}.zmiti-main-main-ui .zmiti-scroller .zmiti-scroller-gear{height:40px;width:20px;background:#f00;border-radius:10px;position:absolute;right:3px;top:50%;margin-top:-20px}.zmiti-main-main-ui .zmiti-scroller .zmiti-scroller-gear:before{content:\"\";position:absolute;width:10px;height:10px;background:#ece9a7;border-radius:50%;left:50%;top:50%;margin-left:-5px;margin-top:-5px}.zmiti-main-main-ui .zmiti-scroller .zmiti-scroller-rod{height:8px;width:80%;background:#f00;position:absolute;top:50%;margin-top:-4px;right:22px}.zmiti-main-main-ui .zmiti-scroller .zmiti-scroller-latter{position:absolute;bottom:10px;left:-5px;width:80px}.zmiti-main-main-ui .zmiti-scroller .zmiti-question{position:relative;bottom:-88px;width:270px;left:-22px;-webkit-transform:rotate(90deg);transform:rotate(90deg)}.zmiti-main-main-ui .zmiti-scroller .zmiti-question span{word-break:break-all;position:absolute;display:-webkit-box;-webkit-box-align:center;-webkit-box-pack:center;-webkit-box-orient:horizontal;left:20px;text-align:left;height:70px;top:28px;text-indent:0;color:#446b9a;width:226px;font-size:28px}.zmiti-main-main-ui .zmiti-controller{position:absolute;width:400px;height:100px;font-size:28px;top:50px;left:40px;color:#fff;-webkit-transform:translate(270px, 140px) rotate(90deg);transform:translate(270px, 140px) rotate(90deg);display:flex;display:-webkit-flex;flex-flow:row}.zmiti-main-main-ui .zmiti-controller.active{-webkit-transform:translate(0, 0);transform:translate(0, 0);-webkit-transition:-webkit-transform 1s;transition:transform 1s}.zmiti-main-main-ui .zmiti-controller>div:last-of-type{margin:5px 0 0 20px;height:40px;font-family:hy}.zmiti-main-main-ui .zmiti-controller>div:last-of-type span{color:#f00;font-size:44px;margin:0 10px}.zmiti-main-main-ui .zmiti-controller img{width:60px;border:2px solid #fff;border-radius:50%}.zmiti-main-main-ui .zmiti-waitint-list{width:200px;position:absolute;top:0;-webkit-transform:translate(200px, 70vh) rotate(90deg);transform:translate(200px, 70vh) rotate(90deg);z-index:4;right:230px;min-height:200px}.zmiti-main-main-ui .zmiti-waitint-list .zmiti-cloud-line{width:60px;height:95px;position:absolute;z-index:1;right:30px;-webkit-transform-style:preserve-3d;transform-style:preserve-3d;perspective:800px;-webkit-perspective:800px}.zmiti-main-main-ui .zmiti-waitint-list .zmiti-cloud-line:last-of-type{top:150px;height:240px}.zmiti-main-main-ui .zmiti-waitint-list .zmiti-cloud-line:last-of-type>aside:after{display:none}.zmiti-main-main-ui .zmiti-waitint-list .zmiti-cloud-line aside{width:2px;height:100%;background:#887011;position:absolute}.zmiti-main-main-ui .zmiti-waitint-list .zmiti-cloud-line aside:after{content:'';-webkit-transform:rotateX(70deg);transform:rotateX(70deg);-webkit-transform-origin:bottom;transform-origin:bottom;position:absolute;width:4px;height:4px;border-radius:50%;border:2px solid #999;bottom:-1px;left:-3px}.zmiti-main-main-ui .zmiti-waitint-list .zmiti-cloud-line aside:nth-of-type(1){left:0}.zmiti-main-main-ui .zmiti-waitint-list .zmiti-cloud-line aside:nth-of-type(2){right:0}.zmiti-main-main-ui .zmiti-waitint-list .zmiti-waiting-C{position:absolute;z-index:12;top:170px;right:0}.zmiti-main-main-ui .zmiti-waitint-list .zmiti-waiting-C li{border-radius:30px;margin:20px 0;line-height:50px;width:200px;text-align:center;height:50px;background:#fff}.zmiti-main-main-ui .zmiti-waitint-list .zmiti-waiting-C li img{margin-right:20px;width:40px;border-radius:50%}.zmiti-main-main-ui .zmiti-waitint-list .zmiti-duration{font-family:hy;position:absolute;color:#000;bottom:-44px;text-align:center;width:100%;font-size:40px}.zmiti-main-main-ui .zmiti-waitint-list svg{position:absolute;width:400px;height:200px}@keyframes sb{to{-webkit-transform:translate3d(-2400px, 0, 0);transform:translate3d(-2400px, 0, 0)}}@keyframes addone{from{-webkit-transform:translate(0, 0) rotate(90deg);transform:translate(0, 0) rotate(90deg);opacity:1}to{-webkit-transform:translate(50px, 0) rotate(90deg);transform:translate(50px, 0) rotate(90deg);opacity:0}}\r\n/*# sourceMappingURL=index.css.map */\r\n", ""]);
 
 	// exports
 
@@ -33967,7 +33984,6 @@
 					_this.initPerson(personList);
 
 					obserable.on('animate', function () {
-
 						_this.timer = _this.timerFn(context, personList, width, height, arr, myCavnas);
 					});
 					obserable.on('stop', function () {
@@ -33990,12 +34006,20 @@
 
 				var obserable = this.props.obserable;
 
+				var count = 0;
 				personList.forEach(function (person, i) {
 					person.img = new Image();
+					person.img.onload = function () {
+						count++;
+					};
 					person.img.src = person.src;
 					person.iNow = 0;
 				});
+
 				var timer = setInterval(function () {
+					if (count < personList.length) {
+						return;
+					}
 					context.clearRect(0, 0, width, height);
 					personList.forEach(function (person, i) {
 
@@ -34152,7 +34176,7 @@
 				};
 				return _react2['default'].createElement(
 					'div',
-					{ className: 'zmiti-loading-ui', style: mainStyle },
+					{ className: 'zmiti-loading-ui lt-full', style: mainStyle },
 					_react2['default'].createElement(
 						'a',
 						{ href: '#' },
@@ -34225,7 +34249,7 @@
 
 
 	// module
-	exports.push([module.id, "/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {\r\n    background-color: #fff;\r\n    border-color: #bf1616;\r\n    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);\r\n}*/\r\n.lt-full {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0;\r\n  overflow: hidden; }\r\n\r\n.zmiti-loading-ui {\r\n  position: fixed;\r\n  left: 50%;\r\n  top: 0;\r\n  margin-left: -320px;\r\n  z-index: 100;\r\n  width: 640px;\r\n  height: 100%; }\r\n  .zmiti-loading-ui .zmiti-screen {\r\n    position: absolute;\r\n    top: 30%;\r\n    width: 200px;\r\n    left: 50%;\r\n    color: #fff;\r\n    text-align: center;\r\n    font-size: 30px;\r\n    margin-left: -100px; }\r\n  .zmiti-loading-ui a {\r\n    text-align: center;\r\n    line-height: 180px;\r\n    color: #fff;\r\n    display: block;\r\n    width: 180px;\r\n    height: 180px;\r\n    position: fixed;\r\n    left: 50%;\r\n    top: 60%;\r\n    border-radius: 50%;\r\n    margin: -90px 0 0 -90px; }\r\n    .zmiti-loading-ui a .zmiti-head {\r\n      width: 60px;\r\n      height: 60px;\r\n      border-radius: 50%;\r\n      position: absolute;\r\n      top: 50%;\r\n      left: 50%;\r\n      margin-left: -30px;\r\n      margin-top: -30px; }\r\n    .zmiti-loading-ui a .zmiti-progress {\r\n      width: 100%;\r\n      position: relative;\r\n      z-index: 10;\r\n      top: 90px;\r\n      font-size: 34px; }\r\n  .zmiti-loading-ui a .line1 {\r\n    width: 80px;\r\n    height: 80px;\r\n    position: absolute;\r\n    left: 50%;\r\n    top: 50%;\r\n    margin: -42px 0 0 -42px;\r\n    border: 2px solid #fff;\r\n    border-radius: 80px 80px 80px 80px;\r\n    border-right-color: transparent;\r\n    border-top-color: transparent; }\r\n  .zmiti-loading-ui a .line2 {\r\n    width: 100px;\r\n    height: 100px;\r\n    position: absolute;\r\n    left: 50%;\r\n    top: 50%;\r\n    margin: -52px 0 0 -52px;\r\n    border: 2px solid #fff;\r\n    border-radius: 100px 100px 100px 100px;\r\n    border-right-color: transparent;\r\n    border-left-color: transparent; }\r\n  .zmiti-loading-ui a .line3 {\r\n    width: 120px;\r\n    height: 120px;\r\n    position: absolute;\r\n    left: 50%;\r\n    top: 50%;\r\n    margin: -62px 0 0 -62px;\r\n    border: 2px solid #fff;\r\n    border-radius: 120px 120px 120px 120px;\r\n    border-right-color: transparent; }\r\n@-webkit-keyframes line1 {\r\n  0% {\r\n    -webkit-transform: rotate(0deg);\r\n    transform: rotate(0deg); }\r\n  20% {\r\n    -webkit-transform: rotate(720deg);\r\n    transform: rotate(720deg); }\r\n  50% {\r\n    -webkit-transform: rotate(1080deg);\r\n    transform: rotate(1080deg); }\r\n  75% {\r\n    -webkit-transform: rotate(1300deg);\r\n    transform: rotate(1300deg); }\r\n  100% {\r\n    -webkit-transform: rotate(2500deg);\r\n    transform: rotate(2500deg); } }\r\n@keyframes line1 {\r\n  0% {\r\n    -webkit-transform: rotate(0deg);\r\n    transform: rotate(0deg); }\r\n  20% {\r\n    -webkit-transform: rotate(720deg);\r\n    transform: rotate(720deg); }\r\n  50% {\r\n    -webkit-transform: rotate(1080deg);\r\n    transform: rotate(1080deg); }\r\n  75% {\r\n    -webkit-transform: rotate(1300deg);\r\n    transform: rotate(1300deg); }\r\n  100% {\r\n    -webkit-transform: rotate(2500deg);\r\n    transform: rotate(2500deg); } }\r\n  .zmiti-loading-ui a .line1 {\r\n    -webkit-animation: line1 14s ease-in-out 1s infinite alternate;\r\n    animation: line1 15s ease-in-out 1s infinite alternate; }\r\n@-webkit-keyframes line2 {\r\n  from {\r\n    -webkit-transform: rotate(360deg);\r\n    transform: rotate(360deg); }\r\n  to {\r\n    -webkit-transform: rotate(0deg);\r\n    transform: rotate(0deg); } }\r\n@keyframes line2 {\r\n  from {\r\n    -webkit-transform: rotate(360deg);\r\n    transform: rotate(360deg); }\r\n  to {\r\n    -webkit-transform: rotate(0deg);\r\n    transform: rotate(0deg); } }\r\n  .zmiti-loading-ui a .line2 {\r\n    -webkit-animation: line2 3s ease-in-out infinite;\r\n    animation: line2 3s ease-in-out infinite; }\r\n@-webkit-keyframes line3 {\r\n  0% {\r\n    -webkit-transform: rotate(0deg);\r\n    transform: rotate(0deg); }\r\n  20% {\r\n    -webkit-transform: rotate(720deg);\r\n    transform: rotate(720deg); }\r\n  50% {\r\n    -webkit-transform: rotate(1080deg);\r\n    transform: rotate(1080deg); }\r\n  75% {\r\n    -webkit-transform: rotate(1300deg);\r\n    transform: rotate(1300deg); }\r\n  100% {\r\n    -webkit-transform: rotate(2500deg);\r\n    transform: rotate(2500deg); } }\r\n@keyframes line3 {\r\n  0% {\r\n    -webkit-transform: rotate(0deg);\r\n    transform: rotate(0deg); }\r\n  20% {\r\n    -webkit-transform: rotate(720deg);\r\n    transform: rotate(720deg); }\r\n  50% {\r\n    -webkit-transform: rotate(1080deg);\r\n    transform: rotate(1080deg); }\r\n  75% {\r\n    -webkit-transform: rotate(1300deg);\r\n    transform: rotate(1300deg); }\r\n  100% {\r\n    -webkit-transform: rotate(2500deg);\r\n    transform: rotate(2500deg); } }\r\n  .zmiti-loading-ui a .line3 {\r\n    -webkit-animation: line3 20s ease-in-out infinite;\r\n    animation: line3 20s ease-in-out infinite; }\r\n\r\n/*# sourceMappingURL=index.css.map */", ""]);
+	exports.push([module.id, ".lt-full{width:100%;height:100%;position:absolute;left:0;top:0;overflow:hidden}.zmiti-loading-ui{z-index:1001}.zmiti-loading-ui .zmiti-screen{position:absolute;top:30%;width:200px;left:50%;color:#fff;text-align:center;font-size:30px;margin-left:-100px}.zmiti-loading-ui a{text-align:center;line-height:180px;color:#fff;display:block;width:180px;height:180px;position:fixed;left:50%;top:60%;border-radius:50%;margin:-90px 0 0 -90px}.zmiti-loading-ui a .zmiti-head{width:60px;height:60px;border-radius:50%;position:absolute;top:50%;left:50%;margin-left:-30px;margin-top:-30px}.zmiti-loading-ui a .zmiti-progress{width:100%;position:relative;z-index:10;top:90px;font-size:34px}.zmiti-loading-ui a .line1{width:80px;height:80px;position:absolute;left:50%;top:50%;margin:-42px 0 0 -42px;border:2px solid #fff;border-radius:80px 80px 80px 80px;border-right-color:transparent;border-top-color:transparent}.zmiti-loading-ui a .line2{width:100px;height:100px;position:absolute;left:50%;top:50%;margin:-52px 0 0 -52px;border:2px solid #fff;border-radius:100px 100px 100px 100px;border-right-color:transparent;border-left-color:transparent}.zmiti-loading-ui a .line3{width:120px;height:120px;position:absolute;left:50%;top:50%;margin:-62px 0 0 -62px;border:2px solid #fff;border-radius:120px 120px 120px 120px;border-right-color:transparent}@-webkit-keyframes line1{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}20%{-webkit-transform:rotate(720deg);transform:rotate(720deg)}50%{-webkit-transform:rotate(1080deg);transform:rotate(1080deg)}75%{-webkit-transform:rotate(1300deg);transform:rotate(1300deg)}100%{-webkit-transform:rotate(2500deg);transform:rotate(2500deg)}}@keyframes line1{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}20%{-webkit-transform:rotate(720deg);transform:rotate(720deg)}50%{-webkit-transform:rotate(1080deg);transform:rotate(1080deg)}75%{-webkit-transform:rotate(1300deg);transform:rotate(1300deg)}100%{-webkit-transform:rotate(2500deg);transform:rotate(2500deg)}}.zmiti-loading-ui a .line1{-webkit-animation:line1 14s ease-in-out 1s infinite alternate;animation:line1 15s ease-in-out 1s infinite alternate}@-webkit-keyframes line2{from{-webkit-transform:rotate(360deg);transform:rotate(360deg)}to{-webkit-transform:rotate(0deg);transform:rotate(0deg)}}@keyframes line2{from{-webkit-transform:rotate(360deg);transform:rotate(360deg)}to{-webkit-transform:rotate(0deg);transform:rotate(0deg)}}.zmiti-loading-ui a .line2{-webkit-animation:line2 3s ease-in-out infinite;animation:line2 3s ease-in-out infinite}@-webkit-keyframes line3{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}20%{-webkit-transform:rotate(720deg);transform:rotate(720deg)}50%{-webkit-transform:rotate(1080deg);transform:rotate(1080deg)}75%{-webkit-transform:rotate(1300deg);transform:rotate(1300deg)}100%{-webkit-transform:rotate(2500deg);transform:rotate(2500deg)}}@keyframes line3{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}20%{-webkit-transform:rotate(720deg);transform:rotate(720deg)}50%{-webkit-transform:rotate(1080deg);transform:rotate(1080deg)}75%{-webkit-transform:rotate(1300deg);transform:rotate(1300deg)}100%{-webkit-transform:rotate(2500deg);transform:rotate(2500deg)}}.zmiti-loading-ui a .line3{-webkit-animation:line3 20s ease-in-out infinite;animation:line3 20s ease-in-out infinite}\r\n/*# sourceMappingURL=index.css.map */\r\n", ""]);
 
 	// exports
 

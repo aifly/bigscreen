@@ -21,7 +21,7 @@ export default class ZmitiIndexApp extends Component {
 			<div style={mainStyle} className={'zmiti-index-main-ui lt-full '+ this.state.mainClass}>
 				<section className='zmiti-index'>
 					<div>
-						<img src='../assets/images/m-logo.png'/>
+						<img src='../assets/images/m-logo1.png'/>
 					</div>
 					
 					<div>
