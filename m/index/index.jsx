@@ -45,11 +45,7 @@ export default class ZmitiIndexApp extends Component {
 			this.setState({
 				bigscreenTap:false
 			});
-			obserable.trigger({
-				type:'toggleRemark',
-				data:'active'
-			});
-
+			 
 			obserable.trigger({
 				type:'toggleIndex',
 				data:'left'
@@ -58,7 +54,8 @@ export default class ZmitiIndexApp extends Component {
 		},150);
 	}
 
-	entrySingleGame(){
+	entrySingleGame(e){
+		e.preventDefault();
 		this.setState({
 			singleTap:true
 		});
@@ -67,15 +64,20 @@ export default class ZmitiIndexApp extends Component {
 			this.setState({
 				singleTap:false
 			});
-			obserable.trigger({
-				type:'toggleMain',
-				data:'active'
-			});
+
 			obserable.trigger({
 				type:'toggleIndex',
 				data:'left'
 			});
+
+			obserable.trigger({
+				type:'toggleMain',
+				data:'active'
+			});
+			
 		},150)
+
+		return false;
 	}
 
 

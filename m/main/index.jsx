@@ -495,10 +495,9 @@ export default class ZmitiMainApp extends Component {
  
  
 	componentDidMount() {
-		this.key = window.localStorage.getItem('zmiti-bigscreen-key') || this.randomString();
-		window.localStorage.setItem('zmiti-bigscreen-key',this.key);
+		
 		let {wxConfig} = this.props;
-
+		
 		//this.renderText();
 		//this.startMove(this.key);
 		window.s = this;
@@ -541,6 +540,12 @@ export default class ZmitiMainApp extends Component {
 
 		let {obserable} = this.props;
 
+		obserable.on('toggleMain',data =>{
+			
+			this.setState({
+				mainClass:data,
+			});
+	 	});
 		 
 
 		obserable.on('controllerAnimate',()=>{
@@ -594,18 +599,6 @@ export default class ZmitiMainApp extends Component {
 			});
 		})
 
-		obserable.on('toggleMain',data =>{
-			/*this.state.currentUser={
-				headimgurl:this.props.headimgurl,
-				name:this.props.nickname
-			}*/
-			this.setState({
-				mainClass:data,
-
-			});
-			 
-			
-	 	})
 		var s = this;
 		var img = new Image();
 		img.onload = function(){
