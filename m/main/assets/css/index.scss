@@ -156,7 +156,7 @@
     text-align: center;
     line-height: 100px;
     @include br(50%);
-    @include transform(rotate(90deg));
+    @include transform(rotate(90deg) translate3d(0,0,1px));
     &:before{
       content:'';
       @include pos(a);
@@ -167,7 +167,7 @@
       @include br(50%);
       box-shadow: 0 0 40px rgba(0,0,0,.5), 0 0 10px rgba(0,0,0,.5) inset;
     }
-    z-index: 103;
+    z-index: 1003;
     &.active{
       @include transition_transform(.2s);
       @include transform(translate3d(-5px,0,0) scale(.98) rotate(90deg));
@@ -175,7 +175,7 @@
 
   }
    .zmiti-mask{
-   z-index: 100;
+   z-index: 1006;
    background: rgba(0,0,0,.7);
    @include displayFlex(row);
 
@@ -290,8 +290,9 @@
      height: 70px;
      @include pos(a);
      right: 5px;
-     z-index: 11;
+     z-index: 1004;
      top: 0;
+     @include transform(translate3d(0,0,1px));
      &.transition{
        @include transition(width 1s);
      }
@@ -350,7 +351,7 @@
      }
       .zmiti-question{
         @include pos(r);
-        bottom: -88px;
+        bottom: -106px;
         width: 270px;
         left: -22px;
         @include transform(rotate(90deg));

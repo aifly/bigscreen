@@ -353,6 +353,8 @@ export class App extends Component {
 				'../assets/images/m-p5.png',
 				'../assets/images/m-p7.png',
 				'../assets/images/r1.png',
+				'../assets/images/tips4.png',
+				'../assets/images/tips3.png',
 
 				'../assets/images/result-bg.png',
 				'../assets/images/m-question.png',

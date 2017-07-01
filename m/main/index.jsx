@@ -8,7 +8,7 @@ export default class ZmitiMainApp extends Component {
 	constructor(props) {
 		super(props);
 		this.state={
-			transY:100,
+			transY:60,
 			direction:'',
 			duration:time,
 			count:0,
@@ -17,7 +17,7 @@ export default class ZmitiMainApp extends Component {
 			bgH:0,
 			bgTransY:0,
 			isBgMove:false,
-			showQ:true,
+			showQ:false,
 			showAnswer:true,
 			defaultDuration:time,
 			mainClass:'right',
@@ -161,7 +161,7 @@ export default class ZmitiMainApp extends Component {
 					</div>
 				</div>}
 
-				<section style={{zIndex:this.state.tips === 1 ? 104 : 100,display:this.state.showAnswer?'block':'none'}} onTouchTap={this.beginGrab.bind(this)} className={'zmiti-begingrab '+(this.state.grabtap?'active':'')}>
+				<section style={{display:this.state.showAnswer?'block':'none'}} onTouchTap={this.beginGrab.bind(this)} className={'zmiti-begingrab '+(this.state.grabtap?'active':'')}>
 					答题
 				</section>
 
@@ -245,9 +245,9 @@ export default class ZmitiMainApp extends Component {
 				</div>}
 
 
-				{this.state.tips<2 && <div onTouchTap={this.clearTips.bind(this)} className='zmiti-tips lt-full'>
-					<img style={{display:this.state.tips === 0 ?'block':'none'}} src='../assets/images/tips1.png'/>
-					<img style={{display:this.state.tips === 1 ?'block':'none'}} src='../assets/images/tips2.png'/>
+				{this.state.tips < 1 && <div onTouchTap={this.clearTips.bind(this)} className='zmiti-tips lt-full'>
+					<img style={{display:this.state.tips === 0 ?'block':'none'}} src='../assets/images/tips3.png'/>
+					<img style={{display:this.state.tips === 0 ?'block':'none'}} src='../assets/images/tips4.png'/>
 				</div>}
 				<div className='zmiti-cotyright'>
 					<img src='../assets/images/zmiti.png'/>
@@ -266,13 +266,15 @@ export default class ZmitiMainApp extends Component {
 		this.setState({
 			tips:this.state.tips+1
 		},()=>{
-			if(this.state.tips>1){
+			if(this.state.tips>0){
 				obserable.trigger({
 					type:'animate'
 				});
 				this.setState({
-					isBgMove:true
+					isBgMove:true,
+					showQ:true
 				});
+				this.renderText();
 				this.refs['bgSound'].play();
 			}
 		});
@@ -337,7 +339,7 @@ export default class ZmitiMainApp extends Component {
 
 	beginGrab(){//开始抓取
 		//this.startGrab = this.startGrab || false;
-		if(this.state.tips === 1){
+		if(this.state.tips === 0){
 			this.clearTips();
 
 			return;
@@ -497,7 +499,7 @@ export default class ZmitiMainApp extends Component {
 		window.localStorage.setItem('zmiti-bigscreen-key',this.key);
 		let {wxConfig} = this.props;
 
-		this.renderText();
+		//this.renderText();
 		//this.startMove(this.key);
 		window.s = this;
 
